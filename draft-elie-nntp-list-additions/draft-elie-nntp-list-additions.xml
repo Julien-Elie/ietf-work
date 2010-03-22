@@ -25,9 +25,9 @@
   <!-- Common NNTP Extensions -->
   <!ENTITY rfc2980 PUBLIC ''
     'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2980.xml'>
-  <!-- UTF-8, a transformation format of ISO 10646
+  <!-- UTF-8, a transformation format of ISO 10646 -->
   <!ENTITY rfc3629 PUBLIC ''
-    'http://xml.resource.org/public/rfc/bibxml/reference.RFC.3629.xml'> -->
+    'http://xml.resource.org/public/rfc/bibxml/reference.RFC.3629.xml'>
   <!-- Network News Transfer Protocol (NNTP) -->
   <!ENTITY rfc3977 PUBLIC ''
     'http://xml.resource.org/public/rfc/bibxml/reference.RFC.3977.xml'>
@@ -43,7 +43,7 @@
 ]>
 
 <!-- full3978 / pre5378Trust200902 -->
-<rfc ipr="pre5378Trust200902" docName="draft-elie-nntp-list-additions-02"
+<rfc ipr="pre5378Trust200902" docName="draft-elie-nntp-list-additions-03"
      updates="2980, 3977" category="std">
 
   <front>
@@ -132,8 +132,8 @@
       rights.  However, several other values are in use that are primarily
       useful for peers as they mainly describe how remote articles coming
       from peers are locally handled by a given news server.  This memo
-      defines five other values for status field in LIST ACTIVE responses:
-      "Y", "M", "x", "j", and "=" followed by the name of a newsgroup.</t>
+      defines three other values for status field in LIST ACTIVE responses:
+      "x", "j", and "=" followed by the name of a newsgroup.</t>
 
       <t>This specification should be read in conjunction with the
       NNTP base specification <xref target="RFC3977" />.  Except where
@@ -158,6 +158,14 @@
         and responses from the server are indicated with [S].  The client
         is the initiator of the NNTP connection; the server is the other
         endpoint.</t>
+
+      </section>
+
+      <section title="Author's Note">
+
+        <t>Please write the first letter of &quot;Elie&quot; with an
+        acute accent wherever possible -- it is U+00C9, that is to say
+        &quot;&amp;#201;&quot; in XML.</t>
 
       </section>
 
@@ -322,7 +330,7 @@
    [S] 215 List of newsgroups follows
    [S] misc.test 3002322 3000234 1234 y
    [S] comp.risks 442001 441099 742 m
-   [S] local.empty 7 8 0 Y
+   [S] local.empty 7 8 0 y
    [S] .
 ]]></artwork></figure>
 
@@ -344,7 +352,7 @@
    [S] 215 List of newsgroups follows
    [S] misc.test 0003002322 0003000234 1234 y
    [S] comp.risks 0000442001 0000441099 742 m
-   [S] local.empty 0000000007 0000000008 0 Y
+   [S] local.empty 0000000007 0000000008 0 y
    [S] .
 ]]></artwork></figure>
 
@@ -397,7 +405,7 @@
           <t>The same distribution SHOULD NOT appear twice in the output
           of this command.</t>
 
-          <t>The description MUST be in UTF-8.</t>
+          <t>The description MUST be in UTF-8 <xref target="RFC3629" />.</t>
 
           <t>The distributions list is not newsgroup-based, and an argument
           MUST NOT be specified.  Otherwise, a 501 response code MUST
@@ -625,7 +633,7 @@
           its reader mode, or between an authenticated session and an
           unauthenticated session.</t>
 
-          <t>The information MUST be in UTF-8.</t>
+          <t>The information MUST be in UTF-8 <xref target="RFC3629" />.</t>
 
           <t>The motd is not newsgroup-based, and an argument MUST NOT
           be specified.  Otherwise, a 501 response code MUST be returned.</t>
@@ -780,9 +788,9 @@
 
     <section title="Additions to LIST ACTIVE" anchor="sec_additions">
 
-      <t>This document specifies five new status fields that can be used
-      in the answers to LIST ACTIVE:  "Y", "M", "x", "j", and "=" followed
-      by the name of a newsgroup.</t>
+      <t>This document specifies three new status fields that can be used
+      in the answers to LIST ACTIVE:  "x", "j", and "=" followed by the
+      name of a newsgroup.</t>
 
       <section title="New status fields">
 
@@ -803,15 +811,10 @@
 
         </list></t>
 
-        <t>This document defines five other case-sensitive status which
+        <t>This document defines three other case-sensitive status which
         can also be used:</t>
 
         <t><list style="hanging" hangIndent="1">
-
-          <t hangText='"Y"'>Only local posting is permitted.</t>
-
-          <t hangText='"M"'>Only local posting is permitted, and articles
-          will be forwarded to the newsgroup moderator.</t>
 
           <t hangText='"x"'>Postings and articles from peers are not
           permitted.</t>
@@ -827,13 +830,6 @@
 
         <t>The server SHOULD use these values when these meanings are
         required and MUST NOT use them with any other meaning.</t>
-
-        <t>A newsgroup with status "Y" is a newsgroup with status "y"
-        except that articles from peers are not accepted.  Similarly,
-        a newsgroup with status "M" is a newsgroup with status "m"
-        except that articles from peers are not accepted.  Only incoming
-        articles are affected; articles in a newsgroup with status "Y" or
-        "M" may still be propagated to other news servers.</t>
 
         <t>A newsgroup with status "x" is a newsgroup with status "n"
         except that articles from peers are not accepted.  A newsgroup
@@ -852,12 +848,13 @@
 
         <t><list style="empty">
 
-          <t>NOTE:  Instead of not filing at all an article posted to
-          a newsgroup with status "j", a news server MAY file it under
-          a catch-all group.  When a news server uses a catch-all group
-          to file the articles posted to newsgroups with status "j", this
-          catch-all group SHOULD be named "junk".  (The first letter of the
-          "junk" newsgroup explains why this status has been called "j".)</t>
+          <t>NOTE:  Instead of not filing at all an article posted to a
+          newsgroup with status "j", a news server MAY file it under a
+          catch-all group if no valid group is applicable.  When a news
+          server uses a catch-all group to file the articles posted to
+          newsgroups with status "j", this catch-all group SHOULD be named
+          "junk".  (The first letter of the "junk" newsgroup explains why
+          this status has been called "j".)</t>
 
           <t>Consequently, when a news server carries the "junk"
           newsgroup and uses it for the purpose of the "j" status, the
@@ -873,11 +870,11 @@
           does not).  In addition, instead of rejecting an article that
           contains an invalid Newsgroups header field or that is posted
           to newsgroups it does not carry, a news server may accept such
-          an article and file it under this catch-all "junk" newsgroup.</t>
+          an article and file it under the catch-all newsgroup.</t>
 
           <t>Depending on the configuration of the news server, mentioning
           a newsgroup with status "j" is different than simply not listing
-          the group, since articles arriving in unknown newsgroups may
+          the group, since articles arriving for unknown newsgroups may
           be rejected.</t>
 
         </list></t>
@@ -896,12 +893,21 @@
         newsgroups, including but not limited to a renaming of a group,
         or a correction of a misspelled group name.</t>
 
-        <t>An alias SHOULD NOT point to another alias group.  The newsgroup
-        an alias points to SHOULD exist on the news server, and be visible to
-        any client that can see the original group.  However, when a client
-        issues a LIST ACTIVE command with a wildmat including the original
-        group, the newsgroup it points to is not listed in the response
-        (unless of course the second newsgroup also matches the wildmat).</t>
+        <t>The status of the newsgroup an alias points to MUST NOT be
+        taken into account when an article arrives in an alias newsgroup.
+        In particular, it means that unapproved articles arriving from peers
+        in an alias pointing to a moderated newsgroup are accepted and
+        filed into this moderated newsgroup.  Therefore, an alias SHOULD
+        NOT point to a moderated newsgroup since it allows bypassing of
+        the moderation.</t>
+
+        <t>An alias SHOULD NOT point to itself or another alias group.
+        The newsgroup an alias points to SHOULD exist on the news server,
+        and be visible to any client that can see the original group.
+        However, when a client issues a LIST ACTIVE command with a wildmat
+        including the original group, the newsgroup it points to is not
+        listed in the response (unless of course the second newsgroup also
+        matches the wildmat).</t>
 
         <t><list style="empty">
 
@@ -940,16 +946,6 @@
           <c>m</c>
             <c>Yes</c>
             <c>Yes</c>
-            <c>Yes</c>
-            <c>foo.bar</c>
-          <c>Y</c>
-            <c>Yes</c>
-            <c>No</c>
-            <c>No</c>
-            <c>foo.bar</c>
-          <c>M</c>
-            <c>Yes</c>
-            <c>No</c>
             <c>Yes</c>
             <c>foo.bar</c>
           <c>x</c>
@@ -995,16 +991,6 @@
             <c>Yes</c>
             <c>Yes</c>
             <c>foo.bar, misc.test</c>
-          <c>Y</c>
-            <c>Yes</c>
-            <c>No</c>
-            <c>No</c>
-            <c>foo.bar, misc.test</c>
-          <c>M</c>
-            <c>Yes</c>
-            <c>No</c>
-            <c>Yes</c>
-            <c>foo.bar, misc.test</c>
           <c>x</c>
             <c>No</c>
             <c>Yes</c>
@@ -1025,7 +1011,7 @@
         <t><list style="empty">
 
           <t>NOTE:  The status of a newsgroup only indicates how articles
-          arriving to that newsgroup are normally processed; news servers
+          arriving for that newsgroup are normally processed; news servers
           MAY provide clients with special privileges to allow or disallow
           some rights in these newsgroups.  This specification defines
           neither these rights nor whether or not articles posted to these
@@ -1140,8 +1126,7 @@
 
 <figure><artwork type="abnf"><![CDATA[
   ; active
-  newsgroup-status =/ %x59 / %x4d /  ; case-sensitive "Y" and "M"
-        %x78 / %x6a /                ; case-sensitive "x" and "j"
+  newsgroup-status =/ %x78 / %x6a /  ; case-sensitive "x" and "j"
         newsgroup-alias
   newsgroup-alias =  "=" newsgroup-name
 
@@ -1183,11 +1168,11 @@
       <xref target="RFC3977" />.</t>
 
       <t>In particular, newsgroup names SHOULD be restricted to US-ASCII
-      until a successor to <xref target="RFC5536" /> standardizes another
-      approach.</t>
+      <xref target="ASCII" /> until a successor to <xref target="RFC5536"
+      /> standardizes another approach.</t>
 
-      <t>Distribution descriptions and the message of the day MUST be
-      in UTF-8.</t>
+      <t>Distribution descriptions and the message of the day MUST be in
+      UTF-8 <xref target="RFC3629" />.</t>
 
     </section>
 
@@ -1255,7 +1240,7 @@
 
         <t>Contact for Further Information:  Author of this document.</t>
 
-        <!-- <t>Change Controller:  IESG <iesg@ietf.org>.</t> -->
+        <t>Change Controller:  IESG &lt;iesg@ietf.org>.</t>
 
       </list></t>
 
@@ -1265,7 +1250,7 @@
 
       <t>The author gratefully acknowledges the comments and additional
       information provided by Russ Allbery, Urs Janssen, Antti-Juhani
-      Kaijanaho, and D. Stussy on this document.</t>
+      Kaijanaho, and Dieter Stussy on this document.</t>
 
       <t>The author would particularly like to thank Jeffrey M. Vinocur
       for having reread, improved, and patiently fixed the English wording
@@ -1298,7 +1283,7 @@
 
     <references title="Normative References">
       &rfc2119;
-      <!-- &rfc3629; -->
+      &rfc3629;
       &rfc3977;
       &rfc5234;
     </references>
@@ -1320,6 +1305,7 @@
       &rfc5536;
       &rfc5537;
 
+<!-- Now published as RFC. -->
 <!--
       <reference anchor="RFC5536">
         <front>
@@ -1361,6 +1347,27 @@
     <appendix title="Document History (to be removed by RFC Editor before
     publication)">
 
+      <appendix title="Changes from -02">
+
+        <t><list style="symbols">
+
+          <t>No longer document the "Y" and "M" status.  It is better
+          to stick with status that already have an implementation for
+          Proposed Standard.</t>
+
+          <t>Mention that the status of the newsgroup an alias points to
+          MUST NOT be taken into account when an article arrives in an
+          alias newsgroup.  Also point out the fact that it can lead to
+          file unapproved articles into moderated newsgroups.</t>
+
+          <t>Clarify that the catch-all group MAY be used when no valid
+          group is applicable.</t>
+
+          <t>Add a reference to <xref target="RFC3629" />.</t>
+
+        </list></t>
+      </appendix>
+
       <appendix title="Changes from -01">
 
         <t><list style="symbols">
@@ -1400,19 +1407,19 @@
           <t>Refer to USEFOR (RFC 5536) and USEAGE instead of putting a
           SHOULD requirement on the name of newsgroups in the example of
           the LIST MODERATORS command.  Besides, the note was only related
-          to the presence of "%s" in the submission address.</t>
+          to the presence of "%s" in the submission address template.</t>
 
           <t>Mention that every moderated newsgroup name SHOULD have a
-          matching line in LIST MODERATORS.</t>
+          matching line in LIST MODERATORS, if no default entry exists.</t>
 
-          <t>The presence of "+" in the name of a newsgroup is a matter
-          of configuration and should not be dealt with in this memo.
-          If any special interpretation is applied by the MTA or MDA
-          of the receiving site, and if they want to host a submission
-          address for a moderated group determined by a "%s" pattern rule,
-          they will need to suppress that interpretation.</t>
+          <t>The presence of "+" in the name of a moderated newsgroup
+          is a matter of configuration and should not be dealt with in
+          this memo.  If any special interpretation is applied by the
+          mail system of the receiving site, and if they want to host a
+          submission address for a moderated group determined by a "%s"
+          pattern rule, they will need to suppress that interpretation.</t>
 
-          <t>Lowercase a "MAY" for the reject of articles arriving in
+          <t>Lowercase a "MAY" for the reject of articles arriving for
           unknown newsgroups.</t>
 
           <t>The meaning of the "j" status flag has changed:  the "junk"
