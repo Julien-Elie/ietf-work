@@ -34,6 +34,9 @@
   <!-- Augmented BNF for Syntax Specifications:  ABNF -->
   <!ENTITY rfc5234 PUBLIC ''
     'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5234.xml'>
+  <!-- Internet Message Format -->
+  <!ENTITY rfc5322 PUBLIC ''
+    'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml'>
   <!-- USEFOR -->
   <!ENTITY rfc5536 PUBLIC ''
     'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5536.xml'>
@@ -42,8 +45,8 @@
     'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5537.xml'>
 ]>
 
-<!-- full3978 / pre5378Trust200902 -->
-<rfc ipr="pre5378Trust200902" docName="draft-elie-nntp-list-additions-03"
+<!-- full3978 / trust200902 -->
+<rfc ipr="trust200902" docName="draft-elie-nntp-list-additions-04"
      updates="2980, 3977" category="std">
 
   <front>
@@ -68,7 +71,8 @@
     <date year="2010" />
 
     <area>Applications</area>
-    <workgroup>Independent Submission</workgroup>
+    <!-- <workgroup>Independent Submission</workgroup> -->
+    <workgroup>Internet Engineering Task Force (IETF)</workgroup>
     <keyword>Usenet</keyword>
     <keyword>NetNews</keyword>
     <keyword>capabilities</keyword>
@@ -100,7 +104,7 @@
       command:  ACTIVE, ACTIVE.TIMES, DISTRIB.PATS, HEADERS, NEWSGROUPS,
       and OVERVIEW.FMT.  Other variants of the LIST command are in use, but
       with limited or absent documentation.  These variants are formalized
-      and extended in this document.</t>
+      in this document.</t>
 
       <t>The DISTRIBUTIONS and SUBSCRIPTIONS variants were originally
       documented in <xref target="RFC2980" />.  The LIST DISTRIBUTIONS
@@ -146,9 +150,10 @@
         as those in <xref target="RFC3977" />, and any term not defined
         in this document has the same meaning as it does in that one.</t>
 
-        <t>The key words "MUST", "MUST NOT", "SHOULD", "SHOULD NOT", and
-        "MAY" in this document are to be interpreted as described in <xref
-        target="RFC2119" />.</t>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+        "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
+        "OPTIONAL" in this document are to be interpreted as described in
+        <xref target="RFC2119" />.</t>
 
         <t>When a hexadecimal correspondence is given to an octet in
         this document, the value is in US-ASCII <xref target="ASCII" />
@@ -283,9 +288,11 @@
           number of articles are as described in the GROUP command (see
           Section 6.1.1 of <xref target="RFC3977" />), but note that they
           are in the opposite order to the 211 response to that command.
-          The current status of the group is as described in the LIST
-          ACTIVE command (see Section 7.6.3 of <xref target="RFC3977" />,
-          as well as <xref target="sec_counts" /> of this document).</t>
+          The current status of the group is as described in the LIST ACTIVE
+          command (see Section 7.6.3 of <xref target="RFC3977" />, as well
+          as <xref target="sec_counts" /> of this document).  Also note
+          that, similarly to the LIST ACTIVE command, TAB characters are
+          not valid separators for the LIST COUNTS command.</t>
 
           <t>The order of newsgroups in the list is not significant.
           The server need not consistently return the same order or the same
@@ -330,17 +337,19 @@
    [S] 215 List of newsgroups follows
    [S] misc.test 3002322 3000234 1234 y
    [S] comp.risks 442001 441099 742 m
+   [S] rec.food.drink.tea 221176 220685 351 y
    [S] local.empty 7 8 0 y
+   [S] local.tea 2004 1504 301 y
    [S] .
 ]]></artwork></figure>
 
           <t>Example of output with a wildmat:</t>
 
 <figure><artwork><![CDATA[
-   [C] LIST COUNTS comp.*,misc.*
+   [C] LIST COUNTS *.tea,misc.*,!local.*
    [S] 215 List of newsgroups follows
    [S] misc.test 3002322 3000234 1234 y
-   [S] comp.risks 442001 441099 742 m
+   [S] rec.food.drink.tea 221176 220685 351 y
    [S] .
 ]]></artwork></figure>
 
@@ -352,7 +361,9 @@
    [S] 215 List of newsgroups follows
    [S] misc.test 0003002322 0003000234 1234 y
    [S] comp.risks 0000442001 0000441099 742 m
+   [S] rec.food.drink.tea 0000221176 0000220685 351 y
    [S] local.empty 0000000007 0000000008 0 y
+   [S] local.tea 0000002004 0000001504 301 y
    [S] .
 ]]></artwork></figure>
 
@@ -488,13 +499,14 @@
           trailing whitespaces in a line.  The submission template MAY
           contain colons (":").</t>
 
-          <t>The submission template is essentially an e-mail address,
-          except with certain modifications.  The case-sensitive string "%s"
-          (%x25.73) MUST occur either zero or one time in the template.
-          If there is to be a literal "%" in the submission address, it
-          MUST be written as "%%" in the template, even if not followed
-          by an "s".  The character "%" MUST NOT occur in the submission
-          template except as part of "%s" or "%%".</t>
+          <t>The submission template is essentially an e-mail address
+          (see the definition of "addr-spec" in Section 3.4.1 of <xref
+          target="RFC5322" />), except with certain modifications.
+          The case-sensitive string "%s" (%x25.73) MUST occur either zero or
+          one time in the template.  If there is to be a literal "%" in the
+          submission address, it MUST be written as "%%" in the template,
+          even if not followed by an "s".  The character "%" MUST NOT occur
+          in the submission template except as part of "%s" or "%%".</t>
 
           <t>The order of lines in the moderators list is significant: the
           first matching line is used.  Consequently, specific patterns
@@ -582,12 +594,14 @@
             be used for the moderation submission addresses for those groups,
             and explicit entries without a pattern will be required.</t>
 
-            <t>Similarly, a "%s" pattern rule cannot be used for the
-            moderation submission template for two moderated newsgroups
-            whose names differ only by the case of their characters.
-            See also Section 3.1.4 of <xref target="RFC5536" /> and Section
-            7.2 of <xref target="I-D.ietf-usefor-useage" /> for the syntax
-            of a newsgroup name.</t>
+            <t>Similarly, it is not recommended to use a "%s" pattern
+            rule for the moderation submission template for two moderated
+            newsgroups whose names differ only by the case of their
+            characters, because e-mail systems frequently treat the
+            left-hand-side of e-mail addresses as case-sensitive.  See also
+            Section 3.1.4 of <xref target="RFC5536" /> and Section 7.2 of
+            <xref target="I-D.ietf-usefor-useage" /> for the syntax of a
+            newsgroup name.</t>
 
           </list></t>
 
@@ -1037,9 +1051,10 @@
    [C] From: "Demo User" <nobody@example.com>
    [C] Newsgroups: misc.test
    [C] Subject: I am just a test article
-   [C] Date: 18 Oct 2009 16:02:45 +0200
+   [C] Date: 18 Oct 2008 16:02:45 +0200
    [C] Organization: An example, Paris, FR.
    [C] Message-ID: <for.misc.test@example.com>
+   [C] MIME-Version: 1.0
    [C]
    [C] This is just a test article.
    [C] .
@@ -1051,7 +1066,7 @@
    [S] .
    [C] HDR Xref <for.misc.test@example.com>
    [S] 225 Header information follows
-   [S] 0 news.server.com foo.bar:22
+   [S] 0 news.example.com foo.bar:22
    [S] .
    [C] HDR Newsgroups <for.misc.test@example.com>
    [S] 225 Header information follows
@@ -1077,6 +1092,7 @@
    [C] From: "Demo User" <nobody@example.com>
    [C] Newsgroups: misc.test
    [C] Subject: I am just a test article
+   [C] MIME-Version: 1.0
    [C]
    [C] This is just a test article.
    [C] .
@@ -1126,8 +1142,8 @@
 
 <figure><artwork type="abnf"><![CDATA[
   ; active
-  newsgroup-status =/ %x78 / %x6a /  ; case-sensitive "x" and "j"
-        newsgroup-alias
+  newsgroup-status =/ newsgroup-alias /
+        %x78 / %x6a  ; case-sensitive "x" and "j"
   newsgroup-alias =  "=" newsgroup-name
 
   ; counts
@@ -1188,15 +1204,16 @@
 
     <section title="IANA Considerations">
 
-      <t>This section gives a formal definition of this extension as
-      required by Section 3.3.3 of <xref target="RFC3977" /> for the
-      IANA registry.</t>
+      <t>This section gives a formal definition of this extension as required
+      by Section 3.3.3 of <xref target="RFC3977" /> for the IANA registry.
+      It extends the LIST capability label defined in Section 7.6 of <xref
+      target="RFC3977" />.</t>
 
       <t><list style="symbols">
 
-        <t>This extension provides additional keywords to the existing LIST
-        capability defined in Section 7.6 of <xref target="RFC3977" />.
-        New status are also added to the ACTIVE variant of the LIST
+        <t>This extension provides additional keywords to the pre-existing
+        LIST capability defined in Section 7.6 of <xref target="RFC3977"
+        />.  New status are also added to the ACTIVE variant of the LIST
         command.</t>
 
         <t>The capability label that this extension extends is "LIST".</t>
@@ -1204,7 +1221,8 @@
         <t>This extension adds five optional arguments to the "LIST"
         capability label:  "COUNTS", "DISTRIBUTIONS", "MODERATORS", "MOTD",
         and "SUBSCRIPTIONS", indicating which new variants of the LIST
-        command are supported.</t>
+        command are supported.  Consequently, this extension associates
+        these new arguments with the pre-existing "LIST" NNTP command.</t>
 
         <t>This extension defines five new commands, LIST COUNTS,
         LIST DISTRIBUTIONS, LIST MODERATORS, LIST MOTD, and LIST
@@ -1250,7 +1268,7 @@
 
       <t>The author gratefully acknowledges the comments and additional
       information provided by Russ Allbery, Urs Janssen, Antti-Juhani
-      Kaijanaho, and Dieter Stussy on this document.</t>
+      Kaijanaho, Alexey Melnikov, and Dieter Stussy on this document.</t>
 
       <t>The author would particularly like to thank Jeffrey M. Vinocur
       for having reread, improved, and patiently fixed the English wording
@@ -1286,6 +1304,7 @@
       &rfc3629;
       &rfc3977;
       &rfc5234;
+      &rfc5322;
     </references>
 
     <references title="Informative References">
@@ -1347,6 +1366,45 @@
     <appendix title="Document History (to be removed by RFC Editor before
     publication)">
 
+      <appendix title="Changes from -03">
+
+        <t><list style="symbols">
+
+          <t>This document is no longer an independent submission.  It is
+          now sponsored by an Area Director, Alexey Melnikov.  Many thanks
+          to him!</t>
+
+          <t>Modify the note about the "%s" pattern rule for the moderation
+          submission template for two moderated newsgroups whose names
+          differ only by the case of their characters:  mention the reason
+          and the fact that it is only a recommendation.</t>
+
+          <t>Mention that TAB characters are not valid separators for the
+          LIST COUNTS command.</t>
+
+          <t>Add an example of wildmat preceded by "!".</t>
+
+          <t>Re-work the BNF syntax for "newsgroup-alias" because it could
+          be a little confusing.  Thanks to Gen-ART for the remark during
+          Last Call.</t>
+
+          <t>Add a MIME-Version: header field in the examples of postings.
+          They now comply with <xref target="RFC5536" />.</t>
+
+          <t>Clarify what is expected from IANA (add a reference to this
+          document for the LIST NNTP extension).</t>
+
+          <t>Use "news.example.com" instead of "news.server.com" in an Xref:
+          header field so as to have a compliant FQDN.</t>
+
+          <t>Use the right boilerplate for <xref target="RFC2119" />.</t>
+
+          <t>Add a reference to <xref target="RFC5322" /> for the submission
+          template.</t>
+
+        </list></t>
+      </appendix>
+
       <appendix title="Changes from -02">
 
         <t><list style="symbols">
@@ -1404,10 +1462,11 @@
           <t>Acknowledge Antti-Juhani Kaijanaho's and D. Stussy's
           remarks.</t>
 
-          <t>Refer to USEFOR (RFC 5536) and USEAGE instead of putting a
-          SHOULD requirement on the name of newsgroups in the example of
-          the LIST MODERATORS command.  Besides, the note was only related
-          to the presence of "%s" in the submission address template.</t>
+          <t>Refer to USEFOR (<xref target="RFC5536" />) and USEAGE (<xref
+          target="I-D.ietf-usefor-useage" />) instead of putting a SHOULD
+          requirement on the name of newsgroups in the example of the LIST
+          MODERATORS command.  Besides, the note was only related to the
+          presence of "%s" in the submission address template.</t>
 
           <t>Mention that every moderated newsgroup name SHOULD have a
           matching line in LIST MODERATORS, if no default entry exists.</t>
