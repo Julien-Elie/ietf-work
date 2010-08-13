@@ -46,7 +46,7 @@
 ]>
 
 <!-- full3978 / trust200902 -->
-<rfc ipr="trust200902" docName="draft-elie-nntp-list-additions-04"
+<rfc ipr="trust200902" docName="draft-elie-nntp-list-additions-05"
      updates="2980, 3977" category="std">
 
   <front>
@@ -185,7 +185,7 @@
       <t>This document provides five new keywords to the LIST capability:
       COUNTS, DISTRIBUTIONS, MODERATORS, MOTD, and SUBSCRIPTIONS.</t>
 
-      <t>Each keyword is optional and corresponds to the same-named variant
+      <t>Each keyword is OPTIONAL and corresponds to the same-named variant
       of the LIST command.</t>
 
       <section title="Advertising the New LIST Variants">
@@ -430,10 +430,11 @@
           server implements the LIST DISTRIBUTIONS command, it SHOULD also
           implement the LIST DISTRIB.PATS command (defined in Section 7.6.5
           of <xref target="RFC3977" />) and describe in the distributions
-          list at least all the distributions present in the distrib.pats
-          list so that the client can use both of these commands jointly.
-          Note that the two commands need not return distributions in the
-          same order.</t>
+          list all the distributions present in the distrib.pats list so that
+          the client can use both of these commands jointly (naturally,
+          the distributions list can also describe distributions that
+          are not present in the distrib.pats list).  Note that the two
+          commands need not return distributions in the same order.</t>
 
         </section>
 
@@ -460,6 +461,7 @@
    [S] fr Local to France.
    [S] local Local to this news server.
    [S] thissite Local to this site.
+   [S] usa Local to the United States of America.
    [S] .
 ]]></artwork></figure>
 
@@ -541,7 +543,7 @@
 
           <t>The moderators list MAY be empty.  If the server does not
           maintain the information, a 503 response code MUST be returned,
-          although these situations SHOULD NOT occur if the news server
+          although these situations should not occur if the news server
           is an injecting agent that carries moderated newsgroups.</t>
 
         </section>
@@ -657,7 +659,7 @@
 
           <t>It is up to the client to decide when and how to display this
           message to the user.  No timestamp or date of last modification
-          date is provided programmatically, although the news administrator
+          is provided programmatically, although the news administrator
           may include one in the text of the motd.  The client MAY cache a
           local copy or fingerprint of the motd so that it can display the
           message to the user only upon modification.  If the client caches
@@ -1268,7 +1270,8 @@
 
       <t>The author gratefully acknowledges the comments and additional
       information provided by Russ Allbery, Urs Janssen, Antti-Juhani
-      Kaijanaho, Alexey Melnikov, and Dieter Stussy on this document.</t>
+      Kaijanaho, Alexey Melnikov, Peter Saint-Andre, Dieter Stussy, and
+      Sean Turner on this document.</t>
 
       <t>The author would particularly like to thank Jeffrey M. Vinocur
       for having reread, improved, and patiently fixed the English wording
@@ -1365,6 +1368,23 @@
 
     <appendix title="Document History (to be removed by RFC Editor before
     publication)">
+
+      <appendix title="Changes from -04">
+
+        <t><list style="symbols">
+
+          <t>Fix a few nits which were found during IESG Evaluation.
+          The most important are:  in Section 2, "optional" is changed to
+          "OPTIONAL"; in Section 2.4.2, "SHOULD NOT occur" is changed
+          to "should not occur".  Thanks to Sean Turner and Peter
+          Saint-Andre.</t>
+
+          <t>Show in the example of LIST DISTRIBUTIONS that descriptions
+          of distributions not present in the distrib.pats list can be
+          mentioned in the distributions list.</t>
+
+        </list></t>
+      </appendix>
 
       <appendix title="Changes from -03">
 
