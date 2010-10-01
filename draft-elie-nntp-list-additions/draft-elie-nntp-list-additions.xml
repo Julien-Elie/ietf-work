@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 
-<?rfc colonspace="yes"?>
-<?rfc comments="yes"?>
 <?rfc compact="yes"?>
-<?rfc inline="yes"?>
-<?rfc rfcedstyle="yes"?>
-<?rfc rfcprocack="yes"?>
 <?rfc subcompact="no"?>
 <?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
 <?rfc toc="yes"?>
+<?rfc rfcedstyle="yes"?>
 
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt'?>
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-  <!-- NNTP LIST Additions -->
-  <!ENTITY I-D.draft-hernacki-nntplist PUBLIC ''
-    'http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-hernacki-nntplist.xml'>
-  <!-- USEAGE -->
-  <!ENTITY I-D.ietf-usefor-useage PUBLIC ''
-    'http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-usefor-useage.xml'>
   <!-- Key words for use in RFCs to Indicate Requirement Levels -->
   <!ENTITY rfc2119 PUBLIC ''
     'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml'>
@@ -45,8 +36,7 @@
     'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5537.xml'>
 ]>
 
-<!-- full3978 / trust200902 -->
-<rfc ipr="trust200902" docName="draft-elie-nntp-list-additions-05"
+<rfc ipr="trust200902" number="6048"
      updates="2980, 3977" category="std">
 
   <front>
@@ -68,26 +58,30 @@
       </address>
     </author>
 
-    <date year="2010" />
+    <date month="October" year="2010" />
 
     <area>Applications</area>
-    <!-- <workgroup>Independent Submission</workgroup> -->
-    <workgroup>Internet Engineering Task Force (IETF)</workgroup>
+
     <keyword>Usenet</keyword>
     <keyword>NetNews</keyword>
     <keyword>capabilities</keyword>
 
+<!-- [rfced] Please note that after you have approved the document,
+post-xml2rfc changes will be made to update the header and boilerplate as
+described in RFC 5741. -->
+
     <abstract>
 
       <t>This document defines a set of enhancements to the Network News
-      Transfer Protocol (NNTP) that allows a client to request extended
+      Transfer Protocol (NNTP) that allow a client to request extended
       information from NNTP servers regarding server status, policy, and
       other aspects of local configuration.  These enhancements are made as
       new keywords to the existing LIST capability described in RFC 3977.</t>
 
       <t>This memo updates and formalizes the LIST DISTRIBUTIONS and
       LIST SUBSCRIPTIONS commands defined in RFC 2980.  It also adds the
-      LIST COUNTS, LIST MODERATORS and LIST MOTD commands, and specifies
+      LIST COUNTS, LIST MODERATORS, and LIST MOTD
+      commands, and specifies
       additional values returned by the existing LIST ACTIVE command for
       the status of a newsgroup.</t>
 
@@ -100,8 +94,8 @@
     <section title="Introduction">
 
       <t>The NNTP specification <xref target="RFC3977" /> defines the
-      LIST capability and a few keywords which can be used with that
-      command:  ACTIVE, ACTIVE.TIMES, DISTRIB.PATS, HEADERS, NEWSGROUPS,
+      LIST capability and a few keywords that can be used with that
+      command: ACTIVE, ACTIVE.TIMES, DISTRIB.PATS, HEADERS, NEWSGROUPS,
       and OVERVIEW.FMT.  Other variants of the LIST command are in use, but
       with limited or absent documentation.  These variants are formalized
       in this document.</t>
@@ -117,7 +111,7 @@
       distributions or look for specific default newsgroups.</t>
 
       <t>The MOTD variant was originally documented in <xref
-      target="I-D.draft-hernacki-nntplist" /> (which also describes the
+      target="NNTP_LIST" /> (which also describes the
       SUBSCRIPTIONS variant).  The LIST MOTD command is sent by a news
       client to obtain a "message of the day" from the server administrator
       regarding the current state of a news server.</t>
@@ -129,19 +123,19 @@
       list of associations between a moderated newsgroup and its submission
       address template.</t>
 
-      <t>The ACTIVE variant was formalized in <xref target="RFC3977" />
+      <t>The ACTIVE variant was formalized in <xref target="RFC3977" />,
       but the meanings of only three status fields in LIST ACTIVE responses
-      have been specified:  "y", "n", and "m".  These status field values
-      are particularly useful for readers since they describe local posting
+      have been specified: "y", "n", and "m".  These status field values
+      are particularly useful for readers, since they describe local posting
       rights.  However, several other values are in use that are primarily
       useful for peers as they mainly describe how remote articles coming
       from peers are locally handled by a given news server.  This memo
-      defines three other values for status field in LIST ACTIVE responses:
-      "x", "j", and "=" followed by the name of a newsgroup.</t>
+      defines three other values for the status field in LIST ACTIVE
+      responses: "x", "j", and "=" followed by the name of a newsgroup.</t>
 
       <t>This specification should be read in conjunction with the
-      NNTP base specification <xref target="RFC3977" />.  Except where
-      specifically stated otherwise, in the case of a conflict between
+      NNTP base specification <xref target="RFC3977" />.  In the case
+      of a conflict between
       these two documents, <xref target="RFC3977" /> takes precedence.</t>
 
       <section title="Conventions Used in This Document">
@@ -157,7 +151,7 @@
 
         <t>When a hexadecimal correspondence is given to an octet in
         this document, the value is in US-ASCII <xref target="ASCII" />
-        (for instance ".", noted %x2E).</t>
+        (for instance, ".", noted %x2E).</t>
 
         <t>In the examples, commands from the client are indicated with [C],
         and responses from the server are indicated with [S].  The client
@@ -234,7 +228,7 @@
 
         <t>When the news server software implements one of these LIST
         variants but a particular server does not maintain the information
-        (for instance when the configuration file does not exist), the
+        (for instance, when the configuration file does not exist), the
         503 response code MUST be returned:</t>
 
 <figure><artwork><![CDATA[
@@ -285,9 +279,27 @@
           </list></t>
 
           <t>The reported high and low water marks, and the estimated
-          number of articles are as described in the GROUP command (see
+          number of articles, are as described in the GROUP command (see
           Section 6.1.1 of <xref target="RFC3977" />), but note that they
           are in the opposite order to the 211 response to that command.
+
+<!-- Section 2.2.2:  The sentence above is not clear.  Does
+"in the opposite order to the 211 response" refer to "high to
+low" for LIST COUNTS versus "low to high" for GROUP?
+If the suggested text is not correct, please clarify.
+
+Original:
+ The reported high and low water marks, and the estimated number of
+ articles are as described in the GROUP command (see Section 6.1.1 of
+ [RFC3977]), but note that they are in the opposite order to the 211
+ response to that command.
+
+Suggested:
+ The reported high and low water marks, and the estimated number of
+ articles, are as described in the GROUP command (see Section 6.1.1 of
+ [RFC3977]), but note that they are in the opposite order to the 211
+ response (that is, number high low group) to that command. -->
+
           The current status of the group is as described in the LIST ACTIVE
           command (see Section 7.6.3 of <xref target="RFC3977" />, as well
           as <xref target="sec_counts" /> of this document).  Also note
@@ -337,7 +349,7 @@
    [S] 215 List of newsgroups follows
    [S] misc.test 3002322 3000234 1234 y
    [S] comp.risks 442001 441099 742 m
-   [S] rec.food.drink.tea 221176 220685 351 y
+   [S] rec.food.drink.tea 100 51 3 y
    [S] local.empty 7 8 0 y
    [S] local.tea 2004 1504 301 y
    [S] .
@@ -349,7 +361,7 @@
    [C] LIST COUNTS *.tea,misc.*,!local.*
    [S] 215 List of newsgroups follows
    [S] misc.test 3002322 3000234 1234 y
-   [S] rec.food.drink.tea 221176 220685 351 y
+   [S] rec.food.drink.tea 100 51 3 y
    [S] .
 ]]></artwork></figure>
 
@@ -361,7 +373,7 @@
    [S] 215 List of newsgroups follows
    [S] misc.test 0003002322 0003000234 1234 y
    [S] comp.risks 0000442001 0000441099 742 m
-   [S] rec.food.drink.tea 0000221176 0000220685 351 y
+   [S] rec.food.drink.tea 0000000100 0000000051 3 y
    [S] local.empty 0000000007 0000000008 0 y
    [S] local.tea 0000002004 0000001504 301 y
    [S] .
@@ -508,14 +520,14 @@
           one time in the template.  If there is to be a literal "%" in the
           submission address, it MUST be written as "%%" in the template,
           even if not followed by an "s".  The character "%" MUST NOT occur
-          in the submission template except as part of "%s" or "%%".</t>
+          in the submission template, except as part of "%s" or "%%".</t>
 
           <t>The order of lines in the moderators list is significant: the
           first matching line is used.  Consequently, specific patterns
           should be listed before general patterns.  Every moderated
           newsgroup name SHOULD be matched by at least one line in the list;
           often this is achieved by having a default pattern at the bottom,
-          but other approaches are acceptable and news server software MAY
+          but other approaches are acceptable, and news server software MAY
           leave this up to the server administrator rather than enforcing
           it programmatically.</t>
 
@@ -527,12 +539,12 @@
           if present, with the name of the matching newsgroup after
           each period ("." or %x2E) in the name is changed to a dash
           ("-" or %x2D).  In addition, any "%%" is changed back to "%".
-          The server then forwards the submitted article to moderator at
-          the resulting submission address.</t>
+          The server then forwards the submitted article to the
+          moderator at the resulting submission address.</t>
 
           <t><list style="empty">
 
-            <t>NOTE:  The creation and maintenance of submission addresses
+            <t>NOTE: The creation and maintenance of submission addresses
             is outside the scope of this specification.</t>
 
           </list></t>
@@ -570,7 +582,7 @@
 
           <t>The following table describes a few examples associating a
           moderated newsgroup and its submission address on a news server
-          whose moderators list is the one of the previous example:</t>
+          whose moderators list is the one in the previous example:</t>
 
           <texttable>
             <ttcol>Name of the moderated newsgroup</ttcol>
@@ -587,7 +599,7 @@
 
           <t><list style="empty">
 
-            <t>NOTE:  When "%s" is used, periods are changed to dashes,
+            <t>NOTE: When "%s" is used, periods are changed to dashes,
             and dashes are left alone.  This implies that two moderated
             newsgroups whose names differ only by changing a period to a dash
             would have the same submission address.  Therefore, if a server
@@ -600,9 +612,9 @@
             rule for the moderation submission template for two moderated
             newsgroups whose names differ only by the case of their
             characters, because e-mail systems frequently treat the
-            left-hand-side of e-mail addresses as case-sensitive.  See also
+            left-hand side of e-mail addresses as case-sensitive.  See also
             Section 3.1.4 of <xref target="RFC5536" /> and Section 7.2 of
-            <xref target="I-D.ietf-usefor-useage" /> for the syntax of a
+            <xref target="USENET_BP" /> for the syntax of a
             newsgroup name.</t>
 
           </list></t>
@@ -670,7 +682,7 @@
 
           <t><list style="empty">
 
-            <t>NOTE:  Though the client MAY cache the results of this
+            <t>NOTE: Though the client MAY cache the results of this
             command, it MUST NOT rely on the correctness of any cached
             results, whether from earlier in the session or from a previous
             session.  If the motd is cached, the client SHOULD provide a
@@ -695,8 +707,8 @@
    [S] 215 Message of the day follows
    [S] Attention all users,
    [S] 
-   [S] This server will be down for scheduled upgrades on February, 1st.
-   [S] It should be back up by 8:00 a.m. February, 2nd.
+   [S] This server will be down for scheduled upgrades on February 1st.
+   [S] It should be back up by 8:00 a.m. February 2nd.
    [S] Any questions should be e-mailed to <newsmaster@example.com>.
    [S]
    [S] Apologies for the disturbance.
@@ -735,7 +747,7 @@
           consist of a newsgroup name.  There are no leading or trailing
           whitespaces in a line.</t>
 
-          <t>The order of newsgroups in the list is significant:  they
+          <t>The order of newsgroups in the list is significant: they
           are listed by order of importance, the first newsgroup being
           the most important to subscribe to.</t>
 
@@ -746,7 +758,7 @@
           <t>The subscriptions list is newsgroup-based, and a wildmat
           MAY be specified, in which case the response is limited to only
           the groups, if any, whose names match the wildmat.  Note that
-          the wildmat argument is a new feature in this specification and
+          the wildmat argument is a new feature in this specification, and
           servers that do not support CAPABILITIES or do not advertise the
           SUBSCRIPTIONS keyword in the LIST capability (and therefore do
           not conform to this specification) are unlikely to support it.</t>
@@ -758,10 +770,10 @@
           connects to the news server so as to initialize the list of
           default subscribed newsgroups.  This list should therefore
           contain groups intended for new users on the news server or
-          Usenet in general.  For instance newsgroups dedicated to testing,
-          support, announcement, or FAQs.  The client MAY present the groups
+          Usenet in general (for instance, newsgroups dedicated to testing,
+          support, announcement, or FAQs).  The client MAY present the groups
           in the order of appearance in the list to the user.  When the
-          subscriptions list is maintained and non empty, the news client
+          subscriptions list is maintained and non&nbhy;empty, the news client
           SHOULD use it, instead of a hard-coded default list, if any.</t>
 
         </section>
@@ -805,16 +817,16 @@
     <section title="Additions to LIST ACTIVE" anchor="sec_additions">
 
       <t>This document specifies three new status fields that can be used
-      in the answers to LIST ACTIVE:  "x", "j", and "=" followed by the
+      in the answers to LIST ACTIVE: "x", "j", and "=" followed by the
       name of a newsgroup.</t>
 
-      <section title="New status fields">
+      <section title="New Status Fields">
 
         <t>The LIST ACTIVE command is defined in Section 7.6.3 of <xref
         target="RFC3977" />.  The fourth field of each line of this
         list indicates the current status of the newsgroup whose name is
-        specified in the first field.  Three status are defined in <xref
-        target="RFC3977" />:</t>
+        specified in the first field.  Three status fields are defined
+        in <xref target="RFC3977" />:</t>
 
         <t><list style="hanging" hangIndent="1">
 
@@ -827,8 +839,8 @@
 
         </list></t>
 
-        <t>This document defines three other case-sensitive status which
-        can also be used:</t>
+        <t>This document defines three other case-sensitive status fields
+        that can also be used:</t>
 
         <t><list style="hanging" hangIndent="1">
 
@@ -847,24 +859,25 @@
         <t>The server SHOULD use these values when these meanings are
         required and MUST NOT use them with any other meaning.</t>
 
-        <t>A newsgroup with status "x" is a newsgroup with status "n"
+        <t>A newsgroup with status "x" is a newsgroup with status "n",
         except that articles from peers are not accepted.  A newsgroup
-        with status "x" is considered as closed:  no new articles will
+        with status "x" is considered as closed: no new articles will
         arrive in such a group.  On the contrary, articles from peers
         will arrive in a newsgroup with status "n".  Local postings are
-        not allowed in a newsgroup of either these two status.</t>
+        not allowed in a newsgroup with either of these two status
+        fields.</t>
 
-        <t>A newsgroup with status "j" is a newsgroup with status "y" except
+        <t>A newsgroup with status "j" is a newsgroup with status "y", except
         that (1) local postings are not accepted, (2) articles received
         from a peer that are crossposted to one or more valid groups are
-        filed only into those valid groups, (3) articles received from a
+        filed only into those valid groups, and (3) articles received from a
         peer that are not crossposted to any valid groups are not filed
         into any newsgroup, but are still propagated to other peers,
         if appropriate.</t>
 
         <t><list style="empty">
 
-          <t>NOTE:  Instead of not filing at all an article posted to a
+          <t>NOTE: Instead of not filing at all an article posted to a
           newsgroup with status "j", a news server MAY file it under a
           catch-all group if no valid group is applicable.  When a news
           server uses a catch-all group to file the articles posted to
@@ -914,7 +927,7 @@
         In particular, it means that unapproved articles arriving from peers
         in an alias pointing to a moderated newsgroup are accepted and
         filed into this moderated newsgroup.  Therefore, an alias SHOULD
-        NOT point to a moderated newsgroup since it allows bypassing of
+        NOT point to a moderated newsgroup, since it allows bypassing of
         the moderation.</t>
 
         <t>An alias SHOULD NOT point to itself or another alias group.
@@ -927,13 +940,14 @@
 
         <t><list style="empty">
 
-          <t>NOTE:  If a server files newsgroups with status "j" into
+          <t>NOTE: If a server files newsgroups with status "j" into
           "junk", a newsgroup with status "j" and a newsgroup with status
           "=junk" are different.  An article fed by a peer, and crossposted
           to a group with status "j", will result in the article being filed
           only in "junk" if there are no other groups with which to file it,
           or otherwise only in other valid newsgroups it is crossposted to.
-          Whereas an article fed by a peer, and crossposted to a group
+          On the other hand, an article fed by a peer, and crossposted to a
+          group
           with status "=junk", will result in the article being filed in
           "junk" and in other valid newsgroups it is crossposted to.</t>
 
@@ -948,7 +962,7 @@
           <ttcol>Accepted if local posting?</ttcol>
           <ttcol>Accepted from peers?</ttcol>
           <ttcol>Moderation needed?</ttcol>
-          <ttcol>Destination if accepted?</ttcol>
+          <ttcol>Destination if accepted</ttcol>
           <c>y</c>
             <c>Yes</c>
             <c>Yes</c>
@@ -991,7 +1005,7 @@
           <ttcol>Accepted if local posting?</ttcol>
           <ttcol>Accepted from peers?</ttcol>
           <ttcol>Moderation needed?</ttcol>
-          <ttcol>Destination if accepted?</ttcol>
+          <ttcol>Destination if accepted</ttcol>
           <c>y</c>
             <c>Yes</c>
             <c>Yes</c>
@@ -1026,7 +1040,7 @@
 
         <t><list style="empty">
 
-          <t>NOTE:  The status of a newsgroup only indicates how articles
+          <t>NOTE: The status of a newsgroup only indicates how articles
           arriving for that newsgroup are normally processed; news servers
           MAY provide clients with special privileges to allow or disallow
           some rights in these newsgroups.  This specification defines
@@ -1081,6 +1095,18 @@
         been posted, and still propagates to other peers, to the newsgroup
         "misc.test".</t>
 
+<!-- [rfced] Section 3.2: Please clarify this sentence.
+
+Original:
+ This article is filed under "foo.bar" even though it has originally
+ been posted, and still propagates to other peers, to the newsgroup
+ "misc.test".
+
+Suggested:
+ This article is filed under "foo.bar" even though it has originally
+ been posted to the newsgroup "misc.test" and still propagates to
+ other peers. -->
+
         <t>Example of an article locally posted to an alias group:</t>
 
 <figure><artwork><![CDATA[
@@ -1114,12 +1140,12 @@
       variants defined in this document using <xref target="RFC5234" />.
       It extends the syntax in Section 9 of <xref target="RFC3977" />,
       and non-terminals not defined in this document are defined there.
-      The <xref target="RFC3977" /> ABNF should be imported first before
+      The <xref target="RFC3977" /> ABNF should be imported first, before
       attempting to validate these rules.</t>
 
       <section title="Commands">
 
-        <t>This syntax extends the non-terminal &lt;list-arguments> which
+        <t>This syntax extends the non-terminal &lt;list-arguments>, which
         represents the variants of the LIST command.</t>
 
 <figure><artwork type="abnf"><![CDATA[
@@ -1138,9 +1164,9 @@
       <section title="Responses">
 
         <t>This syntax extends the non-terminals &lt;newsgroup-status>
-        and &lt;list-content> which respectively represent the status field
+        and &lt;list&nbhy;content>, which represent the status field
         returned by the LIST ACTIVE command and the response contents for
-        the LIST command.</t>
+        the LIST command, respectively.</t>
 
 <figure><artwork type="abnf"><![CDATA[
   ; active
@@ -1199,7 +1225,8 @@
       <t>No new security considerations are introduced by this extension,
       beyond those already described in the core specification <xref
       target="RFC3977" /> and the <xref target="RFC5537">Netnews Architecture
-      and Protocol</xref> (especially distribution leakage and e-mail
+      and Protocols specification</xref>
+      (especially distribution leakage and e-mail
       Denial of Service during the moderation process).</t>
 
     </section>
@@ -1215,25 +1242,25 @@
 
         <t>This extension provides additional keywords to the pre-existing
         LIST capability defined in Section 7.6 of <xref target="RFC3977"
-        />.  New status are also added to the ACTIVE variant of the LIST
+        />.  New status fields are also added to the ACTIVE variant of the LIST
         command.</t>
 
         <t>The capability label that this extension extends is "LIST".</t>
 
         <t>This extension adds five optional arguments to the "LIST"
-        capability label:  "COUNTS", "DISTRIBUTIONS", "MODERATORS", "MOTD",
+        capability label: "COUNTS", "DISTRIBUTIONS", "MODERATORS", "MOTD",
         and "SUBSCRIPTIONS", indicating which new variants of the LIST
         command are supported.  Consequently, this extension associates
         these new arguments with the pre-existing "LIST" NNTP command.</t>
 
         <t>This extension defines five new commands, LIST COUNTS,
         LIST DISTRIBUTIONS, LIST MODERATORS, LIST MOTD, and LIST
-        SUBSCRIPTIONS, whose behaviour, arguments, and responses are
-        defined in Sections <xref target="sec_counts" format="counter"
+        SUBSCRIPTIONS, whose behavior, arguments, and responses are
+        defined in Sections&nbsp;<xref target="sec_counts" format="counter"
         />, <xref target="sec_distributions" format="counter" />, <xref
         target="sec_moderators" format="counter" />, <xref target="sec_motd"
         format="counter" />, and <xref target="sec_subscriptions"
-        format="counter" /> respectively.</t>
+        format="counter" />, respectively.</t>
 
         <t>This extension does not associate any new responses with
         pre-existing NNTP commands.</t>
@@ -1253,14 +1280,14 @@
         <t>This extension is unaffected by any use of the MODE READER
         command.</t>
 
-        <t>This extension does not affect the overall behaviour of a server
+        <t>This extension does not affect the overall behavior of a server
         or client other than via the new commands.</t>
 
-        <t>Published Specification:  This document.</t>
+        <t>Published Specification: This document.</t>
 
-        <t>Contact for Further Information:  Author of this document.</t>
+        <t>Contact for Further Information: Author of this document.</t>
 
-        <t>Change Controller:  IESG &lt;iesg@ietf.org>.</t>
+        <t>Change Controller: IESG &lt;iesg@ietf.org>.</t>
 
       </list></t>
 
@@ -1279,30 +1306,28 @@
 
       <t>Special thanks are due to:</t>
 
-      <t><list>
+      <list>
 
-        <t>Stan Barber, whose <xref target="RFC2980" /> served as the
+        <t>Stan Barber, whose text in <xref target="RFC2980" /> served as the
         initial basis for the DISTRIBUTIONS and SUBSCRIPTIONS variants of
         the LIST command.</t>
 
-        <t>Brian Hernacki, whose <xref target="I-D.draft-hernacki-nntplist"
-        /> draft served as the initial basis for the MOTD and also
-        SUBSCRIPTIONS variants of the LIST command.</t>
+        <t>Brian Hernacki, whose text in <xref target="NNTP_LIST"
+        /> served as the initial basis for the MOTD and also
+        the SUBSCRIPTIONS variants of the LIST command.</t>
 
         <t>The authors of the documentation of a few sample files of the
         InterNetNews news server ("active", "distributions", "moderators",
-        "motd.news", and "subscriptions"):  Russ Allbery, Bettina Fink,
+        "motd.news", and "subscriptions"): Russ Allbery, Bettina Fink,
         Rich Salz, and a few other people to whom I am also grateful.</t>
-
-      </list></t>
-
+      </list>
     </section>
-
   </middle>
 
   <back>
 
     <references title="Normative References">
+
       &rfc2119;
       &rfc3629;
       &rfc3977;
@@ -1322,225 +1347,38 @@
         </front>
       </reference>
 
-      &I-D.draft-hernacki-nntplist;
+      <reference anchor="NNTP_LIST">
+        <front>
+            <title>NNTP LIST Additions</title>
+            <author initials="B." surname="Hernacki" fullname="Brian Hernacki">
+                <organization>Netscape Communications, Inc.</organization>
+            </author>
+            <date month="July" day="15" year="1997"/>
+        </front>
+        <seriesInfo name="Work in" value="Progress"/>
+
+    </reference>
+
       &rfc2980;
       &rfc5536;
       &rfc5537;
 
-<!-- Now published as RFC. -->
-<!--
-      <reference anchor="RFC5536">
-        <front>
-          <title>Netnews Article Format</title>
-          <author initials="K." surname="Murchison"
-            fullname="Kenneth Murchison" role="editor">
-            <organization>Carnegie Mellon University</organization>
-          </author>
-          <author initials="C." surname="Lindsey"
-            fullname="Charles H. Lindsey">
-            <organization>University of Manchester</organization>
-          </author>
-          <author initials="D." surname="Kohn" fullname="Dan Kohn">
-            <organization>FlyDash, Inc.</organization>
-          </author>
-        </front>
-        <seriesInfo name="RFC" value="5536" />
-      </reference>
+    <reference anchor='USENET_BP'>
+    <front>
+    <title>Usenet Best Practice</title>
 
-      <reference anchor="RFC5537">
-        <front>
-          <title>Netnews Architecture and Protocols</title>
-          <author initials="R." surname="Allbery" fullname="Russ Allbery"
-            role="editor">
-            <organization>Stanford University</organization>
-          </author>
-          <author initials="C." surname="Lindsey" fullname="Charles H. Lindsey">
-            <organization>University of Manchester</organization>
-          </author>
-          <date month="April" year="2009"/>
-        </front>
-        <seriesInfo name="RFC" value="5537"/>
-      </reference>
--->
+    <author initials='C' surname='Lindsey' fullname='Charles Lindsey'>
+        <organization />
+    </author>
 
-      &I-D.ietf-usefor-useage;
+    <date month='March' day='16' year='2005' />
+    </front>
+
+    <seriesInfo name='Work in' value='Progress' />
+
+    </reference>
+
     </references>
 
-    <appendix title="Document History (to be removed by RFC Editor before
-    publication)">
-
-      <appendix title="Changes from -04">
-
-        <t><list style="symbols">
-
-          <t>Fix a few nits which were found during IESG Evaluation.
-          The most important are:  in Section 2, "optional" is changed to
-          "OPTIONAL"; in Section 2.4.2, "SHOULD NOT occur" is changed
-          to "should not occur".  Thanks to Sean Turner and Peter
-          Saint-Andre.</t>
-
-          <t>Show in the example of LIST DISTRIBUTIONS that descriptions
-          of distributions not present in the distrib.pats list can be
-          mentioned in the distributions list.</t>
-
-        </list></t>
-      </appendix>
-
-      <appendix title="Changes from -03">
-
-        <t><list style="symbols">
-
-          <t>This document is no longer an independent submission.  It is
-          now sponsored by an Area Director, Alexey Melnikov.  Many thanks
-          to him!</t>
-
-          <t>Modify the note about the "%s" pattern rule for the moderation
-          submission template for two moderated newsgroups whose names
-          differ only by the case of their characters:  mention the reason
-          and the fact that it is only a recommendation.</t>
-
-          <t>Mention that TAB characters are not valid separators for the
-          LIST COUNTS command.</t>
-
-          <t>Add an example of wildmat preceded by "!".</t>
-
-          <t>Re-work the BNF syntax for "newsgroup-alias" because it could
-          be a little confusing.  Thanks to Gen-ART for the remark during
-          Last Call.</t>
-
-          <t>Add a MIME-Version: header field in the examples of postings.
-          They now comply with <xref target="RFC5536" />.</t>
-
-          <t>Clarify what is expected from IANA (add a reference to this
-          document for the LIST NNTP extension).</t>
-
-          <t>Use "news.example.com" instead of "news.server.com" in an Xref:
-          header field so as to have a compliant FQDN.</t>
-
-          <t>Use the right boilerplate for <xref target="RFC2119" />.</t>
-
-          <t>Add a reference to <xref target="RFC5322" /> for the submission
-          template.</t>
-
-        </list></t>
-      </appendix>
-
-      <appendix title="Changes from -02">
-
-        <t><list style="symbols">
-
-          <t>No longer document the "Y" and "M" status.  It is better
-          to stick with status that already have an implementation for
-          Proposed Standard.</t>
-
-          <t>Mention that the status of the newsgroup an alias points to
-          MUST NOT be taken into account when an article arrives in an
-          alias newsgroup.  Also point out the fact that it can lead to
-          file unapproved articles into moderated newsgroups.</t>
-
-          <t>Clarify that the catch-all group MAY be used when no valid
-          group is applicable.</t>
-
-          <t>Add a reference to <xref target="RFC3629" />.</t>
-
-        </list></t>
-      </appendix>
-
-      <appendix title="Changes from -01">
-
-        <t><list style="symbols">
-
-          <t>Acknowledge Jeffrey M. Vinocur's wording fixes and remarks.</t>
-
-          <t>Add a note about how the client should cache the motd.</t>
-
-          <t>Mention that a news server need not consistently return the
-          same order or the same results if the LIST COUNTS command is
-          used more than once in a session.</t>
-
-          <t>Mention that a news server need not return distributions
-          in the same order between the DISTRIB.PATS and DISTRIBUTIONS
-          variants of the LIST command.</t>
-
-          <t>Introduce the notion of "template" in LIST MODERATORS
-          responses.</t>
-
-          <t>Use MUST for the presence of "%s" in submission templates.</t>
-
-          <t>Use the right "header field" and "header field body"
-          terminology.</t>
-
-        </list></t>
-      </appendix>
-
-      <appendix title="Changes from -00">
-
-        <t><list style="symbols">
-
-          <t>Add this appendix.</t>
-
-          <t>Acknowledge Antti-Juhani Kaijanaho's and D. Stussy's
-          remarks.</t>
-
-          <t>Refer to USEFOR (<xref target="RFC5536" />) and USEAGE (<xref
-          target="I-D.ietf-usefor-useage" />) instead of putting a SHOULD
-          requirement on the name of newsgroups in the example of the LIST
-          MODERATORS command.  Besides, the note was only related to the
-          presence of "%s" in the submission address template.</t>
-
-          <t>Mention that every moderated newsgroup name SHOULD have a
-          matching line in LIST MODERATORS, if no default entry exists.</t>
-
-          <t>The presence of "+" in the name of a moderated newsgroup
-          is a matter of configuration and should not be dealt with in
-          this memo.  If any special interpretation is applied by the
-          mail system of the receiving site, and if they want to host a
-          submission address for a moderated group determined by a "%s"
-          pattern rule, they will need to suppress that interpretation.</t>
-
-          <t>Lowercase a "MAY" for the reject of articles arriving for
-          unknown newsgroups.</t>
-
-          <t>The meaning of the "j" status flag has changed:  the "junk"
-          newsgroup is no longer required.  A group with status "j"
-          now only means that no articles are filed under it.  Moreover,
-          local postings to "j" newsgroups are not accepted.</t>
-
-          <t>Add an explanation about how the status of the "junk" newsgroup
-          affects articles posted to "junk" or newsgroups with status
-          "j".</t>
-
-          <t>Add a note about the difference between the "j" and "=junk"
-          status.</t>
-
-          <t>The status of the newsgroup to which an alias group points
-          is no longer checked.  An article is directly filed under it.
-          Besides, the requirement for an alias not pointing to another
-          alias group becomes a SHOULD NOT instead of a MUST NOT.</t>
-
-          <t>Add an example of article locally posted to an alias group.</t>
-
-          <t>Remove the fact that if a news server may accept articles
-          from a client during the session (possibly after successful
-          authentication), it SHOULD NOT return a status like "n" or "x"
-          which suggests that articles are not accepted in the corresponding
-          newsgroup.</t>
-
-          <t>Document the "Y" and "M" status.</t>
-
-          <t>Document the COUNTS variant for the LIST command.</t>
-
-          <t>The "r" status flag will be documented in another (experimental)
-          draft.  A new REMOVALS variant for the LIST command is needed.</t>
-
-          <t>Add a reference to <xref target="ASCII" />.</t>
-
-        </list></t>
-
-      </appendix>
-
-    </appendix>
-
   </back>
-
 </rfc>
