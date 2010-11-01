@@ -1,10 +1,14 @@
 
 
 
-Network Working Group                                            J. Elie
+
+
+
+Internet Engineering Task Force (IETF)                           J. Elie
 Request for Comments: 6048                                 November 2010
 Updates: 2980, 3977
 Category: Standards Track
+ISSN: 2070-1721
 
 
     Network News Transfer Protocol (NNTP) Additions to LIST Command
@@ -25,11 +29,17 @@ Abstract
 
 Status of This Memo
 
-   This document specifies an Internet standards track protocol for the
-   Internet community, and requests discussion and suggestions for
-   improvements.  Please refer to the current edition of the "Internet
-   Official Protocol Standards" (STD 1) for the standardization state
-   and status of this protocol.  Distribution of this memo is unlimited.
+   This is an Internet Standards Track document.
+
+   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6048.
 
 Copyright Notice
 
@@ -42,13 +52,6 @@ Copyright Notice
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
-   include Simplified BSD License text as described in Section 4.e of
-   the Trust Legal Provisions and are provided without warranty as
-   described in the Simplified BSD License.
-
-
-
-
 
 
 
@@ -56,6 +59,10 @@ Elie                         Standards Track                    [Page 1]
 
 RFC 6048             NNTP Additions to LIST Command        November 2010
 
+
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
 
 Table of Contents
 
@@ -71,37 +78,33 @@ Table of Contents
      2.3.  LIST DISTRIBUTIONS . . . . . . . . . . . . . . . . . . . .  8
        2.3.1.  Usage  . . . . . . . . . . . . . . . . . . . . . . . .  8
        2.3.2.  Description  . . . . . . . . . . . . . . . . . . . . .  8
-       2.3.3.  Example  . . . . . . . . . . . . . . . . . . . . . . .  9
+       2.3.3.  Example  . . . . . . . . . . . . . . . . . . . . . . . 10
      2.4.  LIST MODERATORS  . . . . . . . . . . . . . . . . . . . . . 10
        2.4.1.  Usage  . . . . . . . . . . . . . . . . . . . . . . . . 10
        2.4.2.  Description  . . . . . . . . . . . . . . . . . . . . . 10
-       2.4.3.  Example  . . . . . . . . . . . . . . . . . . . . . . . 11
-     2.5.  LIST MOTD  . . . . . . . . . . . . . . . . . . . . . . . . 12
-       2.5.1.  Usage  . . . . . . . . . . . . . . . . . . . . . . . . 12
-       2.5.2.  Description  . . . . . . . . . . . . . . . . . . . . . 12
-       2.5.3.  Example  . . . . . . . . . . . . . . . . . . . . . . . 13
+       2.4.3.  Example  . . . . . . . . . . . . . . . . . . . . . . . 12
+     2.5.  LIST MOTD  . . . . . . . . . . . . . . . . . . . . . . . . 13
+       2.5.1.  Usage  . . . . . . . . . . . . . . . . . . . . . . . . 13
+       2.5.2.  Description  . . . . . . . . . . . . . . . . . . . . . 13
+       2.5.3.  Example  . . . . . . . . . . . . . . . . . . . . . . . 14
      2.6.  LIST SUBSCRIPTIONS . . . . . . . . . . . . . . . . . . . . 14
        2.6.1.  Usage  . . . . . . . . . . . . . . . . . . . . . . . . 14
-       2.6.2.  Description  . . . . . . . . . . . . . . . . . . . . . 14
-       2.6.3.  Examples . . . . . . . . . . . . . . . . . . . . . . . 15
+       2.6.2.  Description  . . . . . . . . . . . . . . . . . . . . . 15
+       2.6.3.  Examples . . . . . . . . . . . . . . . . . . . . . . . 16
    3.  Additions to LIST ACTIVE . . . . . . . . . . . . . . . . . . . 16
      3.1.  New Status Field Values  . . . . . . . . . . . . . . . . . 16
-     3.2.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . 19
+     3.2.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . 20
    4.  Augmented BNF Syntax for These Additions to the LIST
        Command  . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
      4.1.  Commands . . . . . . . . . . . . . . . . . . . . . . . . . 21
      4.2.  Responses  . . . . . . . . . . . . . . . . . . . . . . . . 21
    5.  Internationalization Considerations  . . . . . . . . . . . . . 22
-   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 22
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 23
    7.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 23
    8.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 24
    9.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 24
      9.1.  Normative References . . . . . . . . . . . . . . . . . . . 24
      9.2.  Informative References . . . . . . . . . . . . . . . . . . 25
-
-
-
-
 
 
 
@@ -270,8 +273,8 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    Responses
       215    List of newsgroups follows (multi-line)
 
-
-
+   Parameters
+      wildmat    Groups of interest
 
 
 
@@ -280,9 +283,6 @@ Elie                         Standards Track                    [Page 5]
 
 RFC 6048             NNTP Additions to LIST Command        November 2010
 
-
-   Parameters
-      wildmat    Groups of interest
 
 2.2.2.  Description
 
@@ -329,6 +329,9 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    in which case the response is limited to only the groups, if any,
    whose names match the wildmat.  If no wildmat is specified, the
    server MUST include every newsgroup that the client is permitted to
+   select with the GROUP command (see Section 6.1.1 of [RFC3977]).
+
+
 
 
 
@@ -336,8 +339,6 @@ Elie                         Standards Track                    [Page 6]
 
 RFC 6048             NNTP Additions to LIST Command        November 2010
 
-
-   select with the GROUP command (see Section 6.1.1 of [RFC3977]).
 
    The counts list MAY be empty.  If the server does not maintain the
    information, a 503 response code MUST be returned.  (However, note
@@ -378,7 +379,9 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
       [S] rec.food.drink.tea 100 51 3 y
       [S] .
 
-   Example of output on an implementation that includes leading zeroes:
+
+
+
 
 
 
@@ -392,6 +395,8 @@ Elie                         Standards Track                    [Page 7]
 
 RFC 6048             NNTP Additions to LIST Command        November 2010
 
+
+   Example of output on an implementation that includes leading zeroes:
 
       [C] LIST COUNTS
       [S] 215 List of newsgroups follows
@@ -436,10 +441,8 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    no leading or trailing whitespaces in a line.  The description MAY
    contain whitespaces.
 
-   The order of distributions in the distributions list is not
-   significant; the server need not consistently return the same order
-   or the same results if this command is used more than once in a
-   session.
+
+
 
 
 
@@ -448,6 +451,11 @@ Elie                         Standards Track                    [Page 8]
 
 RFC 6048             NNTP Additions to LIST Command        November 2010
 
+
+   The order of distributions in the distributions list is not
+   significant; the server need not consistently return the same order
+   or the same results if this command is used more than once in a
+   session.
 
    The same distribution SHOULD NOT appear twice in the output of this
    command.
@@ -470,6 +478,35 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    distributions that are not present in the distrib.pats list).  Note
    that the two commands need not return distributions in the same
    order.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Elie                         Standards Track                    [Page 9]
+
+RFC 6048             NNTP Additions to LIST Command        November 2010
+
 
 2.3.3.  Example
 
@@ -495,16 +532,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
       [S] usa Local to the United States of America.
       [S] .
 
-
-
-
-
-
-Elie                         Standards Track                    [Page 9]
-
-RFC 6048             NNTP Additions to LIST Command        November 2010
-
-
 2.4.  LIST MODERATORS
 
 2.4.1.  Usage
@@ -529,6 +556,14 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    215 response code.  Each line of this list MUST consist of two fields
    separated from each other by a colon (":" or %x3A).  The first field
    is a wildmat (which may be a simple newsgroup name), and the second
+
+
+
+Elie                         Standards Track                   [Page 10]
+
+RFC 6048             NNTP Additions to LIST Command        November 2010
+
+
    field is the submission address template for newsgroups matching that
    wildmat.  There are no leading or trailing whitespaces in a line.
    The submission template MAY contain colons (":").
@@ -550,24 +585,15 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    to the server administrator rather than enforcing it
    programmatically.
 
-   When an unapproved article without an Approved header is locally
-   posted to a moderated newsgroup, the server generates a submission
-   address from the corresponding submission template (that is, the
-
-
-
-Elie                         Standards Track                   [Page 10]
-
-RFC 6048             NNTP Additions to LIST Command        November 2010
-
-
-   second field of the first matching line in the moderators list) by
-   replacing the "%s", if present, with the name of the matching
-   newsgroup after each period ("." or %x2E) in the name has been
-   changed to a dash ("-" or %x2D).  In addition, any "%%" is changed
-   back to "%".  The server then forwards the submitted article to the
-   moderator at the resulting submission address (see Section 3.5.1 of
-   [RFC5537]).
+   When an article without an Approved header field is locally posted to
+   a moderated newsgroup, the server generates a submission address from
+   the corresponding submission template (that is, the second field of
+   the first matching line in the moderators list) by replacing the
+   "%s", if present, with the name of the matching newsgroup after each
+   period ("." or %x2E) in the name has been changed to a dash ("-" or
+   %x2D).  In addition, any "%%" is changed back to "%".  The server
+   then forwards the submitted article to the moderator at the resulting
+   submission address (see Section 3.5.1 of [RFC5537]).
 
       NOTE: The creation and maintenance of submission addresses is
       outside the scope of this specification.
@@ -579,6 +605,20 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    the information, a 503 response code MUST be returned, although these
    situations should not occur if the news server is an injecting agent
    that carries moderated newsgroups.
+
+
+
+
+
+
+
+
+
+
+Elie                         Standards Track                   [Page 11]
+
+RFC 6048             NNTP Additions to LIST Command        November 2010
+
 
 2.4.3.  Example
 
@@ -609,14 +649,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    | foo.bar                     | announce@example.com                |
    | local.test                  | local-test@localhost                |
    | alt.dev.null                | alt-dev-null@moderators.example.com |
-
-
-
-Elie                         Standards Track                   [Page 11]
-
-RFC 6048             NNTP Additions to LIST Command        November 2010
-
-
    | alt.test-me                 | alt-test-me@moderators.example.com  |
    +-----------------------------+-------------------------------------+
 
@@ -635,6 +667,14 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
       e-mail systems frequently treat the left-hand side of e-mail
       addresses as case-sensitive.  See also Section 3.1.4 of [RFC5536]
       and Section 7.2 of [USEAGE] for the syntax of a newsgroup name.
+
+
+
+
+Elie                         Standards Track                   [Page 12]
+
+RFC 6048             NNTP Additions to LIST Command        November 2010
+
 
 2.5.  LIST MOTD
 
@@ -665,14 +705,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
 
    The server need not return the same information if this command is
    used more than once in a session.  It MAY indeed send a different
-
-
-
-Elie                         Standards Track                   [Page 12]
-
-RFC 6048             NNTP Additions to LIST Command        November 2010
-
-
    message of the day depending on the state of the session.  For
    instance, on a mode-switching news server, the information can be
    different between its transit mode and its reader mode, or between an
@@ -692,6 +724,14 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    the text of the motd.  The client MAY cache a local copy or
    fingerprint of the motd so that it can display the message to the
    user only upon modification.  If the client caches the information,
+
+
+
+Elie                         Standards Track                   [Page 13]
+
+RFC 6048             NNTP Additions to LIST Command        November 2010
+
+
    it MAY take into account only the motd obtained after reaching the
    intended state of the session.  Nonetheless, in case a privacy
    extension is used, the client MUST NOT cache any motd obtained before
@@ -706,28 +746,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
 2.5.3.  Example
 
    Example of output:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Elie                         Standards Track                   [Page 13]
-
-RFC 6048             NNTP Additions to LIST Command        November 2010
-
 
     [C] CAPABILITIES
     [S] 101 Capability list:
@@ -759,6 +777,17 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    Parameters
       wildmat    Groups of interest
 
+
+
+
+
+
+
+Elie                         Standards Track                   [Page 14]
+
+RFC 6048             NNTP Additions to LIST Command        November 2010
+
+
 2.6.2.  Description
 
    See Section 7.6.1 of [RFC3977] for general requirements of the LIST
@@ -777,14 +806,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    most important to subscribe to.
 
    The same newsgroup name SHOULD NOT appear twice in the output of this
-
-
-
-Elie                         Standards Track                   [Page 14]
-
-RFC 6048             NNTP Additions to LIST Command        November 2010
-
-
    command.  The subscriptions list SHOULD contain only newsgroups the
    news server carries.
 
@@ -808,6 +829,20 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    list to the user.  When the subscriptions list is maintained and
    non-empty, the news client SHOULD use it, instead of a hard-coded
    default list, if any.
+
+
+
+
+
+
+
+
+
+
+Elie                         Standards Track                   [Page 15]
+
+RFC 6048             NNTP Additions to LIST Command        November 2010
+
 
 2.6.3.  Examples
 
@@ -833,14 +868,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
       [S] 215 List of recommended newsgroups follows
       [S] local.welcome
       [S] local.test
-
-
-
-Elie                         Standards Track                   [Page 15]
-
-RFC 6048             NNTP Additions to LIST Command        November 2010
-
-
       [S] .
 
 3.  Additions to LIST ACTIVE
@@ -861,6 +888,17 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    "n"  Posting is not permitted.
 
    "m"  Postings will be forwarded to the newsgroup moderator.
+
+
+
+
+
+
+
+Elie                         Standards Track                   [Page 16]
+
+RFC 6048             NNTP Additions to LIST Command        November 2010
+
 
    This document defines three other case-sensitive status field values
    that can also be used:
@@ -890,13 +928,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    that are not crossposted to any valid groups are not filed into any
    newsgroup, but are still propagated to other peers, if appropriate.
 
-
-
-Elie                         Standards Track                   [Page 16]
-
-RFC 6048             NNTP Additions to LIST Command        November 2010
-
-
       NOTE: Instead of not filing at all an article posted to a
       newsgroup with status "j", a news server MAY file it under a
       catch-all group if no valid group is applicable.  When a news
@@ -917,6 +948,14 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
       will be transmitted to peers (which may carry some of the
       newsgroups the article was posted to even if the local server does
       not).  In addition, instead of rejecting an article that contains
+
+
+
+Elie                         Standards Track                   [Page 17]
+
+RFC 6048             NNTP Additions to LIST Command        November 2010
+
+
       an invalid Newsgroups header field or that is posted to newsgroups
       it does not carry, a news server may accept such an article and
       file it under the catch-all newsgroup.
@@ -945,14 +984,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    particular, it means that unapproved articles arriving from peers in
    an alias pointing to a moderated newsgroup are accepted and filed
    into this moderated newsgroup.  Therefore, an alias SHOULD NOT point
-
-
-
-Elie                         Standards Track                   [Page 17]
-
-RFC 6048             NNTP Additions to LIST Command        November 2010
-
-
    to a moderated newsgroup, since it allows bypassing of the
    moderation.
 
@@ -973,6 +1004,13 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
       the other hand, an article fed by a peer, and crossposted to a
       group with status "=junk", will result in the article being filed
       in "junk" and in other valid newsgroups it is crossposted to.
+
+
+
+Elie                         Standards Track                   [Page 18]
+
+RFC 6048             NNTP Additions to LIST Command        November 2010
+
 
    The following table summarizes what usually happens to an article
    posted to only the newsgroup "foo.bar", depending on its status field
@@ -996,18 +1034,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    crossposted to the newsgroup "foo.bar" and a valid newsgroup
    "misc.test" (whose status field is "y") known by the news server,
    depending on the status field value of "foo.bar" on the news server:
-
-
-
-
-
-
-
-
-Elie                         Standards Track                   [Page 18]
-
-RFC 6048             NNTP Additions to LIST Command        November 2010
-
 
    +---------------+-----------+-----------+------------+--------------+
    | Status field  | Accepted  | Accepted  | Moderation | Destination  |
@@ -1033,29 +1059,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
       neither these rights nor whether or not articles posted to these
       groups should be propagated to other peers.
 
-3.2.  Examples
-
-   Example of an article posted to an alias group by a peer:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1064,6 +1067,10 @@ Elie                         Standards Track                   [Page 19]
 
 RFC 6048             NNTP Additions to LIST Command        November 2010
 
+
+3.2.  Examples
+
+   Example of an article posted to an alias group by a peer:
 
       [C] LIST ACTIVE
       [S] 215 List of newsgroups follows
@@ -1104,10 +1111,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    peers that have been configured to receive articles posted to
    "misc.text".
 
-   Example of an article locally posted to an alias group:
-
-
-
 
 
 
@@ -1120,6 +1123,8 @@ Elie                         Standards Track                   [Page 20]
 
 RFC 6048             NNTP Additions to LIST Command        November 2010
 
+
+   Example of an article locally posted to an alias group:
 
       [C] LIST ACTIVE
       [S] 215 List of newsgroups follows
@@ -1167,8 +1172,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    <list-content>, which represent the status field value returned by
    the LIST ACTIVE command and the response contents for the LIST
    command, respectively.
-
-
 
 
 
@@ -1220,11 +1223,11 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    Distribution descriptions and the message of the day MUST be in UTF-8
    [RFC3629].
 
-6.  Security Considerations
 
-   No new security considerations are introduced by this extension,
-   beyond those already described in the core specification [RFC3977]
-   and the Netnews Architecture and Protocols specification [RFC5537]
+
+
+
+
 
 
 
@@ -1233,6 +1236,11 @@ Elie                         Standards Track                   [Page 22]
 RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
+6.  Security Considerations
+
+   No new security considerations are introduced by this extension,
+   beyond those already described in the core specification [RFC3977]
+   and the Netnews Architecture and Protocols specification [RFC5537]
    (especially distribution leakage and e-mail Denial of Service during
    the moderation process).
 
@@ -1275,11 +1283,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    o  This extension does not cause any pre-existing command to produce
       a 401, 480, or 483 response.
 
-   o  This extension is unaffected by any use of the MODE READER
-      command.
-
-   o  This extension does not affect the overall behavior of a server or
-      client other than via the new commands.
 
 
 
@@ -1288,6 +1291,12 @@ Elie                         Standards Track                   [Page 23]
 
 RFC 6048             NNTP Additions to LIST Command        November 2010
 
+
+   o  This extension is unaffected by any use of the MODE READER
+      command.
+
+   o  This extension does not affect the overall behavior of a server or
+      client other than via the new commands.
 
    o  Published Specification: This document.
 
@@ -1331,12 +1340,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    [RFC3629]    Yergeau, F., "UTF-8, a transformation format of ISO
                 10646", STD 63, RFC 3629, November 2003.
 
-   [RFC3977]    Feather, C., "Network News Transfer Protocol (NNTP)",
-                RFC 3977, October 2006.
-
-   [RFC5234]    Crocker, D. and P. Overell, "Augmented BNF for Syntax
-                Specifications: ABNF", STD 68, RFC 5234, January 2008.
-
 
 
 
@@ -1344,6 +1347,12 @@ Elie                         Standards Track                   [Page 24]
 
 RFC 6048             NNTP Additions to LIST Command        November 2010
 
+
+   [RFC3977]    Feather, C., "Network News Transfer Protocol (NNTP)",
+                RFC 3977, October 2006.
+
+   [RFC5234]    Crocker, D. and P. Overell, "Augmented BNF for Syntax
+                Specifications: ABNF", STD 68, RFC 5234, January 2008.
 
    [RFC5322]    Resnick, P., Ed., "Internet Message Format", RFC 5322,
                 October 2008.
@@ -1390,12 +1399,5 @@ Author's Address
 
 
 
-
-
-
-
-
-
 Elie                         Standards Track                   [Page 25]
 
-

@@ -511,7 +511,7 @@ high group) to the GROUP command.
           leave this up to the server administrator rather than enforcing
           it programmatically.</t>
 
-          <t>When an unapproved article without an Approved header is locally posted to a moderated
+          <t>When an article without an Approved header field is locally posted to a moderated
           newsgroup, the
           server generates a submission address from the corresponding
           submission template (that is, the second field of the first
