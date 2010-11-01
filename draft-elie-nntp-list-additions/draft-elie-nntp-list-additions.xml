@@ -58,17 +58,13 @@
       </address>
     </author>
 
-    <date month="October" year="2010" />
+    <date month="November" year="2010" />
 
     <area>Applications</area>
 
     <keyword>Usenet</keyword>
     <keyword>NetNews</keyword>
     <keyword>capabilities</keyword>
-
-<!-- [rfced] Please note that after you have approved the document,
-post-xml2rfc changes will be made to update the header and boilerplate as
-described in RFC 5741. -->
 
     <abstract>
 
@@ -125,9 +121,9 @@ described in RFC 5741. -->
 
       <t>The ACTIVE variant was formalized in <xref target="RFC3977" />,
       but the meanings of only three status fields in LIST ACTIVE responses
-      have been specified: "y", "n", and "m".  These status field values
+      have been specified: "y", "n", and "m".  These statuses
       are particularly useful for readers, since they describe local posting
-      rights.  However, several other values are in use that are primarily
+      rights.  However, several other statuses are in use that are primarily
       useful for peers as they mainly describe how remote articles coming
       from peers are locally handled by a given news server.  This memo
       defines three other values for the status field in LIST ACTIVE
@@ -281,32 +277,16 @@ described in RFC 5741. -->
           <t>The reported high and low water marks, and the estimated
           number of articles, are as described in the GROUP command (see
           Section 6.1.1 of <xref target="RFC3977" />), but note that they
-          are in the opposite order to the 211 response to that command.
-
-<!-- Section 2.2.2:  The sentence above is not clear.  Does
-"in the opposite order to the 211 response" refer to "high to
-low" for LIST COUNTS versus "low to high" for GROUP?
-If the suggested text is not correct, please clarify.
-
-Original:
- The reported high and low water marks, and the estimated number of
- articles are as described in the GROUP command (see Section 6.1.1 of
- [RFC3977]), but note that they are in the opposite order to the 211
- response to that command.
-
-Suggested:
- The reported high and low water marks, and the estimated number of
- articles, are as described in the GROUP command (see Section 6.1.1 of
- [RFC3977]), but note that they are in the opposite order to the 211
- response (that is, number high low group) to that command. -->
+          are in the opposite order to the 211 response (that is, number low
+high group) to the GROUP command.
 
           The current status of the group is as described in the LIST ACTIVE
           command (see Section 7.6.3 of <xref target="RFC3977" />, as well
-          as <xref target="sec_counts" /> of this document).  Also note
+          as <xref target="sec_additions" /> of this document).  Also note
           that, similarly to the LIST ACTIVE command, TAB characters are
           not valid separators for the LIST COUNTS command.</t>
 
-          <t>The order of newsgroups in the list is not significant.
+          <t>The order of newsgroups in the counts list is not significant.
           The server need not consistently return the same order or the same
           results if this command is used more than once in a session.</t>
 
@@ -380,7 +360,7 @@ Suggested:
 ]]></artwork></figure>
 
           <t>The estimated number of articles usually does not start with
-          leading zeroes, but MAY have them.</t>
+          leading zeroes, but MAY start with such zeroes.</t>
 
         </section>
 
@@ -421,7 +401,7 @@ Suggested:
           the distribution.  There are no leading or trailing whitespaces
           in a line.  The description MAY contain whitespaces.</t>
 
-          <t>The order of distributions in the list is not significant;
+          <t>The order of distributions in the distributions list is not significant;
           the server need not consistently return the same order or the same
           results if this command is used more than once in a session.</t>
 
@@ -531,16 +511,16 @@ Suggested:
           leave this up to the server administrator rather than enforcing
           it programmatically.</t>
 
-          <t>When an unapproved article is locally posted to a moderated
-          newsgroup (see Section 3.5.1 of <xref target="RFC5537" />), the
+          <t>When an article without an Approved header is locally posted to a moderated
+          newsgroup, the
           server generates a submission address from the corresponding
           submission template (that is, the second field of the first
           matching line in the moderators list) by replacing the "%s",
           if present, with the name of the matching newsgroup after
-          each period ("." or %x2E) in the name is changed to a dash
+          each period ("." or %x2E) in the name has been changed to a dash
           ("-" or %x2D).  In addition, any "%%" is changed back to "%".
           The server then forwards the submitted article to the
-          moderator at the resulting submission address.</t>
+          moderator at the resulting submission address (see Section 3.5.1 of <xref target="RFC5537" />).</t>
 
           <t><list style="empty">
 
@@ -614,7 +594,7 @@ Suggested:
             characters, because e-mail systems frequently treat the
             left-hand side of e-mail addresses as case-sensitive.  See also
             Section 3.1.4 of <xref target="RFC5536" /> and Section 7.2 of
-            <xref target="USENET_BP" /> for the syntax of a
+            <xref target="USEAGE" /> for the syntax of a
             newsgroup name.</t>
 
           </list></t>
@@ -752,7 +732,7 @@ Suggested:
           the most important to subscribe to.</t>
 
           <t>The same newsgroup name SHOULD NOT appear twice in the output
-          of this command.  The list SHOULD contain only newsgroups the
+          of this command.  The subscriptions list SHOULD contain only newsgroups the
           news server carries.</t>
 
           <t>The subscriptions list is newsgroup-based, and a wildmat
@@ -816,16 +796,16 @@ Suggested:
 
     <section title="Additions to LIST ACTIVE" anchor="sec_additions">
 
-      <t>This document specifies three new status fields that can be used
+      <t>This document specifies three new status field values that can be used
       in the answers to LIST ACTIVE: "x", "j", and "=" followed by the
       name of a newsgroup.</t>
 
-      <section title="New Status Fields">
+      <section title="New Status Field Values">
 
         <t>The LIST ACTIVE command is defined in Section 7.6.3 of <xref
         target="RFC3977" />.  The fourth field of each line of this
         list indicates the current status of the newsgroup whose name is
-        specified in the first field.  Three status fields are defined
+        specified in the first field.  Three status field values are defined
         in <xref target="RFC3977" />:</t>
 
         <t><list style="hanging" hangIndent="1">
@@ -839,7 +819,7 @@ Suggested:
 
         </list></t>
 
-        <t>This document defines three other case-sensitive status fields
+        <t>This document defines three other case-sensitive status field values
         that can also be used:</t>
 
         <t><list style="hanging" hangIndent="1">
@@ -865,7 +845,7 @@ Suggested:
         arrive in such a group.  On the contrary, articles from peers
         will arrive in a newsgroup with status "n".  Local postings are
         not allowed in a newsgroup with either of these two status
-        fields.</t>
+        field values.</t>
 
         <t>A newsgroup with status "j" is a newsgroup with status "y", except
         that (1) local postings are not accepted, (2) articles received
@@ -908,9 +888,9 @@ Suggested:
 
         </list></t>
 
-        <t>When the status field begins with an equal sign ("=" or %x3D),
-        the name of an existing newsgroup on the news server MUST immediately
-        follow the sign.  If the status field of "foo.bar" is "=other.group",
+        <t>When the status field value begins with an equal sign ("=" or %x3D),
+        a newsgroup name on the news server MUST immediately
+        follow the sign.  If the status of "foo.bar" is "=other.group",
         it means that "foo.bar" is an alias for "other.group".  These two
         newsgroups are distinct; they do not share their articles or their
         article numbers.  Local postings to "foo.bar" are not allowed,
@@ -955,10 +935,10 @@ Suggested:
 
         <t>The following table summarizes what usually happens to an
         article posted to only the newsgroup "foo.bar", depending on its
-        status field on the news server:</t>
+        status field value on the news server:</t>
 
         <texttable>
-          <ttcol>Status field of "foo.bar"</ttcol>
+          <ttcol>Status field value of "foo.bar"</ttcol>
           <ttcol>Accepted if local posting?</ttcol>
           <ttcol>Accepted from peers?</ttcol>
           <ttcol>Moderation needed?</ttcol>
@@ -998,10 +978,10 @@ Suggested:
         <t>The following table summarizes what usually happens to an
         article crossposted to the newsgroup "foo.bar" and a valid newsgroup
         "misc.test" (whose status field is "y") known by the news server,
-        depending on the status field of "foo.bar" on the news server:</t>
+        depending on the status field value of "foo.bar" on the news server:</t>
 
         <texttable>
-          <ttcol>Status field of "foo.bar"</ttcol>
+          <ttcol>Status field value of "foo.bar"</ttcol>
           <ttcol>Accepted if local posting?</ttcol>
           <ttcol>Accepted from peers?</ttcol>
           <ttcol>Moderation needed?</ttcol>
@@ -1092,20 +1072,9 @@ Suggested:
 
         <t>The Newsgroups header field of this article is kept untouched.
         This article is filed under "foo.bar" even though it has originally
-        been posted, and still propagates to other peers, to the newsgroup
-        "misc.test".</t>
-
-<!-- [rfced] Section 3.2: Please clarify this sentence.
-
-Original:
- This article is filed under "foo.bar" even though it has originally
- been posted, and still propagates to other peers, to the newsgroup
- "misc.test".
-
-Suggested:
- This article is filed under "foo.bar" even though it has originally
- been posted to the newsgroup "misc.test" and still propagates to
- other peers. -->
+        been posted to the newsgroup
+        "misc.test". Yet, it still propagates to peers that have been
+configured to receive articles posted to "misc.text".</t>
 
         <t>Example of an article locally posted to an alias group:</t>
 
@@ -1164,7 +1133,7 @@ Suggested:
       <section title="Responses">
 
         <t>This syntax extends the non-terminals &lt;newsgroup-status>
-        and &lt;list&nbhy;content>, which represent the status field
+        and &lt;list&nbhy;content>, which represent the status field value
         returned by the LIST ACTIVE command and the response contents for
         the LIST command, respectively.</t>
 
@@ -1184,7 +1153,7 @@ Suggested:
   list-content =/ list-distributions-content
   list-distributions-content =
         *(distribution WS distribution-description CRLF)
-  distribution-description = S-TEXT
+  distribution-description = U-TEXT
 
   ; moderators
   list-content =/ list-moderators-content
@@ -1242,7 +1211,7 @@ Suggested:
 
         <t>This extension provides additional keywords to the pre-existing
         LIST capability defined in Section 7.6 of <xref target="RFC3977"
-        />.  New status fields are also added to the ACTIVE variant of the LIST
+        />.  New status field values are also added to the ACTIVE variant of the LIST
         command.</t>
 
         <t>The capability label that this extension extends is "LIST".</t>
@@ -1363,7 +1332,7 @@ Suggested:
       &rfc5536;
       &rfc5537;
 
-    <reference anchor='USENET_BP'>
+    <reference anchor='USEAGE'>
     <front>
     <title>Usenet Best Practice</title>
 

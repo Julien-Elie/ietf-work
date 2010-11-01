@@ -2,7 +2,7 @@
 
 
 Network Working Group                                            J. Elie
-Request for Comments: 6048                                  October 2010
+Request for Comments: 6048                                 November 2010
 Updates: 2980, 3977
 Category: Standards Track
 
@@ -54,7 +54,7 @@ Copyright Notice
 
 Elie                         Standards Track                    [Page 1]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
 Table of Contents
@@ -85,7 +85,7 @@ Table of Contents
        2.6.2.  Description  . . . . . . . . . . . . . . . . . . . . . 14
        2.6.3.  Examples . . . . . . . . . . . . . . . . . . . . . . . 15
    3.  Additions to LIST ACTIVE . . . . . . . . . . . . . . . . . . . 16
-     3.1.  New Status Fields  . . . . . . . . . . . . . . . . . . . . 16
+     3.1.  New Status Field Values  . . . . . . . . . . . . . . . . . 16
      3.2.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . 19
    4.  Augmented BNF Syntax for These Additions to the LIST
        Command  . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
@@ -110,7 +110,7 @@ Table of Contents
 
 Elie                         Standards Track                    [Page 2]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
 1.  Introduction
@@ -146,13 +146,13 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
    The ACTIVE variant was formalized in [RFC3977], but the meanings of
    only three status fields in LIST ACTIVE responses have been
-   specified: "y", "n", and "m".  These status field values are
-   particularly useful for readers, since they describe local posting
-   rights.  However, several other values are in use that are primarily
-   useful for peers as they mainly describe how remote articles coming
-   from peers are locally handled by a given news server.  This memo
-   defines three other values for the status field in LIST ACTIVE
-   responses: "x", "j", and "=" followed by the name of a newsgroup.
+   specified: "y", "n", and "m".  These statuses are particularly useful
+   for readers, since they describe local posting rights.  However,
+   several other statuses are in use that are primarily useful for peers
+   as they mainly describe how remote articles coming from peers are
+   locally handled by a given news server.  This memo defines three
+   other values for the status field in LIST ACTIVE responses: "x", "j",
+   and "=" followed by the name of a newsgroup.
 
    This specification should be read in conjunction with the NNTP base
    specification [RFC3977].  In the case of a conflict between these two
@@ -166,7 +166,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                    [Page 3]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
 1.1.  Conventions Used in This Document
@@ -222,7 +222,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                    [Page 4]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
       [C] CAPABILITIES
@@ -278,7 +278,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                    [Page 5]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
    Parameters
@@ -312,15 +312,15 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
    The reported high and low water marks, and the estimated number of
    articles, are as described in the GROUP command (see Section 6.1.1 of
    [RFC3977]), but note that they are in the opposite order to the 211
-   response to that command.  The current status of the group is as
-   described in the LIST ACTIVE command (see Section 7.6.3 of [RFC3977],
-   as well as Section 2.2 of this document).  Also note that, similarly
-   to the LIST ACTIVE command, TAB characters are not valid separators
-   for the LIST COUNTS command.
+   response (that is, number low high group) to the GROUP command.  The
+   current status of the group is as described in the LIST ACTIVE
+   command (see Section 7.6.3 of [RFC3977], as well as Section 3 of this
+   document).  Also note that, similarly to the LIST ACTIVE command, TAB
+   characters are not valid separators for the LIST COUNTS command.
 
-   The order of newsgroups in the list is not significant.  The server
-   need not consistently return the same order or the same results if
-   this command is used more than once in a session.
+   The order of newsgroups in the counts list is not significant.  The
+   server need not consistently return the same order or the same
+   results if this command is used more than once in a session.
 
    The same newsgroup SHOULD NOT appear twice in the output of this
    command.
@@ -334,7 +334,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                    [Page 6]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
    select with the GROUP command (see Section 6.1.1 of [RFC3977]).
@@ -390,7 +390,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                    [Page 7]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
       [C] LIST COUNTS
@@ -403,7 +403,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
       [S] .
 
    The estimated number of articles usually does not start with leading
-   zeroes, but MAY have them.
+   zeroes, but MAY start with such zeroes.
 
 2.3.  LIST DISTRIBUTIONS
 
@@ -436,19 +436,20 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
    no leading or trailing whitespaces in a line.  The description MAY
    contain whitespaces.
 
-   The order of distributions in the list is not significant; the server
-   need not consistently return the same order or the same results if
-   this command is used more than once in a session.
+   The order of distributions in the distributions list is not
+   significant; the server need not consistently return the same order
+   or the same results if this command is used more than once in a
+   session.
 
-   The same distribution SHOULD NOT appear twice in the output of this
 
 
 
 Elie                         Standards Track                    [Page 8]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
+   The same distribution SHOULD NOT appear twice in the output of this
    command.
 
    The description MUST be in UTF-8 [RFC3629].
@@ -499,10 +500,9 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 
 
-
 Elie                         Standards Track                    [Page 9]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
 2.4.  LIST MODERATORS
@@ -550,23 +550,23 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
    to the server administrator rather than enforcing it
    programmatically.
 
-   When an unapproved article is locally posted to a moderated newsgroup
-   (see Section 3.5.1 of [RFC5537]), the server generates a submission
-   address from the corresponding submission template (that is, the
+   When an article without an Approved header is locally posted to a
+   moderated newsgroup, the server generates a submission address from
+   the corresponding submission template (that is, the second field of
 
 
 
 Elie                         Standards Track                   [Page 10]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
-   second field of the first matching line in the moderators list) by
-   replacing the "%s", if present, with the name of the matching
-   newsgroup after each period ("." or %x2E) in the name is changed to a
-   dash ("-" or %x2D).  In addition, any "%%" is changed back to "%".
-   The server then forwards the submitted article to the moderator at
-   the resulting submission address.
+   the first matching line in the moderators list) by replacing the
+   "%s", if present, with the name of the matching newsgroup after each
+   period ("." or %x2E) in the name has been changed to a dash ("-" or
+   %x2D).  In addition, any "%%" is changed back to "%".  The server
+   then forwards the submitted article to the moderator at the resulting
+   submission address (see Section 3.5.1 of [RFC5537]).
 
       NOTE: The creation and maintenance of submission addresses is
       outside the scope of this specification.
@@ -614,7 +614,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 11]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
    | alt.test-me                 | alt-test-me@moderators.example.com  |
@@ -634,7 +634,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
       whose names differ only by the case of their characters, because
       e-mail systems frequently treat the left-hand side of e-mail
       addresses as case-sensitive.  See also Section 3.1.4 of [RFC5536]
-      and Section 7.2 of [USENET_BP] for the syntax of a newsgroup name.
+      and Section 7.2 of [USEAGE] for the syntax of a newsgroup name.
 
 2.5.  LIST MOTD
 
@@ -670,7 +670,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 12]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
    message of the day depending on the state of the session.  For
@@ -726,7 +726,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 13]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
     [C] CAPABILITIES
@@ -782,11 +782,11 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 14]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
-   command.  The list SHOULD contain only newsgroups the news server
-   carries.
+   command.  The subscriptions list SHOULD contain only newsgroups the
+   news server carries.
 
    The subscriptions list is newsgroup-based, and a wildmat MAY be
    specified, in which case the response is limited to only the groups,
@@ -838,23 +838,23 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 15]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
       [S] .
 
 3.  Additions to LIST ACTIVE
 
-   This document specifies three new status fields that can be used in
-   the answers to LIST ACTIVE: "x", "j", and "=" followed by the name of
-   a newsgroup.
+   This document specifies three new status field values that can be
+   used in the answers to LIST ACTIVE: "x", "j", and "=" followed by the
+   name of a newsgroup.
 
-3.1.  New Status Fields
+3.1.  New Status Field Values
 
    The LIST ACTIVE command is defined in Section 7.6.3 of [RFC3977].
    The fourth field of each line of this list indicates the current
    status of the newsgroup whose name is specified in the first field.
-   Three status fields are defined in [RFC3977]:
+   Three status field values are defined in [RFC3977]:
 
    "y"  Posting is permitted.
 
@@ -862,8 +862,8 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
    "m"  Postings will be forwarded to the newsgroup moderator.
 
-   This document defines three other case-sensitive status fields that
-   can also be used:
+   This document defines three other case-sensitive status field values
+   that can also be used:
 
    "x"  Postings and articles from peers are not permitted.
 
@@ -881,7 +881,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
    "x" is considered as closed: no new articles will arrive in such a
    group.  On the contrary, articles from peers will arrive in a
    newsgroup with status "n".  Local postings are not allowed in a
-   newsgroup with either of these two status fields.
+   newsgroup with either of these two status field values.
 
    A newsgroup with status "j" is a newsgroup with status "y", except
    that (1) local postings are not accepted, (2) articles received from
@@ -894,7 +894,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 16]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
       NOTE: Instead of not filing at all an article posted to a
@@ -926,15 +926,15 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
       group, since articles arriving for unknown newsgroups may be
       rejected.
 
-   When the status field begins with an equal sign ("=" or %x3D), the
-   name of an existing newsgroup on the news server MUST immediately
-   follow the sign.  If the status field of "foo.bar" is "=other.group",
-   it means that "foo.bar" is an alias for "other.group".  These two
-   newsgroups are distinct; they do not share their articles or their
-   article numbers.  Local postings to "foo.bar" are not allowed, but
-   articles from peers are accepted for "foo.bar" and filed into
-   "other.group", regardless of the status of "other.group".  The
-   contents of their Newsgroups header fields MUST NOT be altered.
+   When the status field value begins with an equal sign ("=" or %x3D),
+   a newsgroup name on the news server MUST immediately follow the sign.
+   If the status of "foo.bar" is "=other.group", it means that "foo.bar"
+   is an alias for "other.group".  These two newsgroups are distinct;
+   they do not share their articles or their article numbers.  Local
+   postings to "foo.bar" are not allowed, but articles from peers are
+   accepted for "foo.bar" and filed into "other.group", regardless of
+   the status of "other.group".  The contents of their Newsgroups header
+   fields MUST NOT be altered.
 
    Alias groups are typically used during a transition between two
    newsgroups, including but not limited to a renaming of a group, or a
@@ -950,7 +950,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 17]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
    to a moderated newsgroup, since it allows bypassing of the
@@ -976,26 +976,26 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
    The following table summarizes what usually happens to an article
    posted to only the newsgroup "foo.bar", depending on its status field
-   on the news server:
+   value on the news server:
 
-   +--------------+------------+------------+------------+-------------+
-   | Status field | Accepted   | Accepted   | Moderation | Destination |
-   | of "foo.bar" | if local   | from       | needed?    | if accepted |
-   |              | posting?   | peers?     |            |             |
-   +--------------+------------+------------+------------+-------------+
-   | y            | Yes        | Yes        | No         | foo.bar     |
-   | n            | No         | Yes        | No         | foo.bar     |
-   | m            | Yes        | Yes        | Yes        | foo.bar     |
-   | x            | No         | No         | No         |             |
-   | j            | No         | Yes        | No         | junk (if    |
-   |              |            |            |            | filed)      |
-   | =other.group | No         | Yes        | No         | other.group |
-   +--------------+------------+------------+------------+-------------+
+   +---------------+------------+-----------+------------+-------------+
+   | Status field  | Accepted   | Accepted  | Moderation | Destination |
+   | value of      | if local   | from      | needed?    | if accepted |
+   | "foo.bar"     | posting?   | peers?    |            |             |
+   +---------------+------------+-----------+------------+-------------+
+   | y             | Yes        | Yes       | No         | foo.bar     |
+   | n             | No         | Yes       | No         | foo.bar     |
+   | m             | Yes        | Yes       | Yes        | foo.bar     |
+   | x             | No         | No        | No         |             |
+   | j             | No         | Yes       | No         | junk (if    |
+   |               |            |           |            | filed)      |
+   | =other.group  | No         | Yes       | No         | other.group |
+   +---------------+------------+-----------+------------+-------------+
 
    The following table summarizes what usually happens to an article
    crossposted to the newsgroup "foo.bar" and a valid newsgroup
    "misc.test" (whose status field is "y") known by the news server,
-   depending on the status field of "foo.bar" on the news server:
+   depending on the status field value of "foo.bar" on the news server:
 
 
 
@@ -1006,25 +1006,25 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 18]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
-   +--------------+-----------+------------+------------+--------------+
-   | Status field | Accepted  | Accepted   | Moderation | Destination  |
-   | of "foo.bar" | if local  | from       | needed?    | if accepted  |
-   |              | posting?  | peers?     |            |              |
-   +--------------+-----------+------------+------------+--------------+
-   | y            | Yes       | Yes        | No         | foo.bar,     |
-   |              |           |            |            | misc.test    |
-   | n            | No        | Yes        | No         | foo.bar,     |
-   |              |           |            |            | misc.test    |
-   | m            | Yes       | Yes        | Yes        | foo.bar,     |
-   |              |           |            |            | misc.test    |
-   | x            | No        | Yes        | No         | misc.test    |
-   | j            | No        | Yes        | No         | misc.test    |
-   | =other.group | No        | Yes        | No         | other.group, |
-   |              |           |            |            | misc.test    |
-   +--------------+-----------+------------+------------+--------------+
+   +---------------+-----------+-----------+------------+--------------+
+   | Status field  | Accepted  | Accepted  | Moderation | Destination  |
+   | value of      | if local  | from      | needed?    | if accepted  |
+   | "foo.bar"     | posting?  | peers?    |            |              |
+   +---------------+-----------+-----------+------------+--------------+
+   | y             | Yes       | Yes       | No         | foo.bar,     |
+   |               |           |           |            | misc.test    |
+   | n             | No        | Yes       | No         | foo.bar,     |
+   |               |           |           |            | misc.test    |
+   | m             | Yes       | Yes       | Yes        | foo.bar,     |
+   |               |           |           |            | misc.test    |
+   | x             | No        | Yes       | No         | misc.test    |
+   | j             | No        | Yes       | No         | misc.test    |
+   | =other.group  | No        | Yes       | No         | other.group, |
+   |               |           |           |            | misc.test    |
+   +---------------+-----------+-----------+------------+--------------+
 
       NOTE: The status of a newsgroup only indicates how articles
       arriving for that newsgroup are normally processed; news servers
@@ -1062,7 +1062,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 19]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
       [C] LIST ACTIVE
@@ -1100,8 +1100,9 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
    The Newsgroups header field of this article is kept untouched.  This
    article is filed under "foo.bar" even though it has originally been
-   posted, and still propagates to other peers, to the newsgroup
-   "misc.test".
+   posted to the newsgroup "misc.test".  Yet, it still propagates to
+   peers that have been configured to receive articles posted to
+   "misc.text".
 
    Example of an article locally posted to an alias group:
 
@@ -1115,10 +1116,9 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 
 
-
 Elie                         Standards Track                   [Page 20]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
       [C] LIST ACTIVE
@@ -1164,9 +1164,9 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 4.2.  Responses
 
    This syntax extends the non-terminals <newsgroup-status> and
-   <list-content>, which represent the status field returned by the LIST
-   ACTIVE command and the response contents for the LIST command,
-   respectively.
+   <list-content>, which represent the status field value returned by
+   the LIST ACTIVE command and the response contents for the LIST
+   command, respectively.
 
 
 
@@ -1174,7 +1174,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 21]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
      ; active
@@ -1192,7 +1192,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
      list-content =/ list-distributions-content
      list-distributions-content =
            *(distribution WS distribution-description CRLF)
-     distribution-description = S-TEXT
+     distribution-description = U-TEXT
 
      ; moderators
      list-content =/ list-moderators-content
@@ -1230,7 +1230,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 22]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
    (especially distribution leakage and e-mail Denial of Service during
@@ -1244,7 +1244,8 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
    o  This extension provides additional keywords to the pre-existing
       LIST capability defined in Section 7.6 of [RFC3977].  New status
-      fields are also added to the ACTIVE variant of the LIST command.
+      field values are also added to the ACTIVE variant of the LIST
+      command.
 
    o  The capability label that this extension extends is "LIST".
 
@@ -1283,10 +1284,9 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 
 
-
 Elie                         Standards Track                   [Page 23]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
    o  Published Specification: This document.
@@ -1342,7 +1342,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
 
 Elie                         Standards Track                   [Page 24]
 
-RFC 6048             NNTP Additions to LIST Command         October 2010
+RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
    [RFC5322]    Resnick, P., Ed., "Internet Message Format", RFC 5322,
@@ -1366,7 +1366,7 @@ RFC 6048             NNTP Additions to LIST Command         October 2010
    [RFC5537]    Allbery, R. and C. Lindsey, "Netnews Architecture and
                 Protocols", RFC 5537, November 2009.
 
-   [USENET_BP]  Lindsey, C., "Usenet Best Practice", Work in Progress,
+   [USEAGE]     Lindsey, C., "Usenet Best Practice", Work in Progress,
                 March 2005.
 
 Author's Address
