@@ -22,7 +22,7 @@
   <!-- Network News Transfer Protocol (NNTP) -->
   <!ENTITY rfc3977 PUBLIC ''
     'http://xml.resource.org/public/rfc/bibxml/reference.RFC.3977.xml'>
-  <!-- Augmented BNF for Syntax Specifications:  ABNF -->
+  <!-- Augmented BNF for Syntax Specifications: ABNF -->
   <!ENTITY rfc5234 PUBLIC ''
     'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5234.xml'>
   <!-- Internet Message Format -->
@@ -238,14 +238,14 @@
 
         <section title="Usage">
 
-          <list style="hanging" hangIndent="1">
+          <t><list style="hanging" hangIndent="3">
             <t hangText="Syntax"><vspace />LIST COUNTS [wildmat]</t>
             <t hangText="Responses"><vspace />
               215&nbsp;&nbsp;&nbsp;&nbsp;List of newsgroups follows
               (multi-line)</t>
             <t hangText="Parameters"><vspace />
               wildmat&nbsp;&nbsp;&nbsp;&nbsp;Groups of interest</t>
-          </list>
+          </list></t>
 
         </section>
 
@@ -345,6 +345,8 @@ high group) to the GROUP command.
    [S] .
 ]]></artwork></figure>
 
+          <t><vspace blankLines="42" /></t>
+
           <t>Example of output on an implementation that includes leading
           zeroes:</t>
 
@@ -370,12 +372,12 @@ high group) to the GROUP command.
 
         <section title="Usage">
 
-          <list style="hanging" hangIndent="1">
+          <t><list style="hanging" hangIndent="3">
             <t hangText="Syntax"><vspace />LIST DISTRIBUTIONS</t>
             <t hangText="Responses"><vspace />
               215&nbsp;&nbsp;&nbsp;&nbsp;Distributions list follows
               (multi-line)</t>
-          </list>
+          </list></t>
 
         </section>
 
@@ -400,6 +402,8 @@ high group) to the GROUP command.
           distribution, and the second field is a short description of
           the distribution.  There are no leading or trailing whitespaces
           in a line.  The description MAY contain whitespaces.</t>
+
+          <t><vspace blankLines="42" /></t>
 
           <t>The order of distributions in the distributions list is not significant;
           the server need not consistently return the same order or the same
@@ -427,6 +431,8 @@ high group) to the GROUP command.
           the distributions list can also describe distributions that
           are not present in the distrib.pats list).  Note that the two
           commands need not return distributions in the same order.</t>
+
+          <t><vspace blankLines="42" /></t>
 
         </section>
 
@@ -465,12 +471,12 @@ high group) to the GROUP command.
 
         <section title="Usage">
 
-          <list style="hanging" hangIndent="1">
+          <t><list style="hanging" hangIndent="3">
             <t hangText="Syntax"><vspace />LIST MODERATORS</t>
             <t hangText="Responses"><vspace />
               215&nbsp;&nbsp;&nbsp;&nbsp;Moderators list follows
               (multi-line)</t>
-          </list>
+          </list></t>
 
         </section>
 
@@ -537,6 +543,8 @@ high group) to the GROUP command.
           maintain the information, a 503 response code MUST be returned,
           although these situations should not occur if the news server
           is an injecting agent that carries moderated newsgroups.</t>
+
+          <t><vspace blankLines="42" /></t>
 
         </section>
 
@@ -607,12 +615,12 @@ high group) to the GROUP command.
 
         <section title="Usage">
 
-          <list style="hanging" hangIndent="1">
+          <t><list style="hanging" hangIndent="3">
             <t hangText="Syntax"><vspace />LIST MOTD</t>
             <t hangText="Responses"><vspace />
               215&nbsp;&nbsp;&nbsp;&nbsp;Information follows
               (multi-line)</t>
-          </list>
+          </list></t>
 
         </section>
 
@@ -703,14 +711,14 @@ high group) to the GROUP command.
 
         <section title="Usage">
 
-          <list style="hanging" hangIndent="1">
+          <t><list style="hanging" hangIndent="3">
             <t hangText="Syntax"><vspace />LIST SUBSCRIPTIONS [wildmat]</t>
             <t hangText="Responses"><vspace />
               215&nbsp;&nbsp;&nbsp;&nbsp;Subscriptions list follows
               (multi-line)</t>
             <t hangText="Parameters"><vspace />
               wildmat&nbsp;&nbsp;&nbsp;&nbsp;Groups of interest</t>
-          </list>
+          </list></t>
 
         </section>
 
@@ -755,6 +763,8 @@ high group) to the GROUP command.
           in the order of appearance in the list to the user.  When the
           subscriptions list is maintained and non&nbhy;empty, the news client
           SHOULD use it, instead of a hard-coded default list, if any.</t>
+
+          <t><vspace blankLines="42" /></t>
 
         </section>
 
@@ -808,7 +818,7 @@ high group) to the GROUP command.
         specified in the first field.  Three status field values are defined
         in <xref target="RFC3977" />:</t>
 
-        <t><list style="hanging" hangIndent="1">
+        <t><list style="hanging" hangIndent="3">
 
           <t hangText='"y"'>Posting is permitted.</t>
 
@@ -819,10 +829,12 @@ high group) to the GROUP command.
 
         </list></t>
 
+        <t><vspace blankLines="42" /></t>
+
         <t>This document defines three other case-sensitive status field values
         that can also be used:</t>
 
-        <t><list style="hanging" hangIndent="1">
+        <t><list style="hanging" hangIndent="3">
 
           <t hangText='"x"'>Postings and articles from peers are not
           permitted.</t>
@@ -1073,8 +1085,10 @@ high group) to the GROUP command.
         <t>The Newsgroups header field of this article is kept untouched.
         This article is filed under "foo.bar" even though it has originally
         been posted to the newsgroup
-        "misc.test". Yet, it still propagates to peers that have been
+        "misc.test".  Yet, it still propagates to peers that have been
 configured to receive articles posted to "misc.text".</t>
+
+        <t><vspace blankLines="42" /></t>
 
         <t>Example of an article locally posted to an alias group:</t>
 
@@ -1187,6 +1201,8 @@ configured to receive articles posted to "misc.text".</t>
       <t>Distribution descriptions and the message of the day MUST be in
       UTF-8 <xref target="RFC3629" />.</t>
 
+      <t><vspace blankLines="42" /></t>
+
     </section>
 
     <section title="Security Considerations" anchor="sec_security">
@@ -1269,14 +1285,13 @@ configured to receive articles posted to "misc.text".</t>
       Kaijanaho, Alexey Melnikov, Peter Saint-Andre, Dieter Stussy, and
       Sean Turner on this document.</t>
 
-      <t>The author would particularly like to thank Jeffrey M. Vinocur
+      <t>The author would particularly like to thank Jeffrey M.&nbsp;Vinocur
       for having reread, improved, and patiently fixed the English wording
       and the quality of this document.</t>
 
       <t>Special thanks are due to:</t>
 
-      <list>
-
+      <t><list>
         <t>Stan Barber, whose text in <xref target="RFC2980" /> served as the
         initial basis for the DISTRIBUTIONS and SUBSCRIPTIONS variants of
         the LIST command.</t>
@@ -1289,7 +1304,7 @@ configured to receive articles posted to "misc.text".</t>
         InterNetNews news server ("active", "distributions", "moderators",
         "motd.news", and "subscriptions"): Russ Allbery, Bettina Fink,
         Rich Salz, and a few other people to whom I am also grateful.</t>
-      </list>
+      </list></t>
     </section>
   </middle>
 
