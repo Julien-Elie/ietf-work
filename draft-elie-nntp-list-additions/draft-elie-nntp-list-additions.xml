@@ -76,8 +76,7 @@
 
       <t>This memo updates and formalizes the LIST DISTRIBUTIONS and
       LIST SUBSCRIPTIONS commands defined in RFC 2980.  It also adds the
-      LIST COUNTS, LIST MODERATORS, and LIST MOTD
-      commands, and specifies
+      LIST COUNTS, LIST MODERATORS, and LIST MOTD commands, and specifies
       additional values returned by the existing LIST ACTIVE command for
       the status of a newsgroup.</t>
 
@@ -120,8 +119,8 @@
       address template.</t>
 
       <t>The ACTIVE variant was formalized in <xref target="RFC3977" />,
-      but the meanings of only three status field values in LIST ACTIVE responses
-      have been specified: "y", "n", and "m".  These statuses
+      but the meanings of only three status field values in LIST ACTIVE
+      responses have been specified: "y", "n", and "m".  These statuses
       are particularly useful for readers, since they describe local posting
       rights.  However, several other statuses are in use that are primarily
       useful for peers as they mainly describe how remote articles coming
@@ -129,10 +128,10 @@
       defines three other values for the status field in LIST ACTIVE
       responses: "x", "j", and "=" followed by the name of a newsgroup.</t>
 
-      <t>This specification should be read in conjunction with the
-      NNTP base specification <xref target="RFC3977" />.  In the case
-      of a conflict between
-      these two documents, <xref target="RFC3977" /> takes precedence.</t>
+      <t>This specification should be read in conjunction with the NNTP
+      base specification <xref target="RFC3977" />.  In the case of a
+      conflict between these two documents, <xref target="RFC3977" /> takes
+      precedence.</t>
 
       <section title="Conventions Used in This Document">
 
@@ -278,7 +277,7 @@
           number of articles, are as described in the GROUP command (see
           Section 6.1.1 of <xref target="RFC3977" />), but note that they
           are in the opposite order to the 211 response (that is, number low
-high group) to the GROUP command.
+          high group) to the GROUP command.
 
           The current status of the group is as described in the LIST ACTIVE
           command (see Section 7.6.3 of <xref target="RFC3977" />, as well
@@ -405,9 +404,10 @@ high group) to the GROUP command.
 
           <t><vspace blankLines="42" /></t>
 
-          <t>The order of distributions in the distributions list is not significant;
-          the server need not consistently return the same order or the same
-          results if this command is used more than once in a session.</t>
+          <t>The order of distributions in the distributions list is not
+          significant; the server need not consistently return the same order
+          or the same results if this command is used more than once in a
+          session.</t>
 
           <t>The same distribution SHOULD NOT appear twice in the output
           of this command.</t>
@@ -517,8 +517,8 @@ high group) to the GROUP command.
           leave this up to the server administrator rather than enforcing
           it programmatically.</t>
 
-          <t>When an article without an Approved header field is locally posted to a moderated
-          newsgroup, the
+          <t>When an article without an Approved header field is locally
+          posted to a moderated newsgroup, the
           server generates a submission address from the corresponding
           submission template (that is, the second field of the first
           matching line in the moderators list) by replacing the "%s",
@@ -526,7 +526,8 @@ high group) to the GROUP command.
           each period ("." or %x2E) in the name has been changed to a dash
           ("-" or %x2D).  In addition, any "%%" is changed back to "%".
           The server then forwards the submitted article to the
-          moderator at the resulting submission address (see Section 3.5.1 of <xref target="RFC5537" />).</t>
+          moderator at the resulting submission address (see Section 3.5.1
+          of <xref target="RFC5537" />).</t>
 
           <t><list style="empty">
 
@@ -602,8 +603,7 @@ high group) to the GROUP command.
             characters, because e-mail systems frequently treat the
             left-hand side of e-mail addresses as case-sensitive.  See also
             Section 3.1.4 of <xref target="RFC5536" /> and Section 7.2 of
-            <xref target="USEAGE" /> for the syntax of a
-            newsgroup name.</t>
+            <xref target="USEAGE" /> for the syntax of a newsgroup name.</t>
 
           </list></t>
 
@@ -694,7 +694,7 @@ high group) to the GROUP command.
    [C] LIST MOTD
    [S] 215 Message of the day follows
    [S] Attention all users,
-   [S] 
+   [S]
    [S] This server will be down for scheduled upgrades on February 1st.
    [S] It should be back up by 8:00 a.m. February 2nd.
    [S] Any questions should be e-mailed to <newsmaster@example.com>.
@@ -735,13 +735,13 @@ high group) to the GROUP command.
           consist of a newsgroup name.  There are no leading or trailing
           whitespaces in a line.</t>
 
-          <t>The order of newsgroups in the subscriptions list is significant: they
-          are listed by order of importance, the first newsgroup being
+          <t>The order of newsgroups in the subscriptions list is significant:
+          they are listed by order of importance, the first newsgroup being
           the most important to subscribe to.</t>
 
-          <t>The same newsgroup name SHOULD NOT appear twice in the output
-          of this command.  The subscriptions list SHOULD contain only newsgroups the
-          news server carries.</t>
+          <t>The same newsgroup name SHOULD NOT appear twice in the output of
+          this command.  The subscriptions list SHOULD contain only newsgroups
+          the news server carries.</t>
 
           <t>The subscriptions list is newsgroup-based, and a wildmat
           MAY be specified, in which case the response is limited to only
@@ -951,10 +951,10 @@ high group) to the GROUP command.
 
         <texttable>
           <ttcol>Status field value of "foo.bar"</ttcol>
-          <ttcol>Accepted if local posting?</ttcol>
-          <ttcol>Accepted from peers?</ttcol>
-          <ttcol>Moderation needed?</ttcol>
-          <ttcol>Destination if accepted</ttcol>
+            <ttcol>Accepted if local posting?</ttcol>
+            <ttcol>Accepted from peers?</ttcol>
+            <ttcol>Moderation needed?</ttcol>
+            <ttcol>Destination if accepted</ttcol>
           <c>y</c>
             <c>Yes</c>
             <c>Yes</c>
@@ -990,14 +990,15 @@ high group) to the GROUP command.
         <t>The following table summarizes what usually happens to an
         article crossposted to the newsgroup "foo.bar" and a valid newsgroup
         "misc.test" (whose status field is "y") known by the news server,
-        depending on the status field value of "foo.bar" on the news server:</t>
+        depending on the status field value of "foo.bar" on the news
+        server:</t>
 
         <texttable>
           <ttcol>Status field value of "foo.bar"</ttcol>
-          <ttcol>Accepted if local posting?</ttcol>
-          <ttcol>Accepted from peers?</ttcol>
-          <ttcol>Moderation needed?</ttcol>
-          <ttcol>Destination if accepted</ttcol>
+            <ttcol>Accepted if local posting?</ttcol>
+            <ttcol>Accepted from peers?</ttcol>
+            <ttcol>Moderation needed?</ttcol>
+            <ttcol>Destination if accepted</ttcol>
           <c>y</c>
             <c>Yes</c>
             <c>Yes</c>
@@ -1084,9 +1085,9 @@ high group) to the GROUP command.
 
         <t>The Newsgroups header field of this article is kept untouched.
         This article is filed under "foo.bar" even though it has originally
-        been posted to the newsgroup
-        "misc.test".  Yet, it still propagates to peers that have been
-configured to receive articles posted to "misc.text".</t>
+        been posted to the newsgroup "misc.test".  Yet, it still propagates
+        to peers that have been configured to receive articles posted to
+        "misc.text".</t>
 
         <t><vspace blankLines="42" /></t>
 
@@ -1226,9 +1227,9 @@ configured to receive articles posted to "misc.text".</t>
       <t><list style="symbols">
 
         <t>This extension provides additional keywords to the pre-existing
-        LIST capability defined in Section 7.6 of <xref target="RFC3977"
-        />.  New status field values are also added to the ACTIVE variant of the LIST
-        command.</t>
+        LIST capability defined in Section 7.6 of <xref target="RFC3977" />.
+        New status field values are also added to the ACTIVE variant of the
+        LIST command.</t>
 
         <t>The capability label that this extension extends is "LIST".</t>
 
@@ -1305,7 +1306,9 @@ configured to receive articles posted to "misc.text".</t>
         "motd.news", and "subscriptions"): Russ Allbery, Bettina Fink,
         Rich Salz, and a few other people to whom I am also grateful.</t>
       </list></t>
+
     </section>
+
   </middle>
 
   <back>
@@ -1317,9 +1320,11 @@ configured to receive articles posted to "misc.text".</t>
       &rfc3977;
       &rfc5234;
       &rfc5322;
+
     </references>
 
     <references title="Informative References">
+
       <reference anchor="ASCII">
         <front>
           <title>Coded Character Sets - 7-Bit American Standard Code for
@@ -1333,36 +1338,32 @@ configured to receive articles posted to "misc.text".</t>
 
       <reference anchor="NNTP_LIST">
         <front>
-            <title>NNTP LIST Additions</title>
-            <author initials="B." surname="Hernacki" fullname="Brian Hernacki">
-                <organization>Netscape Communications, Inc.</organization>
-            </author>
-            <date month="July" day="15" year="1997"/>
+          <title>NNTP LIST Additions</title>
+          <author initials="B." surname="Hernacki" fullname="Brian Hernacki">
+            <organization>Netscape Communications, Inc.</organization>
+          </author>
+          <date month="July" day="15" year="1997" />
         </front>
-        <seriesInfo name="Work in" value="Progress"/>
-
-    </reference>
+        <seriesInfo name="Work in" value="Progress" />
+      </reference>
 
       &rfc2980;
       &rfc5536;
       &rfc5537;
 
-    <reference anchor='USEAGE'>
-    <front>
-    <title>Usenet Best Practice</title>
-
-    <author initials='C' surname='Lindsey' fullname='Charles Lindsey'>
-        <organization />
-    </author>
-
-    <date month='March' day='16' year='2005' />
-    </front>
-
-    <seriesInfo name='Work in' value='Progress' />
-
-    </reference>
+      <reference anchor='USEAGE'>
+        <front>
+          <title>Usenet Best Practice</title>
+          <author initials='C' surname='Lindsey' fullname='Charles Lindsey'>
+            <organization />
+          </author>
+          <date month='March' day='16' year='2005' />
+        </front>
+        <seriesInfo name='Work in' value='Progress' />
+      </reference>
 
     </references>
 
   </back>
+
 </rfc>
