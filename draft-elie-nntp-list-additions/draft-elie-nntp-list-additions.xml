@@ -120,7 +120,7 @@
       address template.</t>
 
       <t>The ACTIVE variant was formalized in <xref target="RFC3977" />,
-      but the meanings of only three status fields in LIST ACTIVE responses
+      but the meanings of only three status field values in LIST ACTIVE responses
       have been specified: "y", "n", and "m".  These statuses
       are particularly useful for readers, since they describe local posting
       rights.  However, several other statuses are in use that are primarily
@@ -511,7 +511,7 @@ high group) to the GROUP command.
           leave this up to the server administrator rather than enforcing
           it programmatically.</t>
 
-          <t>When an article without an Approved header is locally posted to a moderated
+          <t>When an unapproved article without an Approved header is locally posted to a moderated
           newsgroup, the
           server generates a submission address from the corresponding
           submission template (that is, the second field of the first
@@ -727,7 +727,7 @@ high group) to the GROUP command.
           consist of a newsgroup name.  There are no leading or trailing
           whitespaces in a line.</t>
 
-          <t>The order of newsgroups in the list is significant: they
+          <t>The order of newsgroups in the subscriptions list is significant: they
           are listed by order of importance, the first newsgroup being
           the most important to subscribe to.</t>
 

@@ -145,7 +145,7 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    template.
 
    The ACTIVE variant was formalized in [RFC3977], but the meanings of
-   only three status fields in LIST ACTIVE responses have been
+   only three status field values in LIST ACTIVE responses have been
    specified: "y", "n", and "m".  These statuses are particularly useful
    for readers, since they describe local posting rights.  However,
    several other statuses are in use that are primarily useful for peers
@@ -550,9 +550,9 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    to the server administrator rather than enforcing it
    programmatically.
 
-   When an article without an Approved header is locally posted to a
-   moderated newsgroup, the server generates a submission address from
-   the corresponding submission template (that is, the second field of
+   When an unapproved article without an Approved header is locally
+   posted to a moderated newsgroup, the server generates a submission
+   address from the corresponding submission template (that is, the
 
 
 
@@ -561,12 +561,13 @@ Elie                         Standards Track                   [Page 10]
 RFC 6048             NNTP Additions to LIST Command        November 2010
 
 
-   the first matching line in the moderators list) by replacing the
-   "%s", if present, with the name of the matching newsgroup after each
-   period ("." or %x2E) in the name has been changed to a dash ("-" or
-   %x2D).  In addition, any "%%" is changed back to "%".  The server
-   then forwards the submitted article to the moderator at the resulting
-   submission address (see Section 3.5.1 of [RFC5537]).
+   second field of the first matching line in the moderators list) by
+   replacing the "%s", if present, with the name of the matching
+   newsgroup after each period ("." or %x2E) in the name has been
+   changed to a dash ("-" or %x2D).  In addition, any "%%" is changed
+   back to "%".  The server then forwards the submitted article to the
+   moderator at the resulting submission address (see Section 3.5.1 of
+   [RFC5537]).
 
       NOTE: The creation and maintenance of submission addresses is
       outside the scope of this specification.
@@ -608,7 +609,6 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    | foo.bar                     | announce@example.com                |
    | local.test                  | local-test@localhost                |
    | alt.dev.null                | alt-dev-null@moderators.example.com |
-
 
 
 
@@ -772,9 +772,9 @@ RFC 6048             NNTP Additions to LIST Command        November 2010
    newsgroup name.  There are no leading or trailing whitespaces in a
    line.
 
-   The order of newsgroups in the list is significant: they are listed
-   by order of importance, the first newsgroup being the most important
-   to subscribe to.
+   The order of newsgroups in the subscriptions list is significant:
+   they are listed by order of importance, the first newsgroup being the
+   most important to subscribe to.
 
    The same newsgroup name SHOULD NOT appear twice in the output of this
 
