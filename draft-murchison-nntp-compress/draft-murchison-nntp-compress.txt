@@ -3,81 +3,18 @@
 
 Independent Submission                                      K. Murchison
 Internet-Draft                                Carnegie Mellon University
-Intended status: Standards Track                        January 21, 2010
-Expires: July 25, 2010
+Intended status: Standards Track                        January 26, 2010
+Expires: July 30, 2010
 
 
     Network News Transfer Protocol (NNTP) Extension for Compression
-                  draft-murchison-nntp-compress-00.txt
+                  draft-murchison-nntp-compress-01.txt
 
 Abstract
 
    This memo defines an extension to the Network News Transport Protocol
    (NNTP) to allow a connection to be effectively and efficiently
    compressed.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Murchison                 Expires July 25, 2010                 [Page 1]
-
-Internet-Draft       NNTP Extension for Compression         January 2010
-
-
-Issues to be addressed
-
-   o  What 2xx code should we use when compression is activated? 20x,
-      28x, 29x?
-
-   o  Should failure to activate compression result in a 4xx or 5xx
-      code?
-
-   o  Do we need a special error code for an unknown compression
-      algorithm?
-
-   o  Should we have separate 5xx codes when TLS compression is already
-      active vs. when NNTP COMPRESS is already active?
-
-   o  Do we setup an IANA registery of supported compression algorithms?
-      I don't think we need/want more than DEFLATE.
-
-   o  The text referring to attachments needs work.  Should we discuss
-      yEnc and/or uuencode?  I'm not sure the text regarding binary form
-      even applies to NNTP.
-
 
 Status of this Memo
 
@@ -100,19 +37,11 @@ Status of this Memo
    The list of Internet-Draft Shadow Directories can be accessed at
    http://www.ietf.org/shadow.html.
 
-   This Internet-Draft will expire on July 25, 2010.
+   This Internet-Draft will expire on July 30, 2010.
 
 Copyright Notice
 
    Copyright (c) 2010 IETF Trust and the persons identified as the
-
-
-
-Murchison                 Expires July 25, 2010                 [Page 2]
-
-Internet-Draft       NNTP Extension for Compression         January 2010
-
-
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -120,6 +49,14 @@ Internet-Draft       NNTP Extension for Compression         January 2010
    (http://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
+
+
+
+Murchison                 Expires July 30, 2010                 [Page 1]
+
+Internet-Draft       NNTP Extension for Compression         January 2010
+
+
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
@@ -128,26 +65,37 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
 Table of Contents
 
-   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  4
-     1.1.  Conventions Used in this Document  . . . . . . . . . . . .  4
-   2.  The COMPRESS Extension . . . . . . . . . . . . . . . . . . . .  6
-     2.1.  Advertising the COMPRESS Extension . . . . . . . . . . . .  6
-     2.2.  COMPRESS Command . . . . . . . . . . . . . . . . . . . . .  6
-       2.2.1.  Usage  . . . . . . . . . . . . . . . . . . . . . . . .  6
-       2.2.2.  Description  . . . . . . . . . . . . . . . . . . . . .  7
-       2.2.3.  Examples . . . . . . . . . . . . . . . . . . . . . . .  8
-   3.  Compression Efficiency . . . . . . . . . . . . . . . . . . . . 10
-   4.  Augmented BNF Syntax for the COMPRESS Extension  . . . . . . . 12
-     4.1.  Commands . . . . . . . . . . . . . . . . . . . . . . . . . 12
-     4.2.  Capability entries . . . . . . . . . . . . . . . . . . . . 12
-   5.  Summary of Response Codes  . . . . . . . . . . . . . . . . . . 13
-   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 14
-   7.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 15
-   8.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 17
-     8.1.  Normative References . . . . . . . . . . . . . . . . . . . 17
-     8.2.  Informative References . . . . . . . . . . . . . . . . . . 17
-   Appendix A.  Acknowledgements  . . . . . . . . . . . . . . . . . . 18
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 19
+   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
+     1.1.  Conventions Used in This Document  . . . . . . . . . . . .  3
+   2.  The COMPRESS Extension . . . . . . . . . . . . . . . . . . . .  4
+     2.1.  Advertising the COMPRESS Extension . . . . . . . . . . . .  4
+     2.2.  COMPRESS Command . . . . . . . . . . . . . . . . . . . . .  4
+       2.2.1.  Usage  . . . . . . . . . . . . . . . . . . . . . . . .  4
+       2.2.2.  Description  . . . . . . . . . . . . . . . . . . . . .  5
+       2.2.3.  Examples . . . . . . . . . . . . . . . . . . . . . . .  6
+   3.  Compression Efficiency . . . . . . . . . . . . . . . . . . . .  9
+   4.  Augmented BNF Syntax for the COMPRESS Extension  . . . . . . . 11
+     4.1.  Commands . . . . . . . . . . . . . . . . . . . . . . . . . 11
+     4.2.  Capability entries . . . . . . . . . . . . . . . . . . . . 11
+     4.3.  General Non-terminals  . . . . . . . . . . . . . . . . . . 11
+   5.  Summary of Response Codes  . . . . . . . . . . . . . . . . . . 12
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 13
+   7.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 14
+     7.1.  NNTP Compression Algorithm Registry  . . . . . . . . . . . 14
+       7.1.1.  Algorithm Name Registration Procedure  . . . . . . . . 14
+       7.1.2.  Comments on Algorithm Registrations  . . . . . . . . . 15
+       7.1.3.  Change Control . . . . . . . . . . . . . . . . . . . . 15
+     7.2.  Registration of the DEFLATE Compression Algorithm  . . . . 16
+     7.3.  Registration of the NNTP COMPRESS Extension  . . . . . . . 16
+   8.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+     8.1.  Normative References . . . . . . . . . . . . . . . . . . . 18
+     8.2.  Informative References . . . . . . . . . . . . . . . . . . 18
+   Appendix A.  Acknowledgements  . . . . . . . . . . . . . . . . . . 20
+   Appendix B.  Document History (to be removed by RFC Editor
+                before publication) . . . . . . . . . . . . . . . . . 21
+     B.1.  Changes since -00  . . . . . . . . . . . . . . . . . . . . 21
+   Appendix C.  Issues to be addressed  . . . . . . . . . . . . . . . 22
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 23
 
 
 
@@ -160,11 +108,7 @@ Table of Contents
 
 
 
-
-
-
-
-Murchison                 Expires July 25, 2010                 [Page 3]
+Murchison                 Expires July 30, 2010                 [Page 2]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
@@ -175,17 +119,17 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
    Compared to PPP compression [RFC1962] and modem-based compression
    ([MNP] and [V42bis]), COMPRESS offers greater compression efficiency.
-   COMPRESS can be used together with Transport Security Layer (TLS)
-   [RFC5246], Simple Authentication and Security layer (SASL) encryption
+   COMPRESS can be used together with Transport Layer Security (TLS)
+   [RFC5246], Simple Authentication and Security Layer (SASL) encryption
    [RFC4422], Virtual Private Networks (VPNs), etc.
 
-   Compared to TLS compression [RFC3749], COMPRESS has the following
-   advantages:
+   Compared to TLS compression [RFC3749], NNTP COMPRESS has the
+   following advantages:
 
    o  COMPRESS can be implemented easily both by NNTP servers and
       clients.
 
-   o  NNTP COMPRESS benefits from an intimate knowledge of the NNTP
+   o  COMPRESS benefits from an intimate knowledge of the NNTP
       protocol's state machine, allowing for dynamic and aggressive
       optimization of the underlying compression algorithm's parameters.
 
@@ -198,17 +142,10 @@ Internet-Draft       NNTP Extension for Compression         January 2010
    In order to increase interoperability, it is desirable to have as few
    different compression algorithms as possible, so this document
    specifies only one.  The DEFLATE algorithm (defined in [RFC1951]) is
-   standard, widely available and fairly efficient, so it is the only
-   algorithm defined by this document.
+   standard, widely available and fairly efficient, and MUST be
+   implemented as part of this extension.
 
-   In order to increase interoperability, NNTP servers that advertise
-   this extension SHOULD also support the TLS DEFLATE compression
-   mechanism as defined in [RFC3749].  NNTP clients MAY use either
-   COMPRESS or TLS compression, however, if the client and server
-   support both, it is RECOMMENDED that the client choose TLS
-   compression.
-
-1.1.  Conventions Used in this Document
+1.1.  Conventions Used in This Document
 
    The notational conventions used in this document are the same as
    those in [RFC3977] and any term not defined in this document has the
@@ -217,13 +154,6 @@ Internet-Draft       NNTP Extension for Compression         January 2010
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
-
-
-
-Murchison                 Expires July 25, 2010                 [Page 4]
-
-Internet-Draft       NNTP Extension for Compression         January 2010
-
 
    In the examples, commands from the client are indicated with [C], and
    responses from the server are indicated with [S].
@@ -234,56 +164,14 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Murchison                 Expires July 25, 2010                 [Page 5]
+Murchison                 Expires July 30, 2010                 [Page 3]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
 
 2.  The COMPRESS Extension
 
-   The COMPRESS extension is used to enable compression of an NNTP
+   The COMPRESS extension is used to enable data compression on an NNTP
    connection.
 
    This extension provides a new COMPRESS command and has capability
@@ -295,12 +183,13 @@ Internet-Draft       NNTP Extension for Compression         January 2010
    will advertise the "COMPRESS" capability label in response to the
    CAPABILITIES command ([RFC3977] Section 5.2).  This capability MAY be
    advertised both before and after any use of the MODE READER command
-   ([RFC3977] section 5.3), with the same semantics.
+   ([RFC3977] Section 5.3), with the same semantics.
 
    The COMPRESS capability label contains a whitespace-separated list of
    available compression algorithms.  This document defines one
-   compression algorithm: DEFLATE.  At least one compression algorithm
-   MUST be supported in order to advertise the COMPRESS extension.
+   compression algorithm: DEFLATE.  This algorithm is mandatory to
+   implement and MUST be supported in order to advertise the COMPRESS
+   extension.
 
    Future extensions may add additional compression algorithms to this
    capability.  Unrecognized algorithms MUST be ignored by the client.
@@ -312,7 +201,7 @@ Internet-Draft       NNTP Extension for Compression         January 2010
    [S] VERSION 2
    [S] READER
    [S] IHAVE
-   [S] COMPRESS DEFLATE
+   [S] COMPRESS DEFLATE X-SHRINK
    [S] LIST ACTIVE NEWSGROUPS
    [S] .
 
@@ -331,8 +220,7 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
 
 
-
-Murchison                 Expires July 25, 2010                 [Page 6]
+Murchison                 Expires July 30, 2010                 [Page 4]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
@@ -346,7 +234,7 @@ Internet-Draft       NNTP Extension for Compression         January 2010
       502 Command unavailable [1]
 
    [1] If a compression layer is already active, COMPRESS is not a valid
-       command (see Section 2.2).
+       command (see Section 2.2.2).
 
    Parameters
       algorithm = Name of compression algorithm: "DEFLATE"
@@ -354,18 +242,20 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 2.2.2.  Description
 
    The COMPRESS command instructs the server to use the named
-   compression algorithm ("DEFLATE" is the only one defined) for all
-   commands and/or responses after COMPRESS.
+   compression algorithm ("DEFLATE" is the only one defined in this
+   document) for all commands and/or responses after COMPRESS.
 
    The client MUST NOT send any further commands until it has seen the
    result of COMPRESS.
 
-   If the server is unable to activate compression for any reason (e.g.,
-   a server configuration or resource problem), the server MUST reject
-   the COMPRESS command with a 403 response.  Otherwise, the server
-   issues a 291 response and the compression layer takes effect for both
-   client and server immediately following the CRLF of the success
-   reply.
+   If the requested compression algorithm is invalid (e.g., is not
+   supported), the server MUST reject the COMPRESS command with a 503
+   response ([RFC3977] Section 3.2.1).  If the server is unable to
+   activate compression for any reason (e.g., a server configuration or
+   resource problem), the server MUST reject the COMPRESS command with a
+   403 response ([RFC3977] Section 3.2.1).  Otherwise, the server issues
+   a 291 response and the compression layer takes effect for both client
+   and server immediately following the CRLF of the success reply.
 
    Both the client and the server MUST know if there is a compression
    layer active.  A client MUST NOT attempt to activate compression (via
@@ -373,26 +263,27 @@ Internet-Draft       NNTP Extension for Compression         January 2010
    layer is already active.  A server MUST NOT return the COMPRESS or
    STARTTLS capability labels in response to a CAPABILITIES command
    received after a compression layer is active, and a server MUST reply
-   with a 502 response code if a COMPRESS or STARTTLS command is
-   received while a compression layer is already active.
+   with a 502 response code if a syntactically valid COMPRESS or
+   STARTTLS command is received while a compression layer is already
+   active.
 
-   For DEFLATE (as for many other compression mechanisms), the
-   compressor can trade speed against quality.  When decompressing there
-   isn't much of a tradeoff.  Consequently, the client and server are
-   both free to pick the best reasonable rate of compression for the
-   data they send.
-
-   When COMPRESS is combined with TLS [RFC5246] or SASL [RFC4422]
-   security layers, the sending order of the three extensions MUST be
-   first COMPRESS, then SASL, and finally TLS.  That is, before data is
+   For DEFLATE [RFC1951] (as for many other compression mechanisms), the
+   compressor can trade speed against quality.  The decompressor MUST
+   automatically adjust to the parameters selected by the sender.
+   Consequently, the client and server are both free to pick the best
+   reasonable rate of compression for the data they send.
 
 
 
-Murchison                 Expires July 25, 2010                 [Page 7]
+
+Murchison                 Expires July 30, 2010                 [Page 5]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
 
+   When COMPRESS is combined with TLS [RFC5246] or SASL [RFC4422]
+   security layers, the processing order of the three layers MUST be
+   first COMPRESS, then SASL, and finally TLS.  That is, before data is
    transmitted it is first compressed.  Second, if a SASL security layer
    has been negotiated, the compressed data is then signed and/or
    encrypted accordingly.  Third, if a TLS security layer has been
@@ -400,7 +291,8 @@ Internet-Draft       NNTP Extension for Compression         January 2010
    encrypted accordingly.  When receiving data, the processing order
    MUST be reversed.  This ensures that before sending, data is
    compressed before it is encrypted, independent of the order in which
-   the client issues COMPRESS, AUTHINFO SASL, and STARTTLS.
+   the client issues the COMPRESS, AUTHINFO SASL [RFC4643], and STARTTLS
+   [RFC4642] commands.
 
 2.2.3.  Examples
 
@@ -409,6 +301,7 @@ Internet-Draft       NNTP Extension for Compression         January 2010
  [C] CAPABILITIES
  [S] 101 Capability list:
  [S] VERSION 2
+ [S] READER
  [S] STARTTLS
  [S] AUTHINFO
  [S] COMPRESS DEFLATE
@@ -420,6 +313,7 @@ Internet-Draft       NNTP Extension for Compression         January 2010
  [C] CAPABILITIES
  [S] 101 Capability list:
  [S] VERSION 2
+ [S] READER
  [S] AUTHINFO USER
  [S] COMPRESS DEFLATE
  [S] .
@@ -433,27 +327,42 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
    Example of a server failing to activate compression:
 
+
+
+
+
+
+Murchison                 Expires July 30, 2010                 [Page 6]
+
+Internet-Draft       NNTP Extension for Compression         January 2010
+
+
    [C] CAPABILITIES
    [S] 101 Capability list:
    [S] VERSION 2
+   [S] IHAVE
    [S] COMPRESS DEFLATE
    [S] .
    [C] COMPRESS DEFLATE
    [S] 403 Unable to activate compression
 
+   Example of attempting to use an unsupported compression algorithm:
 
-
-
-Murchison                 Expires July 25, 2010                 [Page 8]
-
-Internet-Draft       NNTP Extension for Compression         January 2010
-
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] IHAVE
+   [S] COMPRESS DEFLATE
+   [S] .
+   [C] COMPRESS X-SHRINK
+   [S] 503 Compression algorithm not supported
 
    Examples of a server refusing to compress twice:
 
    [C] CAPABILITIES
    [S] 101 Capability list:
    [S] VERSION 2
+   [S] IHAVE
    [S] STARTTLS
    [S] COMPRESS DEFLATE
    [S] .
@@ -464,22 +373,40 @@ Internet-Draft       NNTP Extension for Compression         January 2010
    [C] CAPABILITIES
    [S] 101 Capability list:
    [S] VERSION 2
+   [S] IHAVE
    [S] .
    [C] COMPRESS DEFLATE
    [S] 502 Compression already active via TLS
 
 
+
+
+
+
+
+
+
+
+
+Murchison                 Expires July 30, 2010                 [Page 7]
+
+Internet-Draft       NNTP Extension for Compression         January 2010
+
+
    [C] CAPABILITIES
    [S] 101 Capability list:
    [S] VERSION 2
+   [S] IHAVE
    [S] STARTTLS
    [S] COMPRESS DEFLATE
    [S] .
    [C] COMPRESS DEFLATE
    [S] 291 Compression active
+   [From this point on, all traffic is compresssed]
    [C] CAPABILITIES
    [S] 101 Capability list:
    [S] VERSION 2
+   [S] IHAVE
    [S] .
    [C] STARTTLS
    [S] 502 DEFLATE compression already active
@@ -500,67 +427,89 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
 
 
-Murchison                 Expires July 25, 2010                 [Page 9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Murchison                 Expires July 30, 2010                 [Page 8]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
 
 3.  Compression Efficiency
 
-   This section is informative, not normative.
+   This section is only informative.
 
    NNTP poses some unusual problems for a compression layer.
 
-   Upstream is fairly simple.  Most NNTP clients send the same few
-   commands again and again, so any compression algorithm that can
-   exploit repetition works efficiently.  The POST and IHAVE commands
-   are an exception; clients that send many POST/IHAVE commands may want
-   to surround large multi-line data blocks with flushes in the same way
-   as is recommended for servers later in this section.
+   Upstream traffic is fairly simple.  Most NNTP clients send the same
+   few commands again and again, so any compression algorithm that can
+   exploit repetition works efficiently.  The article posting and
+   transfer commands (e.g., POST, IHAVE, and TAKETHIS [RFC4644]) are an
+   exception; clients that send many article posting or transfer
+   commands may want to surround large multi-line data blocks with
+   flushes in the same way as is recommended for servers later in this
+   section.
 
-   Downstream has the unusual property that several kinds of data are
-   sent, confusing all dictionary-based compression algorithms.
+   Downstream traffic has the unusual property that several kinds of
+   data are sent, confusing all dictionary-based compression algorithms.
 
-   One type is NNTP responses.  These are highly compressible; zlib
-   using its least CPU-intensive setting compresses typical responses to
-   25-40% of their original size.
+   One type is NNTP simple responses and NNTP multi-line responses not
+   related to article header/body retrieval (e.g, CAPABILITIES, GROUP,
+   NEXT, STAT, DATE, NEWNEWS, LIST, OVER, CHECK [RFC4644], etc).  These
+   are highly compressible; zlib using its least CPU-intensive setting
+   compresses typical responses to 25-40% of their original size.
 
-   Another type is article headers.  These are equally compressible, and
-   benefit from using the same dictionary as the NNTP responses.
+   Another type is article headers (as retrieved via the HEAD or ARTICLE
+   commands).  These are equally compressible, and benefit from using
+   the same dictionary as the NNTP responses.
 
-   A third type is article body text.  Text is usually fairly short and
-   includes much ASCII, so the same compression dictionary will do a
-   good job here, too.  When multiple messages in the same thread are
-   read at the same time, quoted lines etc. can often be compressed
-   almost to zero.
+   A third type is article body text (as retrieved via the BODY or
+   ARTICLE commands).  Text is usually fairly short and includes much
+   ASCII, so the same compression dictionary will do a good job here,
+   too.  When multiple messages in the same thread are read at the same
+   time, quoted lines, etc. can often be compressed almost to zero.
 
-   Finally, attachments (non-text article bodies) are transmitted,
-   either in binary form or encoded with base-64.
+   Finally, attachments (non-text article bodies retrieved via the BODY
+   and ARTICLE commands) are transmitted in encoded form, usually Base64
+   [RFC4648], UUencode [IEEE.1003-2.1992], or yEnc [yEnc].
 
-   When attachments are retrieved in binary form, DEFLATE may be able to
-   compress them, but the format of the attachment is usually not NNTP-
-   like, so the dictionary built while compressing NNTP does not help.
-   The compressor has to adapt its dictionary from NNTP to the
-   attachment's format, and then back.  A few file formats aren't
-   compressible at all using deflate, e.g., .gz, .zip, and .jpg files.
+   When attachments are retrieved, DEFLATE may be able to compress them,
+   but the format of the attachment's encoding is usually not NNTP-like,
+   so the dictionary built while compressing NNTP does not help.  The
+   compressor has to adapt its dictionary from NNTP to the attachment's
+   encoding format, and then back.
 
-   When attachments are retrieved in base-64 form, the same problems
-   apply, but the base-64 encoding adds another problem. 8-bit
-   compression algorithms such as deflate work well on 8-bit file
-   formats, however base-64 turns a file into something resembling 6-bit
-   bytes, hiding most of the 8-bit file format from the compressor.
-
-   When using the zlib library (see [RFC1951]), the functions
-   deflateInit2(), deflate(), inflateInit2(), and inflate() suffice to
-   implement this extension.  The windowBits value must be in the range
+   When attachments are retrieved in Base64 or UUencode form, these
+   encodings add another problem. 8-bit compression algorithms such as
+   DEFLATE work well on 8-bit file formats, however both Base64 and
+   UUencode transform a file into something resembling 6-bit bytes,
 
 
 
-Murchison                 Expires July 25, 2010                [Page 10]
+Murchison                 Expires July 30, 2010                 [Page 9]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
 
+   hiding most of the 8-bit file format from the compressor.
+
+   When using the zlib library (see [RFC1951]), the functions
+   deflateInit2(), deflate(), inflateInit2(), and inflate() suffice to
+   implement this extension.  The windowBits value must be in the range
    -8 to -15, or else deflateInit2() uses the wrong format.
    deflateParams() can be used to improve compression rate and resource
    use.  The Z_FULL_FLUSH argument to deflate() can be used to clear the
@@ -571,16 +520,7 @@ Internet-Draft       NNTP Extension for Compression         January 2010
    sending a Z_FULL_FLUSH at the start and end of large non-text multi-
    line data blocks (before and after 'content-lines' in the definition
    of 'multi-line-data-block' in [RFC3977] Section 9.8).  Small multi-
-   line data blocks are best left alone.  A possible boundary is 5k.
-
-   A server can improve the CPU efficiency both of the server and the
-   client if it adjusts the compression level (e.g., using the
-   deflateParams() function in zlib) at these points, to avoid trying to
-   compress incompressible attachments.  A very simple strategy is to
-   change the level to 0 at the start of a multi-line data block
-   provided the first two bytes are either 0x1F 0x8B (as in deflate-
-   compressed files) or 0xFF 0xD8 (JPEG), and to keep it at 1-5 the rest
-   of the time.  More complex strategies are possible.
+   line data blocks are best left alone.  A possible boundary is 5kB.
 
 
 
@@ -612,7 +552,11 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
 
 
-Murchison                 Expires July 25, 2010                [Page 11]
+
+
+
+
+Murchison                 Expires July 30, 2010                [Page 10]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
@@ -632,9 +576,7 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
    command =/ compress-command
 
-   compress-command = "COMPRESS" WS compress-alg
-
-   compress-alg = "DEFLATE"
+   compress-command = "COMPRESS" WS algorithm
 
 4.2.  Capability entries
 
@@ -643,7 +585,11 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
    capability-entry =/ compress-capability
 
-   compress-capability = "COMPRESS" *(WS compress-alg)
+   compress-capability = "COMPRESS" *(WS algorithm)
+
+4.3.  General Non-terminals
+
+   algorithm = "DEFLATE" / token
 
 
 
@@ -666,9 +612,7 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
 
 
-
-
-Murchison                 Expires July 25, 2010                [Page 12]
+Murchison                 Expires July 30, 2010                [Page 11]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
@@ -724,7 +668,7 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
 
 
-Murchison                 Expires July 25, 2010                [Page 13]
+Murchison                 Expires July 30, 2010                [Page 12]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
@@ -780,12 +724,143 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
 
 
-Murchison                 Expires July 25, 2010                [Page 14]
+Murchison                 Expires July 30, 2010                [Page 13]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
 
 7.  IANA Considerations
+
+7.1.  NNTP Compression Algorithm Registry
+
+   The NNTP Compression Algorithm registry will be maintained by IANA.
+   The registry will be available at
+   <http://www.iana.org/assignments/nntp-compression-algorithms>.
+
+   The purpose of this registry is not only to ensure uniqueness of
+   values used to name NNTP compression algorithms, but also to provide
+   a definitive reference to technical specifications detailing each
+   NNTP compression algorithm available for use on the Internet.
+
+   There is no naming convention for NNTP compression algorithms; any
+   name that conforms to the syntax of a NNTP compression algorithm name
+   can be registered.
+
+   The procedure detailed in Section 7.1.1 is to be used for
+   registration of a value naming a specific individual mechanism.
+
+   Comments may be included in the registry as discussed in
+   Section 7.1.2 and may be changed as discussed in Section 7.1.3.
+
+7.1.1.  Algorithm Name Registration Procedure
+
+   IANA will register new NNTP compression algorithm names on a First
+   Come First Served basis, as defined in BCP 26 [RFC5226].  IANA has
+   the right to reject obviously bogus registration requests, but will
+   perform no review of claims made in the registration form.
+
+   Registration of an NNTP compression algorithm is requested by filling
+   in the following template:
+
+   Subject: Registration of NNTP compression algorithm X
+
+   NNTP compression algorithm name:
+
+   Security considerations:
+
+   Published specification (recommended):
+
+   Contact for further information:
+
+   Intended usage: (One of COMMON, LIMITED USE, or OBSOLETE)
+
+   Owner/Change controller:
+
+   Note: (Any other information that the author deems relevant may be
+
+
+
+Murchison                 Expires July 30, 2010                [Page 14]
+
+Internet-Draft       NNTP Extension for Compression         January 2010
+
+
+          added here.)
+
+   and sending it via electronic mail to IANA at <iana@iana.org>.
+
+   While this registration procedure does not require expert review,
+   authors of NNTP compression algorithms are encouraged to seek
+   community review and comment whenever that is feasible.  Authors may
+   seek community review by posting a specification of their proposed
+   mechanism as an Internet-Draft.  NNTP compression algorithms intended
+   for widespread use should be standardized through the normal IETF
+   process, when appropriate.
+
+7.1.2.  Comments on Algorithm Registrations
+
+   Comments on a registered NNTP compression algorithm should first be
+   sent to the "owner" of the algorithm and/or to the
+   <ietf-nntp@lists.eyrie.org> mailing list.
+
+   Submitters of comments may, after a reasonable attempt to contact the
+   owner, request IANA to attach their comment to the NNTP compression
+   algorithm registration itself by sending mail to <iana@iana.org>.  At
+   IANA's sole discretion, IANA may attach the comment to the NNTP
+   compression algorithm's registration.
+
+7.1.3.  Change Control
+
+   Once an NNTP compression algorithm registration has been published by
+   IANA, the author may request a change to its definition.  The change
+   request follows the same procedure as the registration request.
+
+   The owner of an NNTP compression algorithm may pass responsibility
+   for the algorithm to another person or agency by informing IANA; this
+   can be done without discussion or review.
+
+   The IESG may reassign responsibility for an NNTP compression
+   algorithm.  The most common case of this will be to enable changes to
+   be made to algorithms where the author of the registration has died,
+   has moved out of contact, or is otherwise unable to make changes that
+   are important to the community.
+
+   NNTP compression algorithm registrations may not be deleted;
+   algorithms that are no longer believed appropriate for use can be
+   declared OBSOLETE by a change to their "intended usage" field; such
+   algorithms will be clearly marked in the lists published by IANA.
+
+   The IESG is considered to be the owner of all NNTP compression
+   algorithms that are on the IETF standards track.
+
+
+
+
+Murchison                 Expires July 30, 2010                [Page 15]
+
+Internet-Draft       NNTP Extension for Compression         January 2010
+
+
+7.2.  Registration of the DEFLATE Compression Algorithm
+
+   This section gives a formal definition of the DEFLATE compression
+   algorithm as required by Section 7.1.1 for the IANA registry.
+
+   NNTP compression algorithm name: DEFLATE
+
+   Security considerations: See Section 6 of this document
+
+   Published specification: This document
+
+   Contact for further information: Author of this document
+
+   Intended usage: COMMON
+
+   Owner/Change controller: IESG <iesg@ietf.org>.
+
+   Note: This algorithm is mandatory to implement
+
+7.3.  Registration of the NNTP COMPRESS Extension
 
    This section gives a formal definition of the COMPRESS extension as
    required by Section 3.3.3 of [RFC3977] for the IANA registry.
@@ -814,6 +889,14 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
    o  Use of this extension does alter the capabilities list; once the
       COMPRESS command has been used successfully, the COMPRESS
+
+
+
+Murchison                 Expires July 30, 2010                [Page 16]
+
+Internet-Draft       NNTP Extension for Compression         January 2010
+
+
       capability can no longer be advertised by CAPABILITIES.
       Additionally, the STARTTLS and MODE-READER capabilities MUST NOT
       be advertised after successful execution of the COMPRESS command.
@@ -832,14 +915,6 @@ Internet-Draft       NNTP Extension for Compression         January 2010
    o  Published Specification: This document.
 
    o  Contact for Further Information: Author of this document.
-
-
-
-
-Murchison                 Expires July 25, 2010                [Page 15]
-
-Internet-Draft       NNTP Extension for Compression         January 2010
-
 
    o  Change Controller: IESG <iesg@ietf.org>.
 
@@ -873,26 +948,7 @@ Internet-Draft       NNTP Extension for Compression         January 2010
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Murchison                 Expires July 25, 2010                [Page 16]
+Murchison                 Expires July 30, 2010                [Page 17]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
@@ -914,10 +970,20 @@ Internet-Draft       NNTP Extension for Compression         January 2010
               Transport Layer Security (TLS) with Network News Transfer
               Protocol (NNTP)", RFC 4642, October 2006.
 
+   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
+              May 2008.
+
    [RFC5234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
               Specifications: ABNF", STD 68, RFC 5234, January 2008.
 
 8.2.  Informative References
+
+   [IEEE.1003-2.1992]
+              Institute of Electrical and Electronics Engineers,
+              "Information Technology - Portable Operating System
+              Interface (POSIX) - Part 2: Shell and Utilities (Vol. 1)",
+              IEEE Standard 1003.2, 1992.
 
    [MNP]      Held, G., "The Complete Modem Reference", Second
               Edition, Wiley Professional Computing, May 1994.
@@ -935,6 +1001,21 @@ Internet-Draft       NNTP Extension for Compression         January 2010
               Protocol (NNTP) Extension for Authentication", RFC 4643,
               October 2006.
 
+
+
+
+Murchison                 Expires July 30, 2010                [Page 18]
+
+Internet-Draft       NNTP Extension for Compression         January 2010
+
+
+   [RFC4644]  Vinocur, J. and K. Murchison, "Network News Transfer
+              Protocol (NNTP) Extension for Streaming Feeds", RFC 4644,
+              October 2006.
+
+   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, October 2006.
+
    [RFC4978]  Gulbrandsen, A., "The IMAP COMPRESS Extension", RFC 4978,
               August 2007.
 
@@ -946,9 +1027,40 @@ Internet-Draft       NNTP Extension for Compression         January 2010
               using error correction procedures", ITU-T Recommendation
               V.42bis, January 1990.
 
+   [yEnc]     Helbing, J., "yEnc - Efficient encoding for Usenet and
+              eMail", http://www.yenc.org.
 
 
-Murchison                 Expires July 25, 2010                [Page 17]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Murchison                 Expires July 30, 2010                [Page 19]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
@@ -959,6 +1071,118 @@ Appendix A.  Acknowledgements
    and a large portion of this text was borrowed from that
    specification.
 
+   Special acknowledgement also goes to Julien Elie and others who
+   commented privately on intermediate revisions of this document.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Murchison                 Expires July 30, 2010                [Page 20]
+
+Internet-Draft       NNTP Extension for Compression         January 2010
+
+
+Appendix B.  Document History (to be removed by RFC Editor before
+             publication)
+
+B.1.  Changes since -00
+
+   o  Made DEFLATE the mandatory to implement compression algorithm.
+
+   o  Removed the requirement that clients/servers implementing COMPRESS
+      also implement TLS compression.
+
+   o  Added an example of a client trying to use an unsupported
+      compression algorithm.
+
+   o  Rewrote Compression Efficiency (Section 3) as follows:
+
+      *  Included a sample listing of which NNTP commands produce which
+         type of data to be compressed.
+
+      *  Removed discussion of attachments in binary form and
+         incompressible file formats.
+
+      *  Mentioned UUencode and yEnc encoding of attachments.
+
+   o  Added IANA registry of NNTP compression algorithms.
+
+   o  Miscellaneous editorial changes submitted by Julien Elie.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Murchison                 Expires July 30, 2010                [Page 21]
+
+Internet-Draft       NNTP Extension for Compression         January 2010
+
+
+Appendix C.  Issues to be addressed
+
+   o  What 2xx code should we use when compression is activated? 20x,
+      28x, 29x?
+
+   o  Should we restrict the ABNF for compression algorithms?
 
 
 
@@ -1004,7 +1228,7 @@ Appendix A.  Acknowledgements
 
 
 
-Murchison                 Expires July 25, 2010                [Page 18]
+Murchison                 Expires July 30, 2010                [Page 22]
 
 Internet-Draft       NNTP Extension for Compression         January 2010
 
@@ -1060,6 +1284,6 @@ Author's Address
 
 
 
-Murchison                 Expires July 25, 2010                [Page 19]
+Murchison                 Expires July 30, 2010                [Page 23]
 
 
