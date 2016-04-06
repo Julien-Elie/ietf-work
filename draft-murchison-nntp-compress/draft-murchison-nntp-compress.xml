@@ -247,7 +247,7 @@ Parameters
 <t>In order help mitigate leaking authentication credentials via a
   CRIME attack <xref target="CRIME"/>, a server SHOULD NOT return any
   arguments with the AUTHINFO capability label in response to a
-  CAPABILTIES command received after a compression layer is active.
+  CAPABILITIES command received after a compression layer is active.
   In this case, a client SHOULD NOT attempt to utilize any AUTHINFO
   commands.</t>
 
