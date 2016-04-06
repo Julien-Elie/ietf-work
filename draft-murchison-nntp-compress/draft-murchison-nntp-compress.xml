@@ -306,7 +306,7 @@ Parameters
 [S] 281 Authentication accepted
 [C] COMPRESS DEFLATE
 [S] 206 Compression active
-[From this point on, all traffic is compresssed before being encrypted]
+[Henceforth, all traffic is compressed before being encrypted]
 </artwork></figure>
 
 <t>Example of a server failing to activate compression:</t>
@@ -368,7 +368,7 @@ Parameters
 [S] .
 [C] COMPRESS DEFLATE
 [S] 206 Compression active
-[From this point on, all traffic is compresssed]
+[Henceforth, all traffic is compressed]
 [C] CAPABILITIES
 [S] 101 Capability list:
 [S] VERSION 2
@@ -391,7 +391,7 @@ compression has been activated:</t>
 [S] .
 [C] COMPRESS DEFLATE
 [S] 206 Compression active
-[From this point on, all traffic is compresssed]
+[Henceforth, all traffic is compressed]
 [C] CAPABILITIES
 [S] 101 Capability list:
 [S] VERSION 2
