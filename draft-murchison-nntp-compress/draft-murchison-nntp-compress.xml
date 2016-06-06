@@ -70,7 +70,7 @@ updates="4642"
 </author>
 
 <author initials="J." surname="&Eacute;lie" fullname="Julien &Eacute;lie">
-<organization />
+<organization/>
 <address>
 <postal>
 <street>10 all&eacute;e Clovis</street>
@@ -143,6 +143,11 @@ updates="4642"
   target="RFC1951"/>) MUST be implemented as part of this extension.
   This compression algorithm is standard, widely available, and fairly
   efficient.</t>
+
+<t>This specification should be read in conjunction with the NNTP
+  base specification <xref target="RFC3977"/>.  In the case of a
+  conflict between these two documents, <xref target="RFC3977"/>
+  takes precedence.</t>
 
 <section title="About TLS-level Compression">
 
