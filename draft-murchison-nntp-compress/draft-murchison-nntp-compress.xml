@@ -221,6 +221,11 @@ updates="4642"
   capability.  Unrecognized algorithms MUST be ignored by the
   client.</t>
 
+<t>As the COMPRESS command is related to security because it can
+  weaken encryption, cached results of CAPABILITIES from a previous
+  session MUST NOT be relied on, as per Section 12.6 of <xref
+  target="RFC3977"/>.</t>
+
 <t>Example:</t>
 
 <figure>
