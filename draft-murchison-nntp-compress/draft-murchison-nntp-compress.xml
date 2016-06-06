@@ -128,12 +128,12 @@ updates="4642"
   compression only for the responses sent by the news server.  On the
   contrary, the COMPRESS command permits to compress data sent by both
   the client and the server, and removes the constraint of having to
-  implement compression separately in each NNTP command.  Besides,
-  the compression level can be dynamically adjusted and optimized
-  at any time during the connection, which even allows to disable
-  compression for certain commands if need be.  If the news client
-  wants to stop compression on a particular connection, it can simply
-  use QUIT <xref target="RFC3977"/>, and establish a new connection.
+  implement compression separately in each NNTP command.  Besides, the
+  compression level can be dynamically adjusted and optimized at any
+  time during the connection, which even allows to disable compression
+  for certain commands if need be.  If the news client wants to stop
+  compression on a particular connection, it can simply use QUIT (<xref
+  target="RFC3977"/> Section 5.4), and establish a new connection.
   For these reasons, using other NNTP commands than COMPRESS to enable
   compression is discouraged once COMPRESS is supported.</t>
 
@@ -152,9 +152,11 @@ updates="4642"
 <section title="About TLS-level Compression">
 
 <t>Though data compression is made possible via the use of TLS with
-  NNTP <xref target="RFC4642"/>, the best current practice is to disable
-  TLS-level compression <xref target="RFC7525"/>.  The COMPRESS command
-  will permit to keep the compression facility in NNTP.</t>
+  NNTP <xref target="RFC4642"/>, the best current practice is to
+  disable TLS-level compression as explained in Section 3.3 of <xref
+  target="RFC7525"/>.  The COMPRESS command will permit to keep the
+  compression facility in NNTP and control when it is available during
+  a connection.</t>
 
 <t>Compared to TLS-level compression
   <xref target="RFC3749"/>, NNTP COMPRESS has the following
