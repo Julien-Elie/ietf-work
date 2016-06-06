@@ -862,6 +862,7 @@ Note: (Any other information that the author deems relevant may be
 <t><list style="symbols">
 <t>Added text stating that the receiving end SHOULD terminate the connection
   when receiving invalid or corrupted compressed data.</t>
+<t>Add Julien &Eacute;Elie as co-author of this document.</t>
 <t>Minor editorial changes.</t>
 </list></t>
 </section>
