@@ -266,7 +266,7 @@ Responses
     command (see Section 2.2.2).
 
 Parameters
-   algorithm = Name of compression algorithm: "DEFLATE"
+   algorithm = Name of compression algorithm (e.g. "DEFLATE")
 </artwork>
 </figure>
 </section> <!-- usage -->
@@ -289,6 +289,10 @@ Parameters
   the compression layer takes effect for both client and server
   immediately following the CRLF of the success reply.</t>
 
+<t>Additionally, the client MUST NOT issue a MODE READER command after
+  activating a compression layer, and a server MUST NOT advertise the
+  MODE-READER capability.</t>
+
 <t>Both the client and the server MUST know if there is a compression
   layer active.  A client MUST NOT attempt to activate compression
   (via either the COMPRESS or STARTTLS <xref target="RFC4642"/>
@@ -301,11 +305,13 @@ Parameters
 
 <t>In order to help mitigate leaking authentication credentials via for
   instance a CRIME attack <xref target="CRIME"/>, authentication SHOULD
-  NOT be attempted when a compression layer is active.  Consequently,
-  a server SHOULD NOT return any arguments with the AUTHINFO capability
+  NOT be attempted when a compression layer is active.  Consequently, a
+  server SHOULD NOT return any arguments with the AUTHINFO capability
   label in response to a CAPABILITIES command received after a
   compression layer is active, and a client SHOULD NOT attempt to
-  utilize any AUTHINFO commands.</t>
+  utilize any AUTHINFO <xref target="RFC4643"/> commands.  A server
+  SHOULD reply with a 502 response code if a syntactically valid AUTHINFO
+  command is received while a compression layer is already active.</t>
 
 <t>For DEFLATE <xref target="RFC1951"/> (as for many other compression
   mechanisms), the compressor can trade speed against quality.  The
@@ -458,6 +464,8 @@ Parameters
 [S] READER
 [S] AUTHINFO
 [S] .
+[C] AUTHINFO USER fred
+[S] 502 DEFLATE compression already active
 </artwork></figure>
 
 </section> <!-- examples -->
@@ -792,15 +800,16 @@ Note: (Any other information that the author deems relevant may be
 <t>Use of this extension does alter the capabilities list; once the
   COMPRESS command has been used successfully, the COMPRESS capability
   can no longer be advertised by CAPABILITIES.  Additionally, the
-  STARTTLS and MODE-READER capabilities MUST NOT be advertised after
+  STARTTLS and MODE-READER capabilities MUST NOT be advertised, and
+  the AUTHINFO capability label SHOULD NOT return any arguments after
   successful execution of the COMPRESS command.</t>
 <t>This extension does not cause any pre-existing command to produce a
   401, 480, or 483 response.</t>
 <t>This extension is unaffected by any use of the MODE READER command,
   however the MODE READER command MUST NOT be used in the same session
   following a successful execution of the COMPRESS command.</t>
-<t>The STARTTLS command MUST NOT be used in the same session
-  following a successful execution of the COMPRESS command.</t>
+<t>The STARTTLS and AUTHINFO commands MUST NOT be used in the same
+  session following a successful execution of the COMPRESS command.</t>
 <t>Published Specification: This document.</t>
 <t>Contact for Further Information: Authors of this document.</t>
 <t>Change Controller: IESG &lt;iesg@ietf.org&gt;.</t>
@@ -900,6 +909,7 @@ Note: (Any other information that the author deems relevant may be
   when receiving invalid or corrupted compressed data.</t>
 <t>Explain why COMPRESS permits to do better than existing unstandardized
   commands like XZVER, XZHDR, MODE COMPRESS, and XFEATURE GZIP.</t>
+<t>Add an example of AUTHINFO command when compression is active.</t>
 <t>Add Julien &Eacute;Elie as co-author of this document.</t>
 <t>Minor editorial changes.</t>
 </list></t>
@@ -947,6 +957,7 @@ Note: (Any other information that the author deems relevant may be
 <t><list style="symbols">
 <t>How are SASL and TLS specific exchanges supposed to be handled?  Should it be mentioned in the RFC that they are outside the scope of NNTP compression?  (I speak of stuff like TLS handshakes, renegotiations, etc. that can occur after the use of COMPRESS.  OpenSSL may use SSL_read/SSL_write on its own, mayn't it?)</t>
 <t>Any worries to add to the Security Considerations section?  Whom should we get a review from?</t>
+<t>If a server knows that STARTTLS won't negotiate a compression layer, couldn't it advertise STARTTLS after COMPRESS?</t>
 </list></t>
 </section>
 
