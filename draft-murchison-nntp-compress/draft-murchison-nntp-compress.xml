@@ -372,6 +372,14 @@ Parameters
 [S] 381 Enter passphrase
 [C] AUTHINFO PASS flintstone
 [S] 281 Authentication accepted
+[C] CAPABILITIES
+[S] 101 Capability list:
+[S] VERSION 2
+[S] READER
+[S] POST
+[S] COMPRESS DEFLATE
+[S] LIST ACTIVE NEWSGROUPS
+[S] .
 [C] COMPRESS DEFLATE
 [S] 206 Compression active
 [Henceforth, all traffic is compressed before being encrypted]
@@ -916,6 +924,7 @@ Note: (Any other information that the author deems relevant may be
 <t>Add an example of AUTHINFO command when compression is active.</t>
 <t>The LIST capability label was missing in the examples when READER
   was also advertised.</t>
+<t>Improve an example to send CAPABILITIES after successful authentication.</t>
 <t>Add Julien &Eacute;Elie as co-author of this document.</t>
 <t>Minor editorial changes.</t>
 </list></t>
