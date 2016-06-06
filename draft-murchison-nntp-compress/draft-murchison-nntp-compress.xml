@@ -203,12 +203,13 @@ updates="4642"
 
 <section title="Advertising the COMPRESS Extension" anchor="advertising">
 
-<t>A server supporting the COMPRESS command as defined in this
-  document will advertise the "COMPRESS" capability label in response
-  to the CAPABILITIES command (<xref target="RFC3977"/> Section
-  5.2).  This capability MAY be advertised both before and after any
-  use of the MODE READER command (<xref target="RFC3977"/> Section
-  5.3), with the same semantics.</t>
+<t>A server supporting the COMPRESS command as defined in this document
+  will advertise the "COMPRESS" capability label in response to the
+  CAPABILITIES command (<xref target="RFC3977"/> Section 5.2).  However,
+  this capability MUST NOT be advertised once a compression layer
+  is active (see Section 2.2.2).  This capability MAY be advertised
+  both before and after any use of the MODE READER command (<xref
+  target="RFC3977"/> Section 5.3), with the same semantics.</t>
 
 <t>The COMPRESS capability label contains a whitespace-separated list
   of available compression algorithms.  This document defines one
