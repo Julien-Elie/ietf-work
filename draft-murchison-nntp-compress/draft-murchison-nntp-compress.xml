@@ -354,6 +354,7 @@ Parameters
 [S] STARTTLS
 [S] AUTHINFO
 [S] COMPRESS DEFLATE
+[S] LIST ACTIVE NEWSGROUPS
 [S] .
 [C] STARTTLS
 [S] 382 Continue with TLS negotiation
@@ -365,6 +366,7 @@ Parameters
 [S] READER
 [S] AUTHINFO USER
 [S] COMPRESS DEFLATE
+[S] LIST ACTIVE NEWSGROUPS
 [S] .
 [C] AUTHINFO USER fred
 [S] 381 Enter passphrase
@@ -454,6 +456,7 @@ Parameters
 [S] READER
 [S] AUTHINFO USER
 [S] COMPRESS DEFLATE
+[S] LIST ACTIVE NEWSGROUPS
 [S] .
 [C] COMPRESS DEFLATE
 [S] 206 Compression active
@@ -463,6 +466,7 @@ Parameters
 [S] VERSION 2
 [S] READER
 [S] AUTHINFO
+[S] LIST ACTIVE NEWSGROUPS
 [S] .
 [C] AUTHINFO USER fred
 [S] 502 DEFLATE compression already active
@@ -910,6 +914,8 @@ Note: (Any other information that the author deems relevant may be
 <t>Explain why COMPRESS permits to do better than existing unstandardized
   commands like XZVER, XZHDR, MODE COMPRESS, and XFEATURE GZIP.</t>
 <t>Add an example of AUTHINFO command when compression is active.</t>
+<t>The LIST capability label was missing in the examples when READER
+  was also advertised.</t>
 <t>Add Julien &Eacute;Elie as co-author of this document.</t>
 <t>Minor editorial changes.</t>
 </list></t>
