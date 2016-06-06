@@ -41,8 +41,8 @@
 <?rfc toc="yes" ?>
 <?rfc symrefs="yes" ?>
 <?rfc sortrefs="yes"?>
-<?rfc iprnotified="no" ?>
 <?rfc strict="yes" ?>
+<?rfc rfcedstyle="yes" ?>
 <rfc category="std" ipr="trust200902"
      docName="draft-murchison-nntp-compress-02">
 <!--
@@ -69,12 +69,28 @@ updates="4642"
 </address>
 </author>
 
-<date month="November" year="2015"/>
+<author initials="J." surname="&Eacute;lie" fullname="Julien &Eacute;lie">
+<organization />
+<address>
+<postal>
+<street>10 all&eacute;e Clovis</street>
+<code>93160</code>
+<city>Noisy-le-Grand</city>
+<country>France</country>
+</postal>
+<email>julien@trigofacile.com</email>
+<uri>http://www.trigofacile.com/</uri>
+</address>
+</author>
+
+<date month="June" year="2016"/>
 
 <area>Applications</area>
 <workgroup>Independent Submission</workgroup>
 
 <keyword>NNTP</keyword>
+<keyword>Usenet</keyword>
+<keyword>NetNews</keyword>
 <keyword>COMPRESS</keyword>
 <keyword>DEFLATE</keyword>
 <keyword>compression</keyword>
@@ -706,7 +722,7 @@ Note: (Any other information that the author deems relevant may be
 
 <t>Published specification: This document</t>
 
-<t>Contact for further information: Author of this document</t>
+<t>Contact for further information: Authors of this document</t>
 
 <t>Intended usage: COMMON</t>
 
@@ -750,7 +766,7 @@ Note: (Any other information that the author deems relevant may be
 <t>The STARTTLS command MUST NOT be used in the same session
   following a successful execution of the COMPRESS command.</t>
 <t>Published Specification: This document.</t>
-<t>Contact for Further Information: Author of this document.</t>
+<t>Contact for Further Information: Authors of this document.</t>
 <t>Change Controller: IESG &lt;iesg@ietf.org&gt;.</t>
 </list></t>
 </section>
@@ -832,10 +848,9 @@ Note: (Any other information that the author deems relevant may be
   by Arnt Gulbrandsen and a large portion of this text was borrowed
   from that specification.</t>
 
-<t>The author would like to thank the following individuals for
+<t>The authors would like to thank the following individuals for
   contributing their ideas and support for writing this
-  specification: Russ Allbery, Michael B&auml;uerle, and Julien
-  &Eacute;LIE.</t>
+  specification: Russ Allbery, and Michael B&auml;uerle.</t>
 
 </section> <!-- acknowledgements -->
 
