@@ -133,9 +133,23 @@ updates="4642"
   at any time during the connection, which even allows to disable
   compression for certain commands if need be.  If the news client
   wants to stop compression on a particular connection, it can simply
-  use QUIT <xref target="RFC3749"/>, and establish a new connection.
+  use QUIT <xref target="RFC3977"/>, and establish a new connection.
   For these reasons, using other NNTP commands than COMPRESS to enable
   compression is discouraged once COMPRESS is supported.</t>
+
+<t>In order to increase interoperability, it is desirable to have as
+  few different compression algorithms as possible, so this document
+  specifies only one.  The DEFLATE algorithm (defined in <xref
+  target="RFC1951"/>) MUST be implemented as part of this extension.
+  This compression algorithm is standard, widely available, and fairly
+  efficient.</t>
+
+<section title="About TLS-level Compression">
+
+<t>Though data compression is made possible via the use of TLS with
+  NNTP <xref target="RFC4642"/>, the best current practice is to disable
+  TLS-level compression <xref target="RFC7525"/>.  The COMPRESS command
+  will permit to keep the compression facility in NNTP.</t>
 
 <t>Compared to TLS-level compression
   <xref target="RFC3749"/>, NNTP COMPRESS has the following
@@ -155,15 +169,7 @@ updates="4642"
   via for instance a CRIME attack <xref target="RFC7457"/>.</t>
 </list></t>
 
-<t>Also note that best current practice is to disable TLS-level
-  compression <xref target="RFC7525"/>.</t>
-
-<t>In order to increase interoperability, it is desirable to have as
-   few different compression algorithms as possible, so this document
-   specifies only one.  The DEFLATE algorithm (defined in <xref
-   target="RFC1951"/>) MUST be implemented as part of this extension.
-   This compression algorithm is standard, widely available, and fairly
-   efficient.</t>
+</section>
 
 <section title="Conventions Used in This Document">
 
