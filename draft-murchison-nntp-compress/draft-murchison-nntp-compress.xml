@@ -29,8 +29,6 @@
 'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5234.xml'>
 <!ENTITY rfc5246 PUBLIC ''
 'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml'>
-<!ENTITY rfc7405 PUBLIC ''
-'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7405.xml'>
 <!ENTITY rfc7457 PUBLIC ''
 'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7457.xml'>
 <!ENTITY rfc7525 PUBLIC ''
@@ -590,11 +588,10 @@ Parameters
 anchor="ABNF">
 
 <t>This section describes the syntax of the COMPRESS extension using
-  ABNF <xref target="RFC7405"/> <xref target="RFC5234"/>.  It extends
-  the syntax in Section 9 of <xref target="RFC3977"/>, and
-  non-terminals not defined in this document are defined there.  The
-  <xref target="RFC3977"/> ABNF should be imported first before
-  attempting to validate these rules.</t>
+  ABNF <xref target="RFC5234"/>.  It extends the syntax in Section 9
+  of <xref target="RFC3977"/>, and non-terminals not defined in this
+  document are defined there.  The <xref target="RFC3977"/> ABNF should
+  be imported first before attempting to validate these rules.</t>
 
 <section title="Commands" anchor="commands">
 
@@ -629,7 +626,7 @@ compress-capability = "COMPRESS" 1*(WS algorithm)
 
 <figure>
 <artwork>
-algorithm = %s"DEFLATE" / 1*20alg-char  ; case-sensitive
+algorithm = "DEFLATE" / 1*20alg-char
 alg-char = UPPER / DIGIT / "-" / "_"
 </artwork>
 </figure>
@@ -853,7 +850,6 @@ Note: (Any other information that the author deems relevant may be
 &rfc4642;
 &rfc5226;
 &rfc5234;
-&rfc7405;
 </references> <!-- normative -->
 
 <references title="Informative References">
@@ -939,6 +935,7 @@ Note: (Any other information that the author deems relevant may be
 <t>Improve an example to send CAPABILITIES after successful authentication.</t>
 <t>Re-add discussion of attachments in binary form and incompressible
   file formats.</t>
+<t>Algorithm names are case-insensitive.</t>
 <t>Add Julien &Eacute;Elie as co-author of this document.</t>
 <t>Minor editorial changes.</t>
 </list></t>
