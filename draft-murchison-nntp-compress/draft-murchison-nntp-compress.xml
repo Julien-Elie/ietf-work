@@ -118,6 +118,25 @@ updates="4642"
   Security Layer (SASL) encryption <xref target="RFC4422"/>, Virtual
   Private Networks (VPNs), etc.</t>
 
+<t>The point of COMPRESS as an NNTP extension is to behave as a transport
+  layer, similar to STARTTLS <xref target="RFC4642"/>.  Compression can
+  therefore benefit to all NNTP commands sent or received after the use
+  of COMPRESS.  This facility responds to a long-standing need for NNTP
+  to compress data, that has partially been addressed by unstandardized
+  commands like XZVER, XZHDR, XFEATURE COMPRESS, or MODE COMPRESS.
+  These commands are not wholly satisfactory because they enable
+  compression only for the responses sent by the news server.  On the
+  contrary, the COMPRESS command permits to compress data sent by both
+  the client and the server, and removes the constraint of having to
+  implement compression separately in each NNTP command.  Besides,
+  the compression level can be dynamically adjusted and optimized
+  at any time during the connection, which even allows to disable
+  compression for certain commands if need be.  If the news client
+  wants to stop compression on a particular connection, it can simply
+  use QUIT <xref target="RFC3749"/>, and establish a new connection.
+  For these reasons, using other NNTP commands than COMPRESS to enable
+  compression is discouraged once COMPRESS is supported.</t>
+
 <t>Compared to TLS-level compression
   <xref target="RFC3749"/>, NNTP COMPRESS has the following
   advantages:
@@ -460,27 +479,22 @@ Parameters
 
 <t>A third type is article body text (as retrieved via the BODY or
   ARTICLE commands).  Text is usually fairly short and includes much
-  ASCII, so the same compression dictionary will do a good job here,
-  too.  When multiple messages in the same thread are read at the
-  same time, quoted lines, etc. can often be compressed almost to
-  zero.</t>
+  ASCII, so the same compression dictionary will do a good job here, too.
+  When multiple messages in the same thread are read at the same time,
+  quoted lines, etc. can often be compressed almost to zero.</t>
 
-<t>Finally, attachments (non-text article bodies retrieved via the
-  BODY and ARTICLE commands) are transmitted in encoded form, usually
-  Base64 <xref target="RFC4648"/>, UUencode
-  <xref target="IEEE.1003-2.1992"/>, or yEnc
-  <xref target="yEnc"/>.</t>
+<t>Finally, non-text article bodies or attachments (as retrieved
+  via the BODY and ARTICLE commands) are transmitted in encoded
+  form, usually Base64 <xref target="RFC4648"/>, UUencode <xref
+  target="IEEE.1003-2.1992"/>, or yEnc <xref target="yEnc"/>.</t>
 
-<t>When attachments are retrieved, DEFLATE may be able to compress
-  them, but the format of the attachment's encoding is usually not
-  NNTP-like, so the dictionary built while compressing NNTP does not
-  help.  The compressor has to adapt its dictionary from NNTP to the
-  attachment's encoding format, and then back.
-<!--
-    A few file formats aren't compressible at all using deflate, e.g.,
-   .gz, .zip, and .jpg files.
--->
-</t>
+<t>When non-compressible articles or attachments are retrieved, DEFLATE
+  may be able to compress them, but the format of their encoding is
+  usually not NNTP-like, so the dictionary built while compressing NNTP
+  does not help.  The compressor has to adapt its dictionary from NNTP
+  to the attachment's encoding format, and then back.
+<!-- A few file formats aren't compressible at all using deflate, e.g.,
+   .gz, .zip, and .jpg files.  --> </t>
 
 <t>When attachments are retrieved in Base64 or UUencode form, these
   encodings add another problem.  8-bit compression algorithms such
@@ -852,8 +866,8 @@ Note: (Any other information that the author deems relevant may be
   from that specification.</t>
 
 <t>The authors would like to thank the following individuals for
-  contributing their ideas and support for writing this
-  specification: Russ Allbery, and Michael B&auml;uerle.</t>
+  contributing their ideas and support for writing this specification:
+  Russ Allbery, Michael B&auml;uerle, and Brian Peterson.</t>
 
 </section> <!-- acknowledgements -->
 
@@ -865,6 +879,8 @@ Note: (Any other information that the author deems relevant may be
 <t><list style="symbols">
 <t>Added text stating that the receiving end SHOULD terminate the connection
   when receiving invalid or corrupted compressed data.</t>
+<t>Explain why COMPRESS permits to do better than existing unstandardized
+  commands like XZVER, XZHDR, MODE COMPRESS, and XFEATURE GZIP.</t>
 <t>Add Julien &Eacute;Elie as co-author of this document.</t>
 <t>Minor editorial changes.</t>
 </list></t>
