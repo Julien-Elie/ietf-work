@@ -844,7 +844,6 @@ Note: (Any other information that the author deems relevant may be
 
 <back>
 <references title="Normative References">
-&rfc1951;
 &rfc2119;
 &rfc3977;
 &rfc4642;
@@ -853,6 +852,7 @@ Note: (Any other information that the author deems relevant may be
 </references> <!-- normative -->
 
 <references title="Informative References">
+&rfc1951;
 &rfc1962;
 &rfc3749;
 &rfc4422;
