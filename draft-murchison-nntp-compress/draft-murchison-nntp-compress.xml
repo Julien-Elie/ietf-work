@@ -494,16 +494,17 @@ Parameters
 
 <t>Upstream traffic is fairly simple.  Most NNTP clients send the same
   few commands again and again, so any compression algorithm that can
-  exploit repetition works efficiently.  The article posting and
-  transfer commands (e.g., POST, IHAVE, and TAKETHIS
-  <xref target="RFC4644"/>) are exceptions; clients that send many
-  article posting or transfer commands may want to surround large
-  multi-line data blocks with flushes in the same way as is
-  recommended for servers later in this section.</t>
+  exploit repetition works efficiently.  The article posting and transfer
+  commands (e.g., POST, IHAVE, and TAKETHIS <xref target="RFC4644"/>) are
+  exceptions; clients that send many article posting or transfer commands
+  may want to surround large multi-line data blocks with a dictionary
+  flush and/or, depending on the compression algorithm, a change of
+  compression level in the same way as is recommended for servers later
+  in this document <xref target="deflatespecificities"/>.</t>
 
 <t>Downstream traffic has the unusual property that several kinds of
-  data are sent, confusing all dictionary-based compression
-  algorithms.</t>
+  data are sent, possibly confusing a dictionary-based compression
+  algorithm.</t>
 
 <t>One type is NNTP simple responses and NNTP multi-line responses not
   related to article header/body retrieval (e.g, CAPABILITIES, GROUP,
@@ -527,50 +528,61 @@ Parameters
   form, usually Base64 <xref target="RFC4648"/>, UUencode <xref
   target="IEEE.1003-2.1992"/>, or yEnc <xref target="yEnc"/>.</t>
 
-<t>When non-compressible articles or attachments are retrieved, DEFLATE
-  may be able to compress them, but the format of their encoding is
-  usually not NNTP-like, so the dictionary built while compressing NNTP
-  does not help.  The compressor has to adapt its dictionary from NNTP
-  to the attachment's encoding format, and then back.
+<t>When already compressed articles or attachments are retrieved, a
+  compression algorithm may be able to compress them, but the format
+  of their encoding is usually not NNTP-like, so the dictionary built
+  while compressing NNTP does not help much.  The compressor has to
+  adapt its dictionary from NNTP to the attachment's encoding format,
+  and then back.
 <!-- A few file formats aren't compressible at all using deflate, e.g.,
    .gz, .zip, and .jpg files.  --> </t>
 
-<t>When attachments are retrieved in Base64 or UUencode form, these
-  encodings add another problem.  8-bit compression algorithms such
-  as DEFLATE work well on 8-bit file formats; however both Base64 and
-  UUencode transform a file into something resembling 6-bit bytes,
-  hiding most of the 8-bit file format from the compressor.</t>
+<t>When attachments are retrieved in Base64 or UUencode form, the
+  Huffman coding usually compresses those to approximatively only 75%
+  of their encoding size.  8-bit compression algorithms such as DEFLATE
+  work well on 8-bit file formats; however, both Base64 and UUencode
+  transform a file into something resembling 6-bit bytes, hiding most
+  of the 8-bit file format from the compressor.</t>
+
+<t>On the other end, attachments encoded using a compression algorithm
+  that retains the full 8-bit spectrum, like yEnc, are much more likely
+  to be incompressible.</t>
+
+<section title="DEFLATE Specificities" anchor="deflatespecificities">
 
 <t>When using the zlib library (see <xref target="RFC1951"/>), the
   functions deflateInit2(), deflate(), inflateInit2(), and inflate()
   suffice to implement this extension.  The windowBits value must be
   in the range -8 to -15 for deflateInit2(), or else it will use the
-  wrong format.  The windowBits value should be -15 for
-  inflateInit2(), or else it will not be able to decompress a
-  stream with a larger window size.  deflateParams() can be used to
-  improve compression rate and resource use.  The Z_FULL_FLUSH
-  argument to deflate() can be used to clear the dictionary (the
-  receiving peer does not need to do anything).</t>
+  wrong format.  The windowBits value should be -15 for inflateInit2(),
+  or else it will not be able to decompress a stream with a larger
+  window size.  deflateParams() can be used to improve compression
+  rate and resource use.  In order to improve compression efficiency,
+  the Z_PARTIAL_FLUSH argument to deflate() should always be used to
+  flush data.  As far as DEFLATE is concerned, clearing the dictionary
+  never improves compression over the other flushes.  On the contrary,
+  having the 32kB dictionary from previous data, no matter how unrelated,
+  can only help.  If there are no matching strings in there, then it
+  is simply not referenced.  Using Z_FULL_FLUSH clears the dictionary,
+  and consequently always results in compression that is less effective
+  than a Z_PARTIAL_FLUSH.</t>
 
-<t>A server can improve downstream compression if it hints to the
-  compressor that the data type is about to change strongly, e.g., by
-  sending a Z_FULL_FLUSH at the start and end of large non-text
-  multi-line data blocks (before and after 'content-lines' in the
-  definition of 'multi-line-data-block' in <xref target="RFC3977"/>
-  Section 9.8).  Small multi-line data blocks are best left alone.  A
-  possible boundary is 5kB.</t>
+<t>A server can improve downstream compression and the CPU efficiency
+  both of the server and the client if it adjusts the compression
+  level (e.g., using the deflateParams() function in zlib) at the
+  start and end of large non-text multi-line data blocks (before and
+  after 'content-lines' in the definition of 'multi-line-data-block'
+  in <xref target="RFC3977"/> Section 9.8).  It permits to avoid trying
+  to compress incompressible attachments.  Small multi-line data blocks
+  are best left alone.  A possible boundary is 5kB.</t>
 
-<!--
-<t>A server can improve the CPU efficiency both of the server and the
-  client if it adjusts the compression level (e.g., using the
-  deflateParams() function in zlib) at these points, to avoid trying
-  to compress incompressible attachments.  A very simple strategy is
-  to change the level to 0 at the start of a multi-line data block
-  provided the first two bytes are either 0x1F 0x8B (as in
-  deflate-compressed files) or 0xFF 0xD8 (JPEG), and to keep it at
-  1-5 the rest of the time.  More complex strategies are
-  possible.</t>
--->
+<t>A very simple strategy is to change the compression level to 0 at
+  the start of a multi-line data block provided the first two bytes
+  are either 0x1F 0x8B (as in deflate-compressed files) or 0xFF 0xD8
+  (JPEG), and to keep it at 1-5 the rest of the time.  More complex
+  strategies are of course possible, and encouraged.</t>
+
+</section> <!-- DEFLATE -->
 </section> <!-- efficiency -->
 
 
@@ -907,7 +919,7 @@ Note: (Any other information that the author deems relevant may be
 
 <t>The authors would like to thank the following individuals for
   contributing their ideas and support for writing this specification:
-  Russ Allbery, Michael B&auml;uerle, and Brian Peterson.</t>
+  Mark Adler, Russ Allbery, Michael B&auml;uerle, and Brian Peterson.</t>
 
 </section> <!-- acknowledgements -->
 
@@ -925,6 +937,8 @@ Note: (Any other information that the author deems relevant may be
 <t>The LIST capability label was missing in the examples when READER
   was also advertised.</t>
 <t>Improve an example to send CAPABILITIES after successful authentication.</t>
+<t>Re-add discussion of attachments in binary form and incompressible
+  file formats.</t>
 <t>Add Julien &Eacute;Elie as co-author of this document.</t>
 <t>Minor editorial changes.</t>
 </list></t>
