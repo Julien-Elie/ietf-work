@@ -290,9 +290,10 @@ Parameters
   AUTHINFO SASL <xref target="RFC4643"/>, and STARTTLS
   <xref target="RFC4642"/> commands.</t>
 
-<t>When compression is active and either the client or the server receives
-  invalid or corrupted compressed data, the receiving end SHOULD
-  immediately close the connection.</t>
+<t>When compression is active and either the client or the server
+  receives invalid or corrupted compressed data, the receiving end
+  SHOULD immediately close the connection.  (Then the sending end will
+  in turn do the same.)</t>
 
 </section> <!-- description -->
 
