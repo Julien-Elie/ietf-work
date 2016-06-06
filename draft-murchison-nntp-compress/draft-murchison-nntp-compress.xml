@@ -667,8 +667,8 @@ Note: (Any other information that the author deems relevant may be
 <section title="Change Control" anchor="changecontrol">
 
 <t>Once an NNTP compression algorithm registration has been published
-  by IANA, the author may request a change to its definition.  The
-  change request follows the same procedure as the registration
+  by IANA, the owner may request a change to its definition.  The
+  change request follows the same procedure as the initial registration
   request.</t>
 
 <t>The owner of an NNTP compression algorithm may pass responsibility
@@ -677,14 +677,14 @@ Note: (Any other information that the author deems relevant may be
 
 <t>The IESG may reassign responsibility for an NNTP compression
   algorithm.  The most common case of this will be to enable changes
-  to be made to algorithms where the author of the registration has
+  to be made to algorithms where the owner of the registration has
   died, has moved out of contact, or is otherwise unable to make
   changes that are important to the community.</t>
 
-<t>NNTP compression algorithm registrations may not be deleted;
+<t>NNTP compression algorithm registrations MUST NOT be deleted;
   algorithms that are no longer believed appropriate for use can be
   declared OBSOLETE by a change to their "intended usage" field; such
-  algorithms will be clearly marked in the lists published by
+  algorithms will be clearly marked in the registry published by
   IANA.</t>
 
 <t>The IESG is considered to be the owner of all NNTP compression
