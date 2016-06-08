@@ -95,9 +95,9 @@ updates="4642"
 
 <abstract>
 
-<t>This memo defines an extension to the Network News Transport
-  Protocol (NNTP) to allow a connection to be effectively and
-  efficiently compressed.</t>
+<t>This document defines an extension to the Network News Transport
+  Protocol (NNTP) that allows a connection to be effectively and
+  efficiently compressed between an NNTP client and server.</t>
 
 </abstract>
 </front>
@@ -147,7 +147,7 @@ updates="4642"
   conflict between these two documents, <xref target="RFC3977"/>
   takes precedence.</t>
 
-<section title="About TLS-level Compression">
+<section title="About TLS-level Compression" anchor="tlslevel">
 
 <t>Though data compression is made possible via the use of TLS with
   NNTP <xref target="RFC4642"/>, the best current practice is to
@@ -174,23 +174,31 @@ updates="4642"
   via for instance a CRIME attack <xref target="RFC7457"/>.</t>
 </list></t>
 
-</section>
+</section> <!-- tlslevel -->
 
-<section title="Conventions Used in This Document">
+<section title="Conventions Used in This Document" anchor="conventions">
 
 <t>The notational conventions used in this document are the same as
-  those in <xref target="RFC3977"/> and any term not defined in this
-  document has the same meaning as in that one.</t>
+  those in <xref target="RFC3977"/>, and any term not defined in this
+  document has the same meaning as it does in that one.</t>
 
 <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
   document are to be interpreted as described in
   <xref target="RFC2119"/>.</t>
 
-<t>In the examples, commands from the client are indicated with [C],
-  and responses from the server are indicated with [S].</t>
+<t>In the examples, commands from the client are indicated with [C], and
+  responses from the server are indicated with [S].  The client is the
+  initiator of the NNTP connection; the server is the other endpoint.</t>
 
 </section> <!-- conventions -->
+<section title="Authors' Note" anchor="authorsnote">
+
+<t>Please write the first letter of &quot;Elie&quot; with an
+  acute accent wherever possible -- it is U+00C9, that is to say
+  &quot;&amp;#201;&quot; in XML.</t>
+
+</section> <!-- authorsnote -->
 </section> <!-- intro -->
 
 <section title="The COMPRESS Extension" anchor="compressext">
@@ -277,15 +285,17 @@ Parameters
 <t>The client MUST NOT send any further commands until it has seen the
   result of COMPRESS.</t>
 
-<t>If the requested compression algorithm is invalid (e.g., is not
-  supported), the server MUST reject the COMPRESS command with a 503
-  response (<xref target="RFC3977"/> Section 3.2.1).  If the
-  server is unable to activate compression for any reason (e.g., a
-  server configuration or resource problem), the server MUST reject
-  the COMPRESS command with a 403 response (<xref target="RFC3977"/>
-  Section 3.2.1).  Otherwise, the server issues a 206 response and
-  the compression layer takes effect for both client and server
-  immediately following the CRLF of the success reply.</t>
+<t>If the requested compression algorithm is syntactically incorrect,
+  the server MUST reject the COMPRESS command with a 501 response code
+  (<xref target="RFC3977"/> Section 3.2.1).  If the requested compression
+  algorithm is invalid (e.g., is not supported), the server MUST reject
+  the COMPRESS command with a 503 response code (<xref target="RFC3977"/>
+  Section 3.2.1).  If the server is unable to activate compression for
+  any reason (e.g., a server configuration or resource problem), the
+  server MUST reject the COMPRESS command with a 403 response code (<xref
+  target="RFC3977"/> Section 3.2.1).  Otherwise, the server issues a 206
+  response code and the compression layer takes effect for both client
+  and server immediately following the CRLF of the success reply.</t>
 
 <t>Additionally, the client MUST NOT issue a MODE READER command after
   activating a compression layer, and a server MUST NOT advertise the
@@ -580,26 +590,26 @@ Parameters
   (JPEG), and to keep it at 1-5 the rest of the time.  More complex
   strategies are of course possible, and encouraged.</t>
 
-</section> <!-- DEFLATE -->
+</section> <!-- deflatespecificities -->
 </section> <!-- efficiency -->
 
 
 <section title="Augmented BNF Syntax for the COMPRESS Extension"
 anchor="ABNF">
 
-<t>This section describes the syntax of the COMPRESS extension using
+<t>This section describes the formal syntax of the COMPRESS extension using
   ABNF <xref target="RFC5234"/>.  It extends the syntax in Section 9
   of <xref target="RFC3977"/>, and non-terminals not defined in this
   document are defined there.  The <xref target="RFC3977"/> ABNF should
-  be imported first before attempting to validate these rules.</t>
+  be imported first, before attempting to validate these rules.</t>
 
 <section title="Commands" anchor="commands">
 
-<t>This syntax extends the non-terminal "command", which represents an
+<t>This syntax extends the non-terminal &lt;command&gt;, which represents an
   NNTP command.</t>
 
 <figure>
-<artwork>
+<artwork type="abnf">
 command =/ compress-command
 
 compress-command = "COMPRESS" WS algorithm
@@ -607,14 +617,13 @@ compress-command = "COMPRESS" WS algorithm
 </figure>
 </section> <!-- commands -->
 
-
 <section title="Capability Entries" anchor="capabilities">
 
-<t>This syntax extends the non-terminal "capability-entry", which
+<t>This syntax extends the non-terminal &lt;capability-entry&gt;, which
   represents a capability that may be advertised by the server.</t>
 
 <figure>
-<artwork>
+<artwork type="abnf">
 capability-entry =/ compress-capability
 
 compress-capability = "COMPRESS" 1*(WS algorithm)
@@ -625,7 +634,7 @@ compress-capability = "COMPRESS" 1*(WS algorithm)
 <section title="General Non-terminals" anchor="non-terminals">
 
 <figure>
-<artwork>
+<artwork type="abnf">
 algorithm = "DEFLATE" / 1*20alg-char
 alg-char = UPPER / DIGIT / "-" / "_"
 </artwork>
@@ -647,7 +656,7 @@ alg-char = UPPER / DIGIT / "-" / "_"
 <artwork>
 Response code 206
    Generated by: COMPRESS
-   Meaning: Compression layer activated
+   Meaning: compression layer activated
 </artwork>
 </figure>
 </section> <!-- respcodes -->
@@ -655,12 +664,13 @@ Response code 206
 
 <section title="Security Considerations" anchor="security">
 
+
 <t>TODO</t>
 
 </section> <!-- security -->
 
 
-<section title="IANA Considerations">
+<section title="IANA Considerations" anchor="iana">
 
 <section title="NNTP Compression Algorithm Registry" anchor="compreg">
 
@@ -773,9 +783,10 @@ Note: (Any other information that the author deems relevant may be
 
 </section> <!-- changecontrol -->
 
-</section> <!-- compreg -->
+</section> <!-- iana -->
 
-<section title="Registration of the DEFLATE Compression Algorithm">
+<section title="Registration of the DEFLATE Compression Algorithm"
+anchor="registrationalg">
 <t>This section gives a formal definition of the DEFLATE compression
   algorithm as required by <xref target="regproc"/> for the IANA
   registry.</t>
@@ -794,9 +805,10 @@ Note: (Any other information that the author deems relevant may be
 <t>Owner/Change controller: IESG &lt;iesg@ietf.org&gt;.</t>
 
 <t>Note: This algorithm is mandatory to implement</t>
-</section>
+</section> <!-- registrationalg -->
 
-<section title="Registration of the NNTP COMPRESS Extension">
+<section title="Registration of the NNTP COMPRESS Extension"
+anchor="registrationext">
 <t>This section gives a formal definition of the COMPRESS extension as
   required by Section 3.3.3 of <xref target="RFC3977"/> for the IANA
   registry.
@@ -825,7 +837,7 @@ Note: (Any other information that the author deems relevant may be
   the AUTHINFO capability label SHOULD NOT return any arguments after
   successful execution of the COMPRESS command.</t>
 <t>This extension does not cause any pre-existing command to produce a
-  401, 480, or 483 response.</t>
+  401, 480, or 483 response code.</t>
 <t>This extension is unaffected by any use of the MODE READER command,
   however the MODE READER command MUST NOT be used in the same session
   following a successful execution of the COMPRESS command.</t>
@@ -835,7 +847,7 @@ Note: (Any other information that the author deems relevant may be
 <t>Contact for Further Information: Authors of this document.</t>
 <t>Change Controller: IESG &lt;iesg@ietf.org&gt;.</t>
 </list></t>
-</section>
+</section> <!-- registrationext -->
 
 </section> <!-- iana -->
 
@@ -907,7 +919,7 @@ Note: (Any other information that the author deems relevant may be
 </references> <!-- informative -->
 
 
-<section title="Acknowledgements">
+<section title="Acknowledgements" anchor="acknowledgements">
 
 <t>This document draws heavily on ideas in <xref target="RFC4978"/>
   by Arnt Gulbrandsen and a large portion of this text was borrowed
@@ -921,7 +933,7 @@ Note: (Any other information that the author deems relevant may be
 
 
 <section title="Document History (to be removed by RFC Editor before
-		publication)">
+		publication)" anchor="history">
 
 <section title="Changes since -02">
 <t><list style="symbols">
@@ -936,6 +948,7 @@ Note: (Any other information that the author deems relevant may be
 <t>Re-add discussion of attachments in binary form and incompressible
   file formats.</t>
 <t>Algorithm names are case-insensitive.</t>
+<t>Mention the use of the 501 response code.</t>
 <t>Add Julien &Eacute;Elie as co-author of this document.</t>
 <t>Minor editorial changes.</t>
 </list></t>
