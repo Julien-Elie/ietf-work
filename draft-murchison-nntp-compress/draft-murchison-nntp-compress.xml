@@ -939,17 +939,20 @@ anchor="registrationext">
 <t><list style="symbols">
 <t>Added text stating that the receiving end SHOULD terminate the connection
   when receiving invalid or corrupted compressed data.</t>
-<t>Explain why COMPRESS permits to do better than existing unstandardized
+<t>Explained why COMPRESS permits to do better than existing unstandardized
   commands like XZVER, XZHDR, MODE COMPRESS, and XFEATURE GZIP.</t>
-<t>Add an example of AUTHINFO command when compression is active.</t>
+<t>Added an example of AUTHINFO command when compression is active.</t>
 <t>The LIST capability label was missing in the examples when READER
   was also advertised.</t>
-<t>Improve an example to send CAPABILITIES after successful authentication.</t>
-<t>Re-add discussion of attachments in binary form and incompressible
-  file formats.</t>
+<t>Improved an example to send CAPABILITIES after successful authentication.</t>
+<t>Mentioned that COMPRESS is related to security.  CAPABILITIES is therefore
+  sent again after COMPRESS.</t>
+<t>Re-added discussion of attachments in binary form and incompressible
+  file formats.  Improve the discussion about flushes, and add a specific
+  section about DEFLATE.</t>
 <t>Algorithm names are case-insensitive.</t>
-<t>Mention the use of the 501 response code.</t>
-<t>Add Julien &Eacute;Elie as co-author of this document.</t>
+<t>Mentioned the use of the 501 response code.</t>
+<t>Added Julien &Eacute;Elie as co-author of this document.</t>
 <t>Minor editorial changes.</t>
 </list></t>
 </section>
