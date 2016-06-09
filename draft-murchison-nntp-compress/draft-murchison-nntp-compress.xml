@@ -302,14 +302,16 @@ Parameters
   MODE-READER capability.</t>
 
 <t>Both the client and the server MUST know if there is a compression
-  layer active.  A client MUST NOT attempt to activate compression
-  (via either the COMPRESS or STARTTLS <xref target="RFC4642"/>
-  commands) if a compression layer is already active.  A server MUST
-  NOT return the COMPRESS or STARTTLS capability labels in response to
-  a CAPABILITIES command received after a compression layer is active,
-  and a server MUST reply with a 502 response code if a syntactically
-  valid COMPRESS or STARTTLS command is received while a compression
-  layer is already active.</t>
+  layer active (for instance via the previous use of the COMPRESS
+  command or the negotiation of a TLS-level compression <xref
+  target="RFC3749"/>).  A client MUST NOT attempt to activate compression
+  or negotiate a TLS layer (for instance via the use of the COMPRESS or
+  STARTTLS <xref target="RFC4642"/> commands) if a compression layer is
+  already active.  A server MUST NOT return the COMPRESS or STARTTLS
+  capability labels in response to a CAPABILITIES command received
+  after a compression layer is active, and a server MUST reply with
+  a 502 response code if a syntactically valid COMPRESS or STARTTLS
+  command is received while a compression layer is already active.</t>
 
 <t>In order to help mitigate leaking authentication credentials via for
   instance a CRIME attack <xref target="CRIME"/>, authentication SHOULD
