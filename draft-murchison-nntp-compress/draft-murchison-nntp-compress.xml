@@ -170,8 +170,8 @@ updates="4642"
   parameters.</t>
 
 <t>COMPRESS can be activated after authentication has completed thus
-  reducing the chances that authentication credentials can be leaked
-  via for instance a CRIME attack <xref target="RFC7457"/>.</t>
+  reducing the chances that authentication credentials can be leaked via
+  for instance a CRIME attack (<xref target="RFC7457"/> Section 2.6).</t>
 </list></t>
 
 </section> <!-- tlslevel -->
@@ -509,7 +509,7 @@ Parameters
   may want to surround large multi-line data blocks with a dictionary
   flush and/or, depending on the compression algorithm, a change of
   compression level in the same way as is recommended for servers later
-  in this document <xref target="deflatespecificities"/>.</t>
+  in this document (<xref target="deflatespecificities"/>).</t>
 
 <t>Downstream traffic has the unusual property that several kinds of
   data are sent, possibly confusing a dictionary-based compression
@@ -665,9 +665,48 @@ Response code 206
 
 <section title="Security Considerations" anchor="security">
 
+<t>Security issues are discussed throughout this document.</t>
 
-<t>TODO</t>
+<t>In general, the security considerations of the NNTP core specification
+  (<xref target="RFC3977"/> Section 12) and the DEFLATE compressed
+  data format specification (<xref target="RFC1951"/> Section 6) are
+  applicable here.</t>
 
+<t>Implementers should be aware that combining compression with
+  encryption like TLS can sometimes reveal information that would not
+  have been revealed without compression, as explained in Section 6
+  of <xref target="RFC3749"/>.  As a matter of fact, adversaries that
+  observe the length of the compressed data might be able to derive
+  information about the corresponding uncompressed data.  The CRIME
+  and the BREACH attacks (<xref target="RFC7457"/> Section 2.6) are
+  examples of such case.</t>
+
+<t>In order to help mitigate leaking authentication credentials, this
+  document states in <xref target="description"/> that authentication
+  SHOULD NOT be attempted when a compression layer is active.
+  Therefore, when a client wants to authenticate, compress data,
+  and negotiate a secure TLS layer (without TLS-level compression)
+  in the same NNTP connection, it SHOULD use the STARTTLS, AUTHINFO,
+  and COMPRESS commands in that order.  Of course instead of using
+  the STARTTLS command, a client can also use implicit TLS, that is to
+  say it begins the TLS negotiation immediately upon connection on a
+  separate port dedicated to NNTP over TLS.</t>
+
+<t>NNTP commands other than AUTHINFO are not believed to divulgate
+  confidential information as far as public Netnews newsgroups and
+  articles are concerned.  That is why this specification only adds a
+  restriction to the use of AUTHINFO when a compression layer is active.
+  In case private and confidential newsgroups or articles are accessed,
+  a server SHOULD NOT allow compression, and a client SHOULD NOT attempt
+  to activate compression, for the same reasons as mentioned above in
+  this Section.</t>
+
+<t>Implementations MUST support a configuration where compression can
+  be easily disabled.</t>
+
+<t>Future extensions to NNTP that define commands conveying confidential
+  data SHOULD ensure to state that they SHOULD NOT be used along with
+  compression.</t>
 </section> <!-- security -->
 
 
@@ -955,7 +994,8 @@ anchor="registrationext">
 <t>Change a MUST NOT to SHOULD NOT for the use of AUTHINFO after COMPRESS.</t>
 <t>Algorithm names are case-insensitive.</t>
 <t>Mentioned the use of the 501 response code.</t>
-<t>Added Julien &Eacute;Elie as co-author of this document.</t>
+<t>Added the Security Considerations Section.</t>
+<t>Added Julien &Eacute;lie as co-author of this document.</t>
 <t>Minor editorial changes.</t>
 </list></t>
 </section>
