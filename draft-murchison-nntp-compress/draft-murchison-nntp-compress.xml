@@ -194,9 +194,10 @@ updates="4642"
 </section> <!-- conventions -->
 <section title="Authors' Note" anchor="authorsnote">
 
-<t>Please write the first letter of &quot;Elie&quot; with an
-  acute accent wherever possible -- it is U+00C9, that is to say
-  &quot;&amp;#201;&quot; in XML.</t>
+<t>Please write the first letter of &quot;Elie&quot; and the penultimate
+  letter of &quot;allee&quot; with an acute accent wherever possible --
+  they are respectively U+00C9 (&quot;&amp;#201;&quot; in XML) and U+00E9
+  (&quot;&amp;#233;&quot; in XML).</t>
 
 </section> <!-- authorsnote -->
 </section> <!-- intro -->
@@ -1044,7 +1045,6 @@ anchor="registrationext">
 <t><list style="symbols">
 <t>How are SASL and TLS specific exchanges supposed to be handled?  Should it be mentioned in the RFC that they are outside the scope of NNTP compression?  (I speak of stuff like TLS handshakes, renegotiations, etc. that can occur after the use of COMPRESS.  OpenSSL may use SSL_read/SSL_write on its own, mayn't it?  And it does not know that it should compress data...)</t>
 <t>Anything to add to the Security Considerations section?  Whom should we get a review from?</t>
-<t>If a server knows that STARTTLS won't negotiate a compression layer, couldn't it advertise STARTTLS after COMPRESS?  (As TLS 1.2 no longer supports compression, it seems that the requirement not to use STARTTLS after COMPRESS will be strange in a few years...  Unless there is a security issue to compress TLS negotiation?  Yet, again, I do not know how to tell OpenSSL to compress that...)</t>
 <t>Should we add a naming convention for private compression algorithms?  (I am unsure that saying it begins with "X" is a good idea, though; we may one day see a standardized compression algorithm with such a name - XZ for instance, though LZMA2 would be its real name.)</t>
 </list></t>
 </section>
