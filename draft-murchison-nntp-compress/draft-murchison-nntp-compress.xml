@@ -569,9 +569,9 @@ Parameters
 
 <t>When using the zlib library (see <xref target="RFC1951"/>), the
   functions deflateInit2(), deflate(), inflateInit2(), and inflate()
-  suffice to implement this extension.  The windowBits value must be
+  suffice to implement this extension.  The windowBits value MUST be
   in the range -8 to -15 for deflateInit2(), or else it will use the
-  wrong format.  The windowBits value should be -15 for inflateInit2(),
+  wrong format.  The windowBits value SHOULD be -15 for inflateInit2(),
   or else it will not be able to decompress a stream with a larger
   window size.  deflateParams() can be used to improve compression
   rate and resource use.  In order to improve compression efficiency,
@@ -708,9 +708,9 @@ Response code 206
   confidential data together with public data when a security layer is
   active, for the same reasons as mentioned above in this Section.</t>
 
-<t>Additionally, implementations MAY NOT compress together the contents
-  of two distinct confidential articles.  This can be achieved for
-  instance with DEFLATE by clearing the compression dictionary before
+<t>Additionally, implementations MAY want not to compress together the
+  contents of two distinct confidential articles.  This can be achieved
+  for instance with DEFLATE by clearing the compression dictionary before
   sending any article in these confidential newsgroups.  More complex
   strategies are of course possible, and encouraged.</t>
 
@@ -1021,6 +1021,15 @@ anchor="registrationext">
 
 <section title="Document History (to be removed by RFC Editor before
 		publication)" anchor="history">
+
+<section title="Changes since -04">
+<t><list style="symbols">
+<t>Reworded a sentence wrongly using "MAY NOT" (not a key word defined in
+  <xref target="RFC2119"/>).</t>
+<t>Uppercased a "must" and a "should" in
+  <xref target="deflatespecificities"/>.</t>
+</list></t>
+</section>
 
 <section title="Changes since -03">
 <t><list style="symbols">
