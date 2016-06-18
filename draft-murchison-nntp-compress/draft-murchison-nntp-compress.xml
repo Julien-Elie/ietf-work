@@ -726,9 +726,31 @@ Response code 206
   detailing each NNTP compression algorithm available for use on the
   Internet.</t>
 
-<t>There is no naming convention for NNTP compression algorithms; any
-  name that conforms to the syntax of a NNTP compression algorithm
-  name can be registered.</t>
+<t>An NNTP compression algorithm is either a private algorithm, or
+  its name is included in the IANA NNTP Compression Algorithm registry
+  (in which case it is a "registered NNTP compression algorithm").
+  Different entries in the registry MUST use different names.</t>
+
+<t>Any name that conforms to the syntax of an NNTP compression algorithm
+  name (<xref target="non-terminals">) can be used.  However, the name
+  of a registered NNTP compression algorithm MUST NOT begin with "X".</t>
+
+<t>To avoid the risk of a clash with a future registered NNTP compression
+  algorithm, the names of private compression algorithms SHOULD begin
+  with "X-".</t>
+
+<t>If the server advertises a registered NNTP compression algorithm, it
+  MUST implement the compression algorithm so as to fully conform with
+  its related specification.  If it does not implement the compression
+  algorithm as specified, it MUST NOT list its registered name in the
+  arguments list of the COMPRESS capability label.  In that case,
+  it MAY, but SHOULD NOT, provide a private algorithm (not listed,
+  or listed with a different name) that implements the compression
+  algorithm differently.</t>
+
+<t>A server MUST NOT send different response codes to COMPRESS
+  in response to the availability or use of a private compression
+  algorithm.</t>
 
 <t>The procedure detailed in <xref target="regproc"/> is to be used
   for registration of a value naming a specific individual
@@ -785,15 +807,17 @@ Note: (Any other information that the author deems relevant may be
 <section title="Comments on Algorithm Registrations"
   anchor="regcomments">
 
-<t>Comments on a registered NNTP compression algorithm should first be
-  sent to the "owner" of the algorithm and/or to the
-  &lt;ietf-nntp@lists.eyrie.org&gt; mailing list.</t>
+<t>Comments on a registered NNTP compression algorithm should
+  first be sent to the "owner" of the algorithm and/or to the
+  mailing list for the now concluded IETF NNTPEXT working group
+  (&lt;ietf-nntp@lists.eyrie.org&gt;).</t>
 
 <t>Submitters of comments may, after a reasonable attempt to contact
-  the owner, request IANA to attach their comment to the NNTP
-  compression algorithm registration itself by sending mail to
-  &lt;iana@iana.org&gt;.  At IANA's sole discretion, IANA may attach
-  the comment to the NNTP compression algorithm's registration.</t>
+  the owner and/or the above mailing list, request IANA to attach their
+  comment to the NNTP compression algorithm registration itself by
+  sending mail to &lt;iana@iana.org&gt;.  At IANA's sole discretion,
+  IANA may attach the comment to the NNTP compression algorithm's
+  registration.</t>
 
 </section> <!-- regcomments -->
 
@@ -980,6 +1004,10 @@ anchor="registrationext">
 
 <section title="Changes since -03">
 <t><list style="symbols">
+<t>Added a naming convention for NNTP compression algorithms.  Improve the
+  wording of registered vs private compression algorithms.</t>
+<t>If a registered NNTP compression algorithm is advertised, it
+  MUST fully conform with its related specification.</t>
 <t>Minor editorial changes.</t>
 </list></t>
 </section>
@@ -999,7 +1027,7 @@ anchor="registrationext">
 <t>Re-added discussion of attachments in binary form and incompressible
   file formats.  Improve the discussion about flushes, and add a specific
   section about DEFLATE.</t>
-<t>Change a MUST NOT to SHOULD NOT for the use of AUTHINFO after COMPRESS.</t>
+<t>Changed a MUST NOT to SHOULD NOT for the use of AUTHINFO after COMPRESS.</t>
 <t>Algorithm names are case-insensitive.</t>
 <t>Mentioned the use of the 501 response code.</t>
 <t>Added the Security Considerations Section.</t>
@@ -1049,7 +1077,6 @@ anchor="registrationext">
 <section title="Issues to be addressed">
 <t><list style="symbols">
 <t>Anything to add to the Security Considerations section?  Whom should we get a review from?</t>
-<t>Should we add a naming convention for private compression algorithms?  (I am unsure that saying it begins with "X" is a good idea, though; we may one day see a standardized compression algorithm with such a name - XZ for instance, though LZMA2 would be its real name.)</t>
 </list></t>
 </section>
 
