@@ -732,7 +732,7 @@ Response code 206
   Different entries in the registry MUST use different names.</t>
 
 <t>Any name that conforms to the syntax of an NNTP compression algorithm
-  name (<xref target="non-terminals">) can be used.  However, the name
+  name (<xref target="non-terminals"/>) can be used.  However, the name
   of a registered NNTP compression algorithm MUST NOT begin with "X".</t>
 
 <t>To avoid the risk of a clash with a future registered NNTP compression
