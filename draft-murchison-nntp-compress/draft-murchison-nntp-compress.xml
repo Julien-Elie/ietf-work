@@ -1048,7 +1048,6 @@ anchor="registrationext">
 
 <section title="Issues to be addressed">
 <t><list style="symbols">
-<t>How are SASL and TLS specific exchanges supposed to be handled?  Should it be mentioned in the RFC that they are outside the scope of NNTP compression?  (I speak of stuff like TLS handshakes, renegotiations, etc. that can occur after the use of COMPRESS.  OpenSSL may use SSL_read/SSL_write on its own, mayn't it?  And it does not know that it should compress data...)</t>
 <t>Anything to add to the Security Considerations section?  Whom should we get a review from?</t>
 <t>Should we add a naming convention for private compression algorithms?  (I am unsure that saying it begins with "X" is a good idea, though; we may one day see a standardized compression algorithm with such a name - XZ for instance, though LZMA2 would be its real name.)</t>
 </list></t>
