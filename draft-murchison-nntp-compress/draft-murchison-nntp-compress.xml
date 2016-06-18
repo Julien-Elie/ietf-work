@@ -244,14 +244,14 @@ updates="4642"
 
 <figure>
 <artwork>
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] READER
-[S] IHAVE
-[S] COMPRESS DEFLATE X-SHRINK
-[S] LIST ACTIVE NEWSGROUPS
-[S] .
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] READER
+   [S] IHAVE
+   [S] COMPRESS DEFLATE X-SHRINK
+   [S] LIST ACTIVE NEWSGROUPS
+   [S] .
 </artwork>
 </figure>
 
@@ -267,18 +267,18 @@ updates="4642"
 <figure>
 <artwork>
 Syntax
-   COMPRESS algorithm
+  COMPRESS algorithm
 
 Responses
-   206 Compression active
-   403 Unable to activate compression
-   502 Command unavailable [1]
+  206 Compression active
+  403 Unable to activate compression
+  502 Command unavailable [1]
 
 [1] If a compression layer is already active, COMPRESS is not a valid
     command (see Section 2.2.2).
 
 Parameters
-   algorithm = Name of compression algorithm (e.g. "DEFLATE")
+  algorithm = Name of compression algorithm (e.g. "DEFLATE")
 </artwork>
 </figure>
 </section> <!-- usage -->
@@ -363,137 +363,140 @@ Parameters
 <t>Example of layering TLS and NNTP compression:</t>
 
 <figure><artwork>
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] READER
-[S] STARTTLS
-[S] AUTHINFO
-[S] COMPRESS DEFLATE
-[S] LIST ACTIVE NEWSGROUPS
-[S] .
-[C] STARTTLS
-[S] 382 Continue with TLS negotiation
-[TLS negotiation without compression occurs here]
-[Following successful negotiation, all traffic is encrypted]
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] READER
-[S] AUTHINFO USER
-[S] COMPRESS DEFLATE
-[S] LIST ACTIVE NEWSGROUPS
-[S] .
-[C] AUTHINFO USER fred
-[S] 381 Enter passphrase
-[C] AUTHINFO PASS flintstone
-[S] 281 Authentication accepted
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] READER
-[S] POST
-[S] COMPRESS DEFLATE
-[S] LIST ACTIVE NEWSGROUPS
-[S] .
-[C] COMPRESS DEFLATE
-[S] 206 Compression active
-[Henceforth, all traffic is compressed before being encrypted]
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] READER
+   [S] STARTTLS
+   [S] AUTHINFO
+   [S] COMPRESS DEFLATE
+   [S] LIST ACTIVE NEWSGROUPS
+   [S] .
+   [C] STARTTLS
+   [S] 382 Continue with TLS negotiation
+   [TLS negotiation without compression occurs here]
+   [Following successful negotiation, all traffic is encrypted]
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] READER
+   [S] AUTHINFO USER
+   [S] COMPRESS DEFLATE
+   [S] LIST ACTIVE NEWSGROUPS
+   [S] .
+   [C] AUTHINFO USER fred
+   [S] 381 Enter passphrase
+   [C] AUTHINFO PASS flintstone
+   [S] 281 Authentication accepted
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] READER
+   [S] POST
+   [S] COMPRESS DEFLATE
+   [S] LIST ACTIVE NEWSGROUPS
+   [S] .
+   [C] COMPRESS DEFLATE
+   [S] 206 Compression active
+   [Henceforth, all traffic is compressed before being encrypted]
 </artwork></figure>
 
 <t>Example of a server failing to activate compression:</t>
 
 <figure><artwork>
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] IHAVE
-[S] COMPRESS DEFLATE
-[S] .
-[C] COMPRESS DEFLATE
-[S] 403 Unable to activate compression
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] IHAVE
+   [S] COMPRESS DEFLATE
+   [S] .
+   [C] COMPRESS DEFLATE
+   [S] 403 Unable to activate compression
 </artwork></figure>
 
 <t>Example of attempting to use an unsupported compression algorithm:</t>
 
 <figure><artwork>
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] IHAVE
-[S] COMPRESS DEFLATE
-[S] .
-[C] COMPRESS X-SHRINK
-[S] 503 Compression algorithm not supported
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] IHAVE
+   [S] COMPRESS DEFLATE
+   [S] .
+   [C] COMPRESS X-SHRINK
+   [S] 503 Compression algorithm not supported
 </artwork></figure>
 
-<t>Examples of a server refusing to compress twice:</t>
+<t>Example of a server refusing to compress twice:</t>
 
 <figure><artwork>
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] IHAVE
-[S] STARTTLS
-[S] COMPRESS DEFLATE
-[S] .
-[C] STARTTLS
-[S] 382 Continue with TLS negotiation
-[TLS negotiation with compression occurs here]
-[Following successful negotiation, all traffic is protected by TLS]
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] IHAVE
-[S] .
-[C] COMPRESS DEFLATE
-[S] 502 Compression already active via TLS
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] IHAVE
+   [S] STARTTLS
+   [S] COMPRESS DEFLATE
+   [S] .
+   [C] STARTTLS
+   [S] 382 Continue with TLS negotiation
+   [TLS negotiation with compression occurs here]
+   [Following successful negotiation, all traffic is encrypted]
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] IHAVE
+   [S] .
+   [C] COMPRESS DEFLATE
+   [S] 502 Compression already active via TLS
 </artwork></figure>
 
+<t>Example of a server refusing to negotiate a TLS layer after
+  compression has been activated:</t>
+
 <figure><artwork>
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] IHAVE
-[S] STARTTLS
-[S] COMPRESS DEFLATE
-[S] .
-[C] COMPRESS DEFLATE
-[S] 206 Compression active
-[Henceforth, all traffic is compressed]
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] IHAVE
-[S] .
-[C] STARTTLS
-[S] 502 DEFLATE compression already active
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] IHAVE
+   [S] STARTTLS
+   [S] COMPRESS DEFLATE
+   [S] .
+   [C] COMPRESS DEFLATE
+   [S] 206 Compression active
+   [Henceforth, all traffic is compressed]
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] IHAVE
+   [S] .
+   [C] STARTTLS
+   [S] 502 DEFLATE compression already active
 </artwork></figure>
 
 <t>Example of a server not advertising AUTHINFO arguments after
   compression has been activated:</t>
 
 <figure><artwork>
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] READER
-[S] AUTHINFO USER
-[S] COMPRESS DEFLATE
-[S] LIST ACTIVE NEWSGROUPS
-[S] .
-[C] COMPRESS DEFLATE
-[S] 206 Compression active
-[Henceforth, all traffic is compressed]
-[C] CAPABILITIES
-[S] 101 Capability list:
-[S] VERSION 2
-[S] READER
-[S] AUTHINFO
-[S] LIST ACTIVE NEWSGROUPS
-[S] .
-[C] AUTHINFO USER fred
-[S] 502 DEFLATE compression already active
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] READER
+   [S] AUTHINFO USER
+   [S] COMPRESS DEFLATE
+   [S] LIST ACTIVE NEWSGROUPS
+   [S] .
+   [C] COMPRESS DEFLATE
+   [S] 206 Compression active
+   [Henceforth, all traffic is compressed]
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] READER
+   [S] AUTHINFO
+   [S] LIST ACTIVE NEWSGROUPS
+   [S] .
+   [C] AUTHINFO USER fred
+   [S] 502 DEFLATE compression already active
 </artwork></figure>
 
 </section> <!-- examples -->
@@ -616,9 +619,9 @@ anchor="ABNF">
 
 <figure>
 <artwork type="abnf">
-command =/ compress-command
+  command =/ compress-command
 
-compress-command = "COMPRESS" WS algorithm
+  compress-command = "COMPRESS" WS algorithm
 </artwork>
 </figure>
 </section> <!-- commands -->
@@ -630,9 +633,9 @@ compress-command = "COMPRESS" WS algorithm
 
 <figure>
 <artwork type="abnf">
-capability-entry =/ compress-capability
+  capability-entry =/ compress-capability
 
-compress-capability = "COMPRESS" 1*(WS algorithm)
+  compress-capability = "COMPRESS" 1*(WS algorithm)
 </artwork>
 </figure>
 </section> <!-- capabilities -->
@@ -641,8 +644,8 @@ compress-capability = "COMPRESS" 1*(WS algorithm)
 
 <figure>
 <artwork type="abnf">
-algorithm = "DEFLATE" / 1*20alg-char
-alg-char = UPPER / DIGIT / "-" / "_"
+  algorithm = "DEFLATE" / 1*20alg-char
+  alg-char = UPPER / DIGIT / "-" / "_"
 </artwork>
 </figure>
 
@@ -788,22 +791,22 @@ Response code 206
 
 <figure>
 <artwork>
-Subject: Registration of NNTP compression algorithm X
+   Subject: Registration of NNTP compression algorithm X
 
-NNTP compression algorithm name:
+   NNTP compression algorithm name:
 
-Security considerations:
+   Security considerations:
 
-Published specification (recommended):
+   Published specification (recommended):
 
-Contact for further information:
+   Contact for further information:
 
-Intended usage: (One of COMMON, LIMITED USE, or OBSOLETE)
+   Intended usage: (One of COMMON, LIMITED USE, or OBSOLETE)
 
-Owner/Change controller:
+   Owner/Change controller:
 
-Note: (Any other information that the author deems relevant may be
-       added here.)
+   Note: (Any other information that the author deems relevant may be
+          added here.)
 </artwork>
 </figure>
 
@@ -870,20 +873,23 @@ anchor="registrationalg">
   algorithm as required by <xref target="regproc"/> for the IANA
   registry.</t>
 
-<t>NNTP compression algorithm name: DEFLATE</t>
+<figure>
+<artwork>
+   NNTP compression algorithm name: DEFLATE
 
-<t>Security considerations: See <xref target="security"/> of this
-  document</t>
+   Security considerations: See Section 6 of this document
 
-<t>Published specification: This document</t>
+   Published specification: This document
 
-<t>Contact for further information: Authors of this document</t>
+   Contact for further information: Authors of this document
 
-<t>Intended usage: COMMON</t>
+   Intended usage: COMMON
 
-<t>Owner/Change controller: IESG &lt;iesg@ietf.org&gt;.</t>
+   Owner/Change controller: IESG &lt;iesg@ietf.org&gt;
 
-<t>Note: This algorithm is mandatory to implement</t>
+   Note: This algorithm is mandatory to implement
+</artwork>
+</figure>
 </section> <!-- registrationalg -->
 
 <section title="Registration of the NNTP COMPRESS Extension"
