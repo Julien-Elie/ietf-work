@@ -116,24 +116,25 @@ updates="4642"
   Security Layer (SASL) encryption <xref target="RFC4422"/>, Virtual
   Private Networks (VPNs), etc.</t>
 
-<t>The point of COMPRESS as an NNTP extension is to behave as a transport
-  layer, similar to STARTTLS <xref target="RFC4642"/>.  Compression can
-  therefore benefit to all NNTP commands sent or received after the use
-  of COMPRESS.  This facility responds to a long-standing need for NNTP
-  to compress data, that has partially been addressed by unstandardized
-  commands like XZVER, XZHDR, XFEATURE COMPRESS, or MODE COMPRESS.
-  These commands are not wholly satisfactory because they enable
-  compression only for the responses sent by the news server.  On the
-  contrary, the COMPRESS command permits to compress data sent by both
-  the client and the server, and removes the constraint of having to
-  implement compression separately in each NNTP command.  Besides, the
-  compression level can be dynamically adjusted and optimized at any
-  time during the connection, which even allows to disable compression
-  for certain commands if need be.  If the news client wants to stop
-  compression on a particular connection, it can simply use QUIT (<xref
-  target="RFC3977"/> Section 5.4), and establish a new connection.
-  For these reasons, using other NNTP commands than COMPRESS to enable
-  compression is discouraged once COMPRESS is supported.</t>
+<t>The point of COMPRESS as an NNTP extension is to act as a compression
+  layer, similarly to a security layer like the one negotiated by
+  STARTTLS <xref target="RFC4642"/>.  Compression can therefore benefit
+  to all NNTP commands sent or received after the use of COMPRESS.
+  This facility responds to a long-standing need for NNTP to compress
+  data, that has partially been addressed by unstandardized commands like
+  XZVER, XZHDR, XFEATURE COMPRESS, or MODE COMPRESS.  These commands
+  are not wholly satisfactory because they enable compression only for
+  the responses sent by the news server.  On the contrary, the COMPRESS
+  command permits to compress data sent by both the client and the
+  server, and removes the constraint of having to implement compression
+  separately in each NNTP command.  Besides, the compression level can be
+  dynamically adjusted and optimized at any time during the connection,
+  which even allows to disable compression for certain commands, if
+  need be.  If the news client wants to stop compression on a particular
+  connection, it can simply use QUIT (<xref target="RFC3977"/> Section
+  5.4), and establish a new connection.  For these reasons, using other
+  NNTP commands than COMPRESS to enable compression is discouraged once
+  COMPRESS is supported.</t>
 
 <t>In order to increase interoperability, it is desirable to have as
   few different compression algorithms as possible, so this document
@@ -194,11 +195,14 @@ updates="4642"
 </section> <!-- conventions -->
 <section title="Authors' Note" anchor="authorsnote">
 
-<t>Please write the first letter of "Elie" and the penultimate letter of
-  "allee" with an acute accent wherever possible -- they are respectively
-  U+00C9 ("&amp;#201;" in XML) and U+00E9 ("&amp;#233;" in XML).  Also,
-  the letters "ae" in "Baeuerle" should be written as an a-umlaut
-  (U+00E4, "&amp;#228;" in XML).</t>
+<t>Please write the first letter of "Elie" and the penultimate letter
+  of "allee" with an acute accent wherever possible -- they are
+  respectively U+00C9 ("&amp;#201;" in XML) and U+00E9 ("&amp;#233;"
+  in XML).  Also, the letters "ae" in "Baeuerle" should be written as
+  an a-umlaut (U+00E4, "&amp;#228;" in XML), and the first letter of
+  "Angel" as well as the fifth letter of "Gonzalez" should be written
+  with an acute accent (respectively U+00C1 and U+00E1, that is to say
+  "&amp;#193;" and "&amp;#225;" in XML).</t>
 
 </section> <!-- authorsnote -->
 </section> <!-- intro -->
@@ -327,11 +331,10 @@ Parameters
   command is received while a compression layer is already active.</t>
 
 <t>For DEFLATE <xref target="RFC1951"/> (as for many other compression
-  mechanisms), the compressor can trade speed against quality.  The
+  algorithms), the compressor can trade speed against quality.  The
   decompressor MUST automatically adjust to the parameters selected by
-  the sender.  Consequently, the client and server are both free to
-  pick the best reasonable rate of compression for the data they
-  send.</t>
+  the sender.  Consequently, the client and server are both free to pick
+  the best reasonable rate of compression for the data they send.</t>
 
 <t>When COMPRESS is combined with TLS <xref target="RFC5246"/>
   or SASL <xref target="RFC4422"/> security layers, the processing
@@ -685,30 +688,40 @@ Response code 206
 
 <t>In order to help mitigate leaking authentication credentials, this
   document states in <xref target="description"/> that authentication
-  SHOULD NOT be attempted when a compression layer is active.
-  Therefore, when a client wants to authenticate, compress data,
-  and negotiate a secure TLS layer (without TLS-level compression)
-  in the same NNTP connection, it SHOULD use the STARTTLS, AUTHINFO,
-  and COMPRESS commands in that order.  Of course instead of using
-  the STARTTLS command, a client can also use implicit TLS, that is to
-  say it begins the TLS negotiation immediately upon connection on a
-  separate port dedicated to NNTP over TLS.</t>
+  SHOULD NOT be attempted when a compression layer is active.  Therefore,
+  when a client wants to authenticate, compress data, and negotiate a TLS
+  layer (without TLS-level compression) in the same NNTP connection, it
+  SHOULD use the STARTTLS, AUTHINFO, and COMPRESS commands in that order.
+  Of course instead of using the STARTTLS command, a client can also use
+  implicit TLS, that is to say it begins the TLS negotiation immediately
+  upon connection on a separate port dedicated to NNTP over TLS.</t>
 
 <t>NNTP commands other than AUTHINFO are not believed to divulgate
-  confidential information as far as public Netnews newsgroups and
-  articles are concerned.  That is why this specification only adds a
-  restriction to the use of AUTHINFO when a compression layer is active.
-  In case private and confidential newsgroups or articles are accessed,
-  a server SHOULD NOT allow compression, and a client SHOULD NOT attempt
-  to activate compression, for the same reasons as mentioned above in
-  this Section.</t>
+  confidential information as long as only public Netnews newsgroups
+  and articles are accessed.  That is why this specification only
+  adds a restriction to the use of AUTHINFO when a compression layer
+  is active.  In case confidential articles are accessed in private
+  newsgroups, special care is needed: implementations SHOULD NOT compress
+  confidential data together with public data when a security layer is
+  active, for the same reasons as mentioned above in this Section.</t>
 
-<t>Implementations MUST support a configuration where compression can
-  be easily disabled.</t>
+<t>Additionally, implementations MAY NOT compress together the contents
+  of two distinct confidential articles.  This can be achieved for
+  instance with DEFLATE by clearing the compression dictionary before
+  sending any article in these confidential newsgroups.  More complex
+  strategies are of course possible, and encouraged.</t>
+
+<t>Implementations SHOULD use a default configuration with disabled
+  compression when a security layer is active, and MUST support an option
+  to allow compression to be enabled when a security layer is active.
+  Such an option can be either with global scope or server/connection
+  based.  Implementations MAY unconditionally allow compression to be
+  enabled when no security layer is active.</t>
 
 <t>Future extensions to NNTP that define commands conveying confidential
-  data SHOULD ensure to state that they SHOULD NOT be used along with
-  compression.</t>
+  data SHOULD ensure to state that these confidential data SHOULD
+  NOT be compressed together with public data when a security layer
+  is active.</t>
 </section> <!-- security -->
 
 
@@ -753,8 +766,8 @@ Response code 206
   algorithm.</t>
 
 <t>The procedure detailed in <xref target="regproc"/> is to be used
-  for registration of a value naming a specific individual
-  mechanism.</t>
+  for registration of a value naming a specific individual compression
+  algorithm.</t>
 
 <t>Comments may be included in the registry as discussed in
   <xref target="regcomments"/> and may be changed as discussed in
@@ -798,7 +811,7 @@ Note: (Any other information that the author deems relevant may be
   authors of NNTP compression algorithms are encouraged to seek
   community review and comment whenever that is feasible.  Authors
   may seek community review by posting a specification of their
-  proposed mechanism as an Internet-Draft.  NNTP compression
+  proposed algorithm as an Internet-Draft.  NNTP compression
   algorithms intended for widespread use should be standardized
   through the normal IETF process, when appropriate.</t>
 
@@ -994,7 +1007,8 @@ anchor="registrationext">
 
 <t>The authors would like to thank the following individuals for
   contributing their ideas and support for writing this specification:
-  Mark Adler, Russ Allbery, Michael B&#228;uerle, and Brian Peterson.</t>
+  Mark Adler, Russ Allbery, Michael B&#228;uerle, &#193;ngel
+  Gonz&#225;lez, and Brian Peterson.</t>
 
 </section> <!-- acknowledgements -->
 
@@ -1008,6 +1022,12 @@ anchor="registrationext">
   wording of registered vs private compression algorithms.</t>
 <t>If a registered NNTP compression algorithm is advertised, it
   MUST fully conform with its related specification.</t>
+<t>Fixed the wording of security considerations to reflect that the threat
+  appears when public and confidential data are compressed together inside
+  a security layer.  Thanks to &#193;ngel Gonz&#225;lez for pointing that.</t>
+<t>The default configuration SHOULD be disabled compression when a security
+  layer is active.</t>
+<t>COMPRESS acts as a compression layer, not a transport layer.</t>
 <t>Minor editorial changes.</t>
 </list></t>
 </section>
@@ -1072,14 +1092,6 @@ anchor="registrationext">
 </section>
 
 </section> <!-- history -->
-
-
-<section title="Issues to be addressed">
-<t><list style="symbols">
-<t>Anything to add to the Security Considerations section?  Whom should we get a review from?</t>
-</list></t>
-</section>
-
 
 </back>
 </rfc>
