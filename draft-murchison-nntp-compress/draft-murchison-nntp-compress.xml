@@ -708,11 +708,11 @@ Response code 206
   confidential data together with public data when a security layer is
   active, for the same reasons as mentioned above in this Section.</t>
 
-<t>Additionally, implementations MAY want not to compress together the
-  contents of two distinct confidential articles.  This can be achieved
-  for instance with DEFLATE by clearing the compression dictionary before
-  sending any article in these confidential newsgroups.  More complex
-  strategies are of course possible, and encouraged.</t>
+<t>Additionally, implementations MAY ensure that the contents of two
+  distinct confidential articles are not compressed together.  This can
+  be achieved for instance with DEFLATE by clearing the compression
+  dictionary each time a confidential article is sent.  More complex
+  implementations are of course possible, and encouraged.</t>
 
 <t>Implementations SHOULD use a default configuration with disabled
   compression when a security layer is active, and MUST support an option
