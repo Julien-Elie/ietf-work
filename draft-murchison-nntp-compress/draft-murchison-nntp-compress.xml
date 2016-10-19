@@ -307,17 +307,18 @@ Parameters
   activating a compression layer, and a server MUST NOT advertise the
   MODE-READER capability.</t>
 
-<t>Both the client and the server MUST know if there is a compression
-  layer active (for instance via the previous use of the COMPRESS
-  command or the negotiation of a TLS-level compression <xref
-  target="RFC3749"/>).  A client MUST NOT attempt to activate compression
-  or negotiate a TLS layer (for instance via the use of the COMPRESS or
-  STARTTLS <xref target="RFC4642"/> commands) if a compression layer is
-  already active.  A server MUST NOT return the COMPRESS or STARTTLS
-  capability labels in response to a CAPABILITIES command received
-  after a compression layer is active, and a server MUST reply with
-  a 502 response code if a syntactically valid COMPRESS or STARTTLS
-  command is received while a compression layer is already active.</t>
+<t>Both the client and the server MUST know if there is a
+  compression layer active (for instance via the previous use of
+  the COMPRESS command or the negotiation of a TLS-level compression
+  <xref target="RFC3749"/>).  A client MUST NOT attempt to activate
+  compression or negotiate a TLS security layer (for instance via the
+  use of the COMPRESS or STARTTLS <xref target="RFC4642"/> commands) if
+  a compression layer is already active.  A server MUST NOT return the
+  COMPRESS or STARTTLS capability labels in response to a CAPABILITIES
+  command received after a compression layer is active, and a server
+  MUST reply with a 502 response code if a syntactically valid COMPRESS
+  or STARTTLS command is received while a compression layer is already
+  active.</t>
 
 <t>In order to help mitigate leaking authentication credentials via for
   instance a CRIME attack <xref target="CRIME"/>, authentication SHOULD
@@ -450,7 +451,7 @@ Parameters
    [S] 502 Compression already active via TLS
 </artwork></figure>
 
-<t>Example of a server refusing to negotiate a TLS layer after
+<t>Example of a server refusing to negotiate a TLS security layer after
   compression has been activated:</t>
 
 <figure><artwork>
@@ -565,6 +566,8 @@ Parameters
   that retains the full 8-bit spectrum, like yEnc, are much more likely
   to be incompressible.</t>
 
+</section> <!-- efficiency -->
+
 <section title="DEFLATE Specificities" anchor="deflatespecificities">
 
 <t>When using the zlib library (see <xref target="RFC1951"/>), the
@@ -600,7 +603,6 @@ Parameters
   strategies are of course possible, and encouraged.</t>
 
 </section> <!-- deflatespecificities -->
-</section> <!-- efficiency -->
 
 
 <section title="Augmented BNF Syntax for the COMPRESS Extension"
@@ -691,22 +693,24 @@ Response code 206
 
 <t>In order to help mitigate leaking authentication credentials, this
   document states in <xref target="description"/> that authentication
-  SHOULD NOT be attempted when a compression layer is active.  Therefore,
-  when a client wants to authenticate, compress data, and negotiate a TLS
-  layer (without TLS-level compression) in the same NNTP connection, it
-  SHOULD use the STARTTLS, AUTHINFO, and COMPRESS commands in that order.
-  Of course instead of using the STARTTLS command, a client can also use
-  implicit TLS, that is to say it begins the TLS negotiation immediately
-  upon connection on a separate port dedicated to NNTP over TLS.</t>
+  SHOULD NOT be attempted when a compression layer is active.
+  Therefore, when a client wants to authenticate, compress data,
+  and negotiate a TLS security layer (without TLS-level compression)
+  in the same NNTP connection, it SHOULD use the STARTTLS, AUTHINFO,
+  and COMPRESS commands in that order.  Of course instead of using
+  the STARTTLS command, a client can also use implicit TLS, that is to
+  say it begins the TLS negotiation immediately upon connection on a
+  separate port dedicated to NNTP over TLS.</t>
 
 <t>NNTP commands other than AUTHINFO are not believed to divulgate
   confidential information as long as only public Netnews newsgroups
   and articles are accessed.  That is why this specification only
   adds a restriction to the use of AUTHINFO when a compression layer
   is active.  In case confidential articles are accessed in private
-  newsgroups, special care is needed: implementations SHOULD NOT compress
-  confidential data together with public data when a security layer is
-  active, for the same reasons as mentioned above in this Section.</t>
+  newsgroups, special care is needed: implementations SHOULD NOT
+  compress confidential data together with public data when a TLS <xref
+  target="RFC5246"/> or SASL <xref target="RFC4422"/> security layer
+  is active, for the same reasons as mentioned above in this Section.</t>
 
 <t>Additionally, implementations MAY ensure that the contents of two
   distinct confidential articles are not compressed together.  This can
@@ -714,12 +718,10 @@ Response code 206
   dictionary each time a confidential article is sent.  More complex
   implementations are of course possible, and encouraged.</t>
 
-<t>Implementations SHOULD use a default configuration with disabled
-  compression when a security layer is active, and MUST support an option
-  to allow compression to be enabled when a security layer is active.
-  Such an option can be either with global scope or server/connection
-  based.  Implementations MAY unconditionally allow compression to be
-  enabled when no security layer is active.</t>
+<t>Implementations are encouraged to unconditionally allow compression
+  when no security layer is active, and to support an option to enable
+  or disable compression when a security layer is active.  Such an option
+  could for instance be with global scope or server/connection based.</t>
 
 <t>Future extensions to NNTP that define commands conveying confidential
   data SHOULD ensure to state that these confidential data SHOULD
@@ -937,19 +939,19 @@ anchor="registrationext">
 
 <back>
 <references title="Normative References">
+&rfc1951;
 &rfc2119;
 &rfc3977;
 &rfc4642;
+&rfc4643;
 &rfc5226;
 &rfc5234;
 </references> <!-- normative -->
 
 <references title="Informative References">
-&rfc1951;
 &rfc1962;
 &rfc3749;
 &rfc4422;
-&rfc4643;
 &rfc4644;
 &rfc4648;
 &rfc4978;
@@ -1008,14 +1010,30 @@ anchor="registrationext">
 
 <t>The authors would like to thank the following individuals for
   contributing their ideas and support for writing this specification:
-  Mark Adler, Russ Allbery, Michael B&#228;uerle, Stephane Bortzmeyer, Francis Dupont,
-  &#193;ngel Gonz&#225;lez, and Brian Peterson.</t>
+  Mark Adler, Russ Allbery, Michael B&#228;uerle, Stephane Bortzmeyer,
+  Francis Dupont, &#193;ngel Gonz&#225;lez, and Brian Peterson.</t>
 
 </section> <!-- acknowledgments -->
 
 
 <section title="Document History (to be removed by RFC Editor before
 		publication)" anchor="history">
+
+<section title="Changes since -05">
+<t><list style="symbols">
+<t>Take into account all the remarks sent during IETF Last Call.</t>
+<t>Do not prevent the registration of compression algorithm names beginning
+  with "X" (in conformance with RFC6648).  Also, in the examples, use "SHRINK"
+  instead of "X-SHRINK".</t>
+<t>Separate <xref target="efficiency"/> and
+  <xref target="deflatespecificities"/> because the latter uses normative
+  keywords.</t>
+<t>Do not declare non-compliant an implementation that only supports COMPRESS
+  when there is no security layer.</t>
+<t><xref target="RFC1951"/> and <xref target="RFC4643"/> are normative.</t>
+<t>Minor other wording improvements.</t>
+</list></t>
+</section>
 
 <section title="Changes since -04">
 <t><list style="symbols">
