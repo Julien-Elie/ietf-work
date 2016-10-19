@@ -170,7 +170,7 @@ updates="4642"
   optimization of the underlying compression algorithm's
   parameters.</t>
 
-<t>COMPRESS can be activated after authentication has completed thus
+<t>COMPRESS can be activated after authentication has completed, thus
   reducing the chances that authentication credentials can be leaked via
   for instance a CRIME attack (<xref target="RFC7457"/> Section 2.6).</t>
 </list></t>
@@ -184,8 +184,8 @@ updates="4642"
   document has the same meaning as it does in that one.</t>
 
 <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-  "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-  document are to be interpreted as described in
+  "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+  "OPTIONAL" in this document are to be interpreted as described in
   <xref target="RFC2119"/>.</t>
 
 <t>In the examples, commands from the client are indicated with [C], and
@@ -628,7 +628,7 @@ anchor="ABNF">
 
 <section title="Capability Entries" anchor="capabilities">
 
-<t>This syntax extends the non-terminal &lt;capability&nbhy;entry&gt;, which
+<t>This syntax extends the non-terminal &lt;capability&#8209;entry&gt;, which
   represents a capability that may be advertised by the server.</t>
 
 <figure>
