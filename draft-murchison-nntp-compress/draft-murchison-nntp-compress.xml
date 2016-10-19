@@ -195,14 +195,14 @@ updates="4642"
 </section> <!-- conventions -->
 <section title="Authors' Note" anchor="authorsnote">
 
-<t>Please write the first letter of "Elie" and the penultimate letter
-  of "allee" with an acute accent wherever possible -- they are
-  respectively U+00C9 ("&amp;#201;" in XML) and U+00E9 ("&amp;#233;"
-  in XML).  Also, the letters "ae" in "Baeuerle" should be written as
-  an a-umlaut (U+00E4, "&amp;#228;" in XML), and the first letter of
-  "Angel" as well as the fifth letter of "Gonzalez" should be written
-  with an acute accent (respectively U+00C1 and U+00E1, that is to say
-  "&amp;#193;" and "&amp;#225;" in XML).</t>
+<t>Please write the first letter of "Elie" with an acute accent wherever
+  possible -- it is U+00C9 ("&amp;#201;" in XML).  The third letter of
+  "Stephane" and the penultimate letter of "allee" similarly have an
+  acute accent (U+00E9, "&amp;#233;" in XML).  Also, the letters "ae"
+  in "Baeuerle" should be written as an a-umlaut (U+00E4, "&amp;#228;"
+  in XML), and the first letter of "Angel" as well as the fifth letter of
+  "Gonzalez" should be written with an acute accent (respectively U+00C1
+  and U+00E1, that is to say "&amp;#193;" and "&amp;#225;" in XML).</t>
 
 </section> <!-- authorsnote -->
 </section> <!-- intro -->
@@ -249,7 +249,7 @@ updates="4642"
    [S] VERSION 2
    [S] READER
    [S] IHAVE
-   [S] COMPRESS DEFLATE X-SHRINK
+   [S] COMPRESS DEFLATE SHRINK
    [S] LIST ACTIVE NEWSGROUPS
    [S] .
 </artwork>
@@ -423,7 +423,7 @@ Parameters
    [S] IHAVE
    [S] COMPRESS DEFLATE
    [S] .
-   [C] COMPRESS X-SHRINK
+   [C] COMPRESS SHRINK
    [S] 503 Compression algorithm not supported
 </artwork></figure>
 
@@ -748,12 +748,7 @@ Response code 206
   Different entries in the registry MUST use different names.</t>
 
 <t>Any name that conforms to the syntax of an NNTP compression algorithm
-  name (<xref target="non-terminals"/>) can be used.  However, the name
-  of a registered NNTP compression algorithm MUST NOT begin with "X".</t>
-
-<t>To avoid the risk of a clash with a future registered NNTP compression
-  algorithm, the names of private compression algorithms SHOULD begin
-  with "X-".</t>
+  name (<xref target="non-terminals"/>) can be used.</t>
 
 <t>If the server advertises a registered NNTP compression algorithm, it
   MUST implement the compression algorithm so as to fully conform with
@@ -1013,7 +1008,7 @@ anchor="registrationext">
 
 <t>The authors would like to thank the following individuals for
   contributing their ideas and support for writing this specification:
-  Mark Adler, Russ Allbery, Michael B&#228;uerle, Francis Dupont,
+  Mark Adler, Russ Allbery, Michael B&#228;uerle, Stephane Bortzmeyer, Francis Dupont,
   &#193;ngel Gonz&#225;lez, and Brian Peterson.</t>
 
 </section> <!-- acknowledgments -->
