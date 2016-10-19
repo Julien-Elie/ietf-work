@@ -60,7 +60,7 @@ updates="4642"
 <street>5000 Forbes Avenue</street>
 <!-- <street>Cyert Hall 285</street>-->
 <city>Pittsburgh</city> <region>PA</region>
-<code>15213</code> <country>US</country>
+<code>15213</code> <country>USA</country>
 </postal>
 <phone>+1 412 268 1982</phone>
 <email>murch@andrew.cmu.edu</email>
@@ -278,7 +278,7 @@ Responses
     command (see Section 2.2.2).
 
 Parameters
-  algorithm = Name of compression algorithm (e.g. "DEFLATE")
+  algorithm = Name of compression algorithm (e.g., "DEFLATE")
 </artwork>
 </figure>
 </section> <!-- usage -->
@@ -526,7 +526,7 @@ Parameters
   algorithm.</t>
 
 <t>One type is NNTP simple responses and NNTP multi-line responses not
-  related to article header/body retrieval (e.g, CAPABILITIES, GROUP,
+  related to article header/body retrieval (e.g., CAPABILITIES, GROUP,
   LISTGROUP, LAST, NEXT, STAT, DATE, NEWNEWS, NEWGROUPS, LIST, CHECK
   <xref target="RFC4644"/>, etc).  These are highly compressible;
   zlib using its least CPU-intensive setting compresses typical
@@ -791,7 +791,7 @@ Response code 206
 
 <figure>
 <artwork>
-   Subject: Registration of NNTP compression algorithm X
+   Subject: Registration of NNTP compression algorithm Z
 
    NNTP compression algorithm name:
 
@@ -826,7 +826,7 @@ Response code 206
 <t>Comments on a registered NNTP compression algorithm should
   first be sent to the "owner" of the algorithm and/or to the
   mailing list for the now concluded IETF NNTPEXT working group
-  (&lt;ietf-nntp@lists.eyrie.org&gt;).</t>
+  (&lt;ietf&#8209;nntp@lists.eyrie.org&gt;).</t>
 
 <t>Submitters of comments may, after a reasonable attempt to contact
   the owner and/or the above mailing list, request IANA to attach their
@@ -1005,7 +1005,7 @@ anchor="registrationext">
 </references> <!-- informative -->
 
 
-<section title="Acknowledgements" anchor="acknowledgements">
+<section title="Acknowledgments" anchor="acknowledgments">
 
 <t>This document draws heavily on ideas in <xref target="RFC4978"/>
   by Arnt Gulbrandsen and a large portion of this text was borrowed
@@ -1013,10 +1013,10 @@ anchor="registrationext">
 
 <t>The authors would like to thank the following individuals for
   contributing their ideas and support for writing this specification:
-  Mark Adler, Russ Allbery, Michael B&#228;uerle, &#193;ngel
-  Gonz&#225;lez, and Brian Peterson.</t>
+  Mark Adler, Russ Allbery, Michael B&#228;uerle, Francis Dupont,
+  &#193;ngel Gonz&#225;lez, and Brian Peterson.</t>
 
-</section> <!-- acknowledgements -->
+</section> <!-- acknowledgments -->
 
 
 <section title="Document History (to be removed by RFC Editor before
