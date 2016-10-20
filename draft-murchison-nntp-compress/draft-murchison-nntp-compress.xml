@@ -719,9 +719,13 @@ Response code 206
   implementations are of course possible, and encouraged.</t>
 
 <t>Implementations are encouraged to unconditionally allow compression
-  when no security layer is active, and to support an option to enable
-  or disable compression when a security layer is active.  Such an option
-  could for instance be with global scope or server/connection based.</t>
+  when no security layer is active, and to support an option to enable or
+  disable compression when a security layer is active.  Such an option
+  could for instance be with global scope or server/connection based.
+  Besides, as in general compression may weaken the confidentiality
+  of a security layer, implementations SHOULD NOT automatically enable
+  compression when a security layer is active unless the user explicitly
+  enabled it with this knowledge.</t>
 
 <t>Future extensions to NNTP that define commands conveying confidential
   data SHOULD ensure to state that these confidential data SHOULD
@@ -1009,9 +1013,16 @@ anchor="registrationext">
   from that specification.</t>
 
 <t>The authors would like to thank the following individuals for
-  contributing their ideas and support for writing this specification:
-  Mark Adler, Russ Allbery, Michael B&#228;uerle, Stephane Bortzmeyer,
-  Francis Dupont, &#193;ngel Gonz&#225;lez, and Brian Peterson.</t>
+  contributing their ideas and reviewing this specification: Mark
+  Adler, Russ Allbery, Stephane Bortzmeyer, Francis Dupont, &#193;ngel
+  Gonz&#225;lez, and Brian Peterson.</t>
+
+<t>Special thanks to our Document Shepherd, Michael B&#228;uerle,
+  who substantially helped in increasing the quality of this
+  specification.</t>
+
+<t>Many thanks to the Responsible Area Director, Alexey Melnikov,
+  for reviewing and sponsoring this document.</t>
 
 </section> <!-- acknowledgments -->
 
