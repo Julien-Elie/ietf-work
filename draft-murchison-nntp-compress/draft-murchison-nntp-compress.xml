@@ -307,18 +307,18 @@ Parameters
   activating a compression layer, and a server MUST NOT advertise the
   MODE-READER capability.</t>
 
-<t>Both the client and the server MUST know if there is a
-  compression layer active (for instance via the previous use of
-  the COMPRESS command or the negotiation of a TLS-level compression
-  <xref target="RFC3749"/>).  A client MUST NOT attempt to activate
-  compression or negotiate a TLS security layer (for instance via the
-  use of the COMPRESS or STARTTLS <xref target="RFC4642"/> commands) if
-  a compression layer is already active.  A server MUST NOT return the
-  COMPRESS or STARTTLS capability labels in response to a CAPABILITIES
-  command received after a compression layer is active, and a server
-  MUST reply with a 502 response code if a syntactically valid COMPRESS
-  or STARTTLS command is received while a compression layer is already
-  active.</t>
+<t>Both the client and the server MUST know if there is a compression
+  layer active (for instance via the previous use of the COMPRESS
+  command or the negotiation of a TLS-level compression <xref
+  target="RFC3749"/>).  A client MUST NOT attempt to activate compression
+  (for instance via the COMPRESS command) or negotiate a TLS security
+  layer (because STARTTLS <xref target="RFC4642"/> may activate a
+  TLS-level compression) if a compression layer is already active.
+  A server MUST NOT return the COMPRESS or STARTTLS capability labels
+  in response to a CAPABILITIES command received after a compression
+  layer is active, and a server MUST reply with a 502 response code if
+  a syntactically valid COMPRESS or STARTTLS command is received while
+  a compression layer is already active.</t>
 
 <t>In order to help mitigate leaking authentication credentials via for
   instance a CRIME attack <xref target="CRIME"/>, authentication SHOULD
@@ -753,17 +753,9 @@ Response code 206
   (in which case it is a "registered NNTP compression algorithm").
   Different entries in the registry MUST use different names.</t>
 
-<t>Any name that conforms to the syntax of an NNTP compression algorithm
-  name (<xref target="non-terminals"/>) can be used.</t>
-
-<t>If the server advertises a registered NNTP compression algorithm, it
-  MUST implement the compression algorithm so as to fully conform with
-  its related specification.  If it does not implement the compression
-  algorithm as specified, it MUST NOT list its registered name in the
-  arguments list of the COMPRESS capability label.  In that case,
-  it MAY, but SHOULD NOT, provide a private algorithm (not listed,
-  or listed with a different name) that implements the compression
-  algorithm differently.</t>
+<t>Private algorithms with unregistered names are allowed, but SHOULD
+  NOT be used because it is difficult to achieve interoperability
+  with them.</t>
 
 <t>A server MUST NOT send different response codes to COMPRESS
   in response to the availability or use of a private compression
@@ -772,6 +764,9 @@ Response code 206
 <t>The procedure detailed in <xref target="regproc"/> is to be used
   for registration of a value naming a specific individual compression
   algorithm.</t>
+
+<t>Any name that conforms to the syntax of an NNTP compression algorithm
+  name (<xref target="non-terminals"/>) can be used.</t>
 
 <t>Comments may be included in the registry as discussed in
   <xref target="regcomments"/> and may be changed as discussed in
@@ -1042,6 +1037,8 @@ anchor="registrationext">
 <t>Do not declare non-compliant an implementation that only supports COMPRESS
   when there is no security layer.</t>
 <t><xref target="RFC1951"/> and <xref target="RFC4643"/> are normative.</t>
+<t>Explain why STARTTLS is not allowed after COMPRESS.</t>
+<t>Mention that using unregistered algorithms decrease interoperability.</t>
 <t>Minor other wording improvements.</t>
 </list></t>
 </section>
