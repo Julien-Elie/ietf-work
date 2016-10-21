@@ -941,8 +941,6 @@ anchor="registrationext">
 &rfc1951;
 &rfc2119;
 &rfc3977;
-&rfc4642;
-&rfc4643;
 &rfc5226;
 &rfc5234;
 </references> <!-- normative -->
@@ -951,6 +949,8 @@ anchor="registrationext">
 &rfc1962;
 &rfc3749;
 &rfc4422;
+&rfc4642;
+&rfc4643;
 &rfc4644;
 &rfc4648;
 &rfc4978;
@@ -1036,7 +1036,8 @@ anchor="registrationext">
   keywords.</t>
 <t>Do not declare non-compliant an implementation that only supports COMPRESS
   when there is no security layer.</t>
-<t><xref target="RFC1951"/> and <xref target="RFC4643"/> are normative.</t>
+<t>Move <xref target="RFC1951"/> reference to normative, and <xref
+  target="RFC4642"/> reference to informative.</t>
 <t>Explain why STARTTLS is not allowed after COMPRESS.</t>
 <t>Mention that using unregistered algorithms decrease interoperability.</t>
 <t>Minor other wording improvements.</t>
