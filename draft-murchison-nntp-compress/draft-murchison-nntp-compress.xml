@@ -866,6 +866,7 @@ Response code 206
 
 <section title="Registration of the DEFLATE Compression Algorithm"
 anchor="registrationalg">
+
 <t>This section gives a formal definition of the DEFLATE compression
   algorithm as required by <xref target="regproc"/> for the IANA
   registry.</t>
@@ -887,10 +888,24 @@ anchor="registrationalg">
    Note: This algorithm is mandatory to implement
 </artwork>
 </figure>
+
+<t>This registration will appear as follows in the NNTP Compression
+  Algorithm registry:</t>
+
+<texttable>
+  <ttcol>Algorithm Name</ttcol>
+  <ttcol>Intended Usage</ttcol>
+  <ttcol>Reference</ttcol>
+  <c>DEFLATE</c>
+  <c>COMMON</c>
+  <c>[ RFC-to-be ]</c>
+</texttable>
+
 </section> <!-- registrationalg -->
 
 <section title="Registration of the NNTP COMPRESS Extension"
 anchor="registrationext">
+
 <t>This section gives a formal definition of the COMPRESS extension as
   required by Section 3.3.3 of <xref target="RFC3977"/> for the IANA
   registry.
@@ -930,6 +945,20 @@ anchor="registrationext">
 <t>Contact for Further Information: Authors of this document.</t>
 <t>Change Controller: IESG &lt;iesg@ietf.org&gt;.</t>
 </list></t>
+
+<t>This registration will appear as follows in the NNTP capability
+  labels registry contained in the Network News Transfer Protocol (NNTP)
+  Parameters registry:</t>
+
+<texttable>
+  <ttcol>Label</ttcol>
+  <ttcol>Meaning</ttcol>
+  <ttcol>Reference</ttcol>
+  <c>COMPRESS</c>
+  <c>Supported compression algorithms</c>
+  <c>[ RFC-to-be ]</c>
+</texttable>
+
 </section> <!-- registrationext -->
 
 </section> <!-- iana -->
@@ -1044,6 +1073,8 @@ anchor="registrationext">
   target="RFC4642"/> reference to informative.</t>
 <t>Explain why STARTTLS is not allowed after COMPRESS.</t>
 <t>Mention that using unregistered algorithms decrease interoperability.</t>
+<t>Mention the exact contents of the IANA registrations asked by this
+  document.</t>
 <t>Minor other wording improvements.</t>
 </list></t>
 </section>
