@@ -526,12 +526,15 @@ Parameters
   data are sent, possibly confusing a dictionary-based compression
   algorithm.</t>
 
-<t>One type is NNTP simple responses and NNTP multi-line responses not
-  related to article header/body retrieval (e.g., CAPABILITIES, GROUP,
-  LISTGROUP, LAST, NEXT, STAT, DATE, NEWNEWS, NEWGROUPS, LIST, CHECK
-  <xref target="RFC4644"/>, etc).  These are highly compressible;
-  zlib using its least CPU-intensive setting compresses typical
-  responses to 25-40% of their original size.</t>
+<t>One type is NNTP responses not related to article header/body
+  retrieval.  Compressing NNTP simple responses (e.g., in answer to
+  CHECK <xref target="RFC4644"/>, DATE, GROUP, LAST, NEXT, STAT, etc.)
+  generally does not save many bytes, unless repeated several times
+  in the same NNTP session.  On the contrary, most of NNTP multi-line
+  responses (e.g., in answer to LIST, LISTGROUP, NEWGROUPS, NEWNEWS,
+  etc.) are highly compressible; zlib using its least CPU-intensive
+  setting compresses typical responses to 25-40% of their original
+  size.</t>
 
 <t>Another type is article headers (as retrieved via the HEAD, HDR,
   OVER, or ARTICLE commands).  These are equally compressible, and
@@ -544,7 +547,7 @@ Parameters
   quoted lines, etc. can often be compressed almost to zero.</t>
 
 <t>Finally, non-text article bodies or attachments (as retrieved
-  via the BODY and ARTICLE commands) are transmitted in encoded
+  via the BODY or ARTICLE commands) are transmitted in encoded
   form, usually Base64 <xref target="RFC4648"/>, UUencode <xref
   target="IEEE.1003-2.1992"/>, or yEnc <xref target="yEnc"/>.</t>
 
@@ -572,20 +575,19 @@ Parameters
 
 <t>When using the zlib library (see <xref target="RFC1951"/>), the
   functions deflateInit2(), deflate(), inflateInit2(), and inflate()
-  suffice to implement this extension.  The windowBits value MUST be
-  in the range -8 to -15 for deflateInit2(), or else it will use the
-  wrong format.  The windowBits value SHOULD be -15 for inflateInit2(),
-  or else it will not be able to decompress a stream with a larger
-  window size.  deflateParams() can be used to improve compression
-  rate and resource use.  In order to improve compression efficiency,
-  the Z_PARTIAL_FLUSH argument to deflate() should always be used to
-  flush data.  As far as DEFLATE is concerned, clearing the dictionary
-  never improves compression over the other flushes.  On the contrary,
-  having the 32kB dictionary from previous data, no matter how unrelated,
-  can only help.  If there are no matching strings in there, then it
-  is simply not referenced.  Using Z_FULL_FLUSH clears the dictionary,
-  and consequently always results in compression that is less effective
-  than a Z_PARTIAL_FLUSH.</t>
+  suffice to implement this extension.</t>
+
+<t>The windowBits value MUST be in the range -8 to -15 for
+  deflateInit2(), or else it will use the wrong format.  The windowBits
+  value SHOULD be -15 for inflateInit2(), or else it will not be able
+  to decompress a stream with a larger window size, thus reducing
+  interoperability.  deflateParams() can be used to improve compression
+  rate and resource use.  Regarding flush operations, the Z_FULL_FLUSH
+  argument to deflate() permits to clear the dictionary, but generally
+  results in compression that is less effective than performing a
+  Z_PARTIAL_FLUSH.  As a matter of fact, keeping the 32kB dictionary from
+  previous data, no matter how unrelated, can be of help (if there are
+  no matching strings in there, then it is simply not referenced).</t>
 
 <t>A server can improve downstream compression and the CPU efficiency
   both of the server and the client if it adjusts the compression
@@ -593,8 +595,7 @@ Parameters
   start and end of large non-text multi-line data blocks (before and
   after 'content-lines' in the definition of 'multi-line-data-block'
   in <xref target="RFC3977"/> Section 9.8).  It permits to avoid trying
-  to compress incompressible attachments.  Small multi-line data blocks
-  are best left alone.  A possible boundary is 5kB.</t>
+  to compress incompressible attachments.</t>
 
 <t>A very simple strategy is to change the compression level to 0 at
   the start of a multi-line data block provided the first two bytes
@@ -1010,7 +1011,7 @@ anchor="registrationext">
 <t>The authors would like to thank the following individuals for
   contributing their ideas and reviewing this specification: Mark Adler,
   Russ Allbery, St&#233;phane Bortzmeyer, Francis Dupont, &#193;ngel
-  Gonz&#225;lez, and Brian Peterson.</t>
+  Gonz&#225;lez, John Levine, and Brian Peterson.</t>
 
 <t>Special thanks to our Document Shepherd, Michael B&#228;uerle,
   who substantially helped in increasing the quality of this
@@ -1033,7 +1034,10 @@ anchor="registrationext">
   instead of "X-SHRINK".</t>
 <t>Separate <xref target="efficiency"/> and
   <xref target="deflatespecificities"/> because the latter uses normative
-  keywords.</t>
+  keywords.  Also improve and simplify the wording of these two Sections,
+  notably by distinguishing NNTP simple responses and NNTP multi-line
+  responses, and by not being categorical that Z_PARTIAL_FLUSH is the best
+  and only flush operation to use.</t>
 <t>Do not declare non-compliant an implementation that only supports COMPRESS
   when there is no security layer.</t>
 <t>Move <xref target="RFC1951"/> reference to normative, and <xref
