@@ -29,6 +29,8 @@
 'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5234.xml'>
 <!ENTITY rfc5246 PUBLIC ''
 'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml'>
+<!ENTITY rfc7405 PUBLIC ''
+'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7405.xml'>
 <!ENTITY rfc7457 PUBLIC ''
 'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7457.xml'>
 <!ENTITY rfc7525 PUBLIC ''
@@ -225,11 +227,11 @@ updates="4642"
   both before and after any use of the MODE READER command (<xref
   target="RFC3977"/> Section 5.3), with the same semantics.</t>
 
-<t>The COMPRESS capability label contains a whitespace-separated list
-  of available compression algorithms.  This document defines one
-  compression algorithm: DEFLATE.  This algorithm is mandatory to
-  implement and MUST be supported in order to advertise the COMPRESS
-  extension.</t>
+<t>The COMPRESS capability label contains a whitespace-separated
+  list of available compression algorithms.  This document defines
+  one compression algorithm: DEFLATE.  This algorithm is mandatory to
+  implement; it MUST be supported and listed in the advertisement of
+  the COMPRESS extension.</t>
 
 <t>Future extensions may add additional compression algorithms to this
   capability.  Unrecognized algorithms MUST be ignored by the
@@ -321,14 +323,14 @@ Parameters
   a compression layer is already active.</t>
 
 <t>In order to help mitigate leaking authentication credentials via for
-  instance a CRIME attack <xref target="CRIME"/>, authentication SHOULD
+  instance a CRIME attack <xref target="CRIME"/>, authentication MUST
   NOT be attempted when a compression layer is active.  Consequently,
-  a server SHOULD NOT return any arguments with the AUTHINFO capability
-  label (or SHOULD NOT advertise it at all) in response to a CAPABILITIES
-  command received from an unauthenticated client after a compression
-  layer is active, and such a client SHOULD NOT attempt to utilize any
-  AUTHINFO <xref target="RFC4643"/> commands.  It implies that a server
-  SHOULD reply with a 502 response code if a syntactically valid AUTHINFO
+  a server MUST either list the AUTHINFO capability with no arguments
+  or not advertise it at all, in response to a CAPABILITIES command
+  received from an unauthenticated client after a compression layer is
+  active, and such a client MUST NOT attempt to utilize any AUTHINFO
+  <xref target="RFC4643"/> commands.  It implies that a server MUST
+  reply with a 502 response code if a syntactically valid AUTHINFO
   command is received while a compression layer is already active.</t>
 
 <t>For DEFLATE <xref target="RFC1951"/> (as for many other compression
@@ -353,15 +355,15 @@ Parameters
 
 <t>When compression is active and either the client or the server
   receives invalid or corrupted compressed data, the receiving end
-  SHOULD immediately close the connection.  (Then the sending end will
-  in turn do the same.)</t>
+  immediately closes the connection, in response to which the sending
+  end will do the same.</t>
 
 </section> <!-- description -->
 
 
 <section title="Examples" anchor="examples">
 
-<t>Example of layering TLS and NNTP compression:</t>
+<t>Example of layering a TLS security layer and NNTP compression:</t>
 
 <figure><artwork>
    [C] CAPABILITIES
@@ -400,6 +402,13 @@ Parameters
    [C] COMPRESS DEFLATE
    [S] 206 Compression active
    [Henceforth, all traffic is compressed before being encrypted]
+   [C] CAPABILITIES
+   [S] 101 Capability list:
+   [S] VERSION 2
+   [S] READER
+   [S] POST
+   [S] LIST ACTIVE NEWSGROUPS
+   [S] .
 </artwork></figure>
 
 <t>Example of a server failing to activate compression:</t>
@@ -609,11 +618,12 @@ Parameters
 <section title="Augmented BNF Syntax for the COMPRESS Extension"
 anchor="ABNF">
 
-<t>This section describes the formal syntax of the COMPRESS extension using
-  ABNF <xref target="RFC5234"/>.  It extends the syntax in Section 9
-  of <xref target="RFC3977"/>, and non-terminals not defined in this
-  document are defined there.  The <xref target="RFC3977"/> ABNF should
-  be imported first, before attempting to validate these rules.</t>
+<t>This section describes the formal syntax of the COMPRESS extension
+  using ABNF <xref target="RFC7405"/> <xref target="RFC5234"/>.
+  It extends the syntax in Section 9 of <xref target="RFC3977"/>,
+  and non-terminals not defined in this document are defined there.
+  The <xref target="RFC3977"/> ABNF should be imported first, before
+  attempting to validate these rules.</t>
 
 <section title="Commands" anchor="commands">
 
@@ -646,8 +656,8 @@ anchor="ABNF">
 <section title="General Non-terminals" anchor="non-terminals">
 
 <figure>
-<artwork type="abnf">
-  algorithm = "DEFLATE" / 1*20alg-char
+<artwork>
+  algorithm = %s"DEFLATE" / 1*20alg-char  ; case-sensitive
   alg-char = UPPER / DIGIT / "-" / "_"
 </artwork>
 </figure>
@@ -659,10 +669,8 @@ anchor="ABNF">
 
 <section title="Summary of Response Codes" anchor="respcodes">
 
-<t>This section contains a list of each new response code defined in
-  this document and indicates whether it is multi-line, which commands
-  can generate it, what arguments it has, and what its meaning
-  is.</t>
+<t>This section defines the following new response code.  It is not
+  multi-line and has no arguments.</t>
 
 <figure>
 <artwork>
@@ -703,7 +711,7 @@ Response code 206
   say it begins the TLS negotiation immediately upon connection on a
   separate port dedicated to NNTP over TLS.</t>
 
-<t>NNTP commands other than AUTHINFO are not believed to divulgate
+<t>NNTP commands other than AUTHINFO are not believed to divulge
   confidential information as long as only public Netnews newsgroups
   and articles are accessed.  That is why this specification only
   adds a restriction to the use of AUTHINFO when a compression layer
@@ -711,13 +719,18 @@ Response code 206
   newsgroups, special care is needed: implementations SHOULD NOT
   compress confidential data together with public data when a TLS <xref
   target="RFC5246"/> or SASL <xref target="RFC4422"/> security layer
-  is active, for the same reasons as mentioned above in this Section.</t>
+  is active.  As a matter of fact, adversaries that observe the length
+  of the compressed data might be able to derive information about it,
+  when public data (that adversaries know is read) and confidential
+  data are compressed in the same compress session.</t>
 
-<t>Additionally, implementations MAY ensure that the contents of two
-  distinct confidential articles are not compressed together.  This can
-  be achieved for instance with DEFLATE by clearing the compression
-  dictionary each time a confidential article is sent.  More complex
-  implementations are of course possible, and encouraged.</t>
+<t>Additionally, it is preferable not to compress the contents of
+  two distinct confidential articles together if it can be avoided,
+  as adversaries might be able to derive information about them (for
+  instance if they have a few header fields or body lines in common).
+  This can be achieved for instance with DEFLATE by clearing the
+  compression dictionary each time a confidential article is sent.  More
+  complex implementations are of course possible, and encouraged.</t>
 
 <t>Implementations are encouraged to unconditionally allow compression
   when no security layer is active, and to support an option to enable or
@@ -758,16 +771,20 @@ Response code 206
   NOT be used because it is difficult to achieve interoperability
   with them.</t>
 
-<t>A server MUST NOT send different response codes to COMPRESS
-  in response to the availability or use of a private compression
-  algorithm.</t>
+<t>The 206, 403, and 502 response codes that a news server answers to
+   the COMPRESS command using a private compression algorithm MUST have
+   the same meaning as the one documented in <xref target="compresscmd"/>
+   of this document.</t>
 
 <t>The procedure detailed in <xref target="regproc"/> is to be used
   for registration of a value naming a specific individual compression
   algorithm.</t>
 
 <t>Any name that conforms to the syntax of an NNTP compression algorithm
-  name (<xref target="non-terminals"/>) can be used.</t>
+  name (<xref target="non-terminals"/>) can be used.  Especially, NNTP
+  compression algorithms are named by strings, from 1 to 20 characters
+  in length, consisting of upper-case letters, digits, hyphens, and/or
+  underscores.</t>
 
 <t>Comments may be included in the registry as discussed in
   <xref target="regcomments"/> and may be changed as discussed in
@@ -973,6 +990,7 @@ anchor="registrationext">
 &rfc3977;
 &rfc5226;
 &rfc5234;
+&rfc7405;
 </references> <!-- normative -->
 
 <references title="Informative References">
@@ -1040,7 +1058,7 @@ anchor="registrationext">
 <t>The authors would like to thank the following individuals for
   contributing their ideas and reviewing this specification: Mark Adler,
   Russ Allbery, St&#233;phane Bortzmeyer, Francis Dupont, &#193;ngel
-  Gonz&#225;lez, John Levine, and Brian Peterson.</t>
+  Gonz&#225;lez, Barry Leiba, John Levine, and Brian Peterson.</t>
 
 <t>Special thanks to our Document Shepherd, Michael B&#228;uerle,
   who substantially helped in increasing the quality of this
@@ -1072,9 +1090,13 @@ anchor="registrationext">
 <t>Move <xref target="RFC1951"/> reference to normative, and <xref
   target="RFC4642"/> reference to informative.</t>
 <t>Explain why STARTTLS is not allowed after COMPRESS.</t>
+<t>Improve security by saying that authentication MUST NOT be attempted after
+  COMPRESS has been successfully used.</t>
 <t>Mention that using unregistered algorithms decrease interoperability.</t>
 <t>Mention the exact contents of the IANA registrations asked by this
   document.</t>
+<t>NNTP compression algorithm names really are case-sensitive.  Update ABNF
+  syntax accordingly.</t>
 <t>Minor other wording improvements.</t>
 </list></t>
 </section>
