@@ -152,12 +152,12 @@ updates="4642"
 
 <section title="About TLS-level Compression" anchor="tlslevel">
 
-<t>Though data compression is made possible via the use of TLS with
-  NNTP <xref target="RFC4642"/>, the best current practice is to
-  disable TLS-level compression as explained in Section 3.3 of <xref
-  target="RFC7525"/>.  The COMPRESS command will permit to keep the
-  compression facility in NNTP and control when it is available during
-  a connection.</t>
+<t>Though lossless data compression is already possible via the use of
+  TLS with NNTP <xref target="RFC4642"/>, the best current practice
+  is to disable TLS-level compression as explained in Section 3.3 of
+  <xref target="RFC7525"/>.  The COMPRESS command will permit to keep
+  the compression facility in NNTP, and control when it is available
+  during a connection.</t>
 
 <t>Compared to TLS-level compression
   <xref target="RFC3749"/>, NNTP COMPRESS has the following
@@ -211,8 +211,8 @@ updates="4642"
 
 <section title="The COMPRESS Extension" anchor="compressext">
 
-<t>The COMPRESS extension is used to enable data compression on an
-  NNTP connection.</t>
+<t>The COMPRESS extension is used to enable lossless data compression
+  on an NNTP connection.</t>
 
 <t>This extension provides a new COMPRESS command and has capability
   label COMPRESS.</t>
@@ -222,10 +222,10 @@ updates="4642"
 <t>A server supporting the COMPRESS command as defined in this document
   will advertise the "COMPRESS" capability label in response to the
   CAPABILITIES command (<xref target="RFC3977"/> Section 5.2).  However,
-  this capability MUST NOT be advertised once a compression layer
-  is active (see Section 2.2.2).  This capability MAY be advertised
-  both before and after any use of the MODE READER command (<xref
-  target="RFC3977"/> Section 5.3), with the same semantics.</t>
+  this capability MUST NOT be advertised once a compression layer is
+  active (see <xref target="description"/>).  This capability MAY be
+  advertised both before and after any use of the MODE READER command
+  (<xref target="RFC3977"/> Section 5.3), with the same semantics.</t>
 
 <t>The COMPRESS capability label contains a whitespace-separated
   list of available compression algorithms.  This document defines
@@ -236,11 +236,6 @@ updates="4642"
 <t>Future extensions may add additional compression algorithms to this
   capability.  Unrecognized algorithms MUST be ignored by the
   client.</t>
-
-<t>As the COMPRESS command is related to security because it can
-  weaken encryption, cached results of CAPABILITIES from a previous
-  session MUST NOT be relied on, as per Section 12.6 of <xref
-  target="RFC3977"/>.</t>
 
 <t>Example:</t>
 
@@ -256,6 +251,11 @@ updates="4642"
    [S] .
 </artwork>
 </figure>
+
+<t>As the COMPRESS command is related to security because it can
+  weaken encryption, cached results of CAPABILITIES from a previous
+  session MUST NOT be relied on, as per Section 12.6 of <xref
+  target="RFC3977"/>.</t>
 
 </section> <!-- advertising -->
 
@@ -288,7 +288,7 @@ Parameters
 
 <t>The COMPRESS command instructs the server to use the named
   compression algorithm ("DEFLATE" is the only one defined in this
-  document) for all commands and/or responses after COMPRESS.</t>
+  document) for all commands and responses after COMPRESS.</t>
 
 <t>The client MUST NOT send any further commands until it has seen the
   result of COMPRESS.</t>
@@ -311,10 +311,10 @@ Parameters
 
 <t>Both the client and the server MUST know if there is a compression
   layer active (for instance via the previous use of the COMPRESS
-  command or the negotiation of a TLS-level compression <xref
+  command or the negotiation of a TLS-level compression method <xref
   target="RFC3749"/>).  A client MUST NOT attempt to activate compression
   (for instance via the COMPRESS command) or negotiate a TLS security
-  layer (because STARTTLS <xref target="RFC4642"/> may activate a
+  layer (because STARTTLS <xref target="RFC4642"/> may activate
   TLS-level compression) if a compression layer is already active.
   A server MUST NOT return the COMPRESS or STARTTLS capability labels
   in response to a CAPABILITIES command received after a compression
@@ -322,36 +322,42 @@ Parameters
   a syntactically valid COMPRESS or STARTTLS command is received while
   a compression layer is already active.</t>
 
-<t>In order to help mitigate leaking authentication credentials via for
-  instance a CRIME attack <xref target="CRIME"/>, authentication MUST
-  NOT be attempted when a compression layer is active.  Consequently,
-  a server MUST either list the AUTHINFO capability with no arguments
-  or not advertise it at all, in response to a CAPABILITIES command
-  received from an unauthenticated client after a compression layer is
-  active, and such a client MUST NOT attempt to utilize any AUTHINFO
-  <xref target="RFC4643"/> commands.  It implies that a server MUST
-  reply with a 502 response code if a syntactically valid AUTHINFO
-  command is received while a compression layer is already active.</t>
+<t>In order to help mitigate leaking authentication credentials via
+  for instance a CRIME attack <xref target="CRIME"/>, authentication
+  MUST NOT be attempted after a successful use of the COMPRESS command.
+  Consequently, a server MUST either list the AUTHINFO capability with
+  no arguments or not advertise it at all, in response to a CAPABILITIES
+  command received from an unauthenticated client after a successful
+  use of the COMPRESS command, and such a client MUST NOT attempt to
+  utilize any AUTHINFO <xref target="RFC4643"/> commands.  It implies
+  that a server MUST reply with a 502 response code if a syntactically
+  valid AUTHINFO command is received after a successful use of the
+  COMPRESS command.  (Note that this specification does not change
+  the behaviour of AUTHINFO as described in <xref target="RFC4643"/>
+  independently of TLS-level compression.  Authentication is therefore
+  still allowed, even though TLS-level compression is active.)</t>
 
 <t>For DEFLATE <xref target="RFC1951"/> (as for many other compression
-  algorithms), the compressor can trade speed against quality.  The
-  decompressor MUST automatically adjust to the parameters selected by
-  the sender.  Consequently, the client and server are both free to pick
-  the best reasonable rate of compression for the data they send.</t>
+  algorithms), the sending compressor can trade speed against compression
+  ratio.  The receiving decompressor MUST automatically adjust to the
+  parameters selected by the sender.  Consequently, the client and server
+  are both free to pick the best reasonable rate of compression for the
+  data they send.  Besides, all data that was submitted for compression
+  MUST be included in the compressed output, and appropriately flushed
+  so as to ensure that the receiving decompressor can completely
+  decompress it.</t>
 
-<t>When COMPRESS is combined with TLS <xref target="RFC5246"/>
-  or SASL <xref target="RFC4422"/> security layers, the processing
-  order of the three layers MUST be first COMPRESS, then SASL, and
-  finally TLS.  That is, before data is transmitted, it is first
-  compressed.  Second, if a SASL security layer has been negotiated,
-  the compressed data is then signed and/or encrypted accordingly.
-  Third, if a TLS security layer has been negotiated, the data from
-  the previous step is signed and/or encrypted accordingly.  When
-  receiving data, the processing order MUST be reversed.  This ensures
-  that before sending, data is compressed before it is encrypted,
-  independent of the order in which the client issues the COMPRESS,
-  AUTHINFO SASL <xref target="RFC4643"/>, and STARTTLS
-  <xref target="RFC4642"/> commands.</t>
+<t>When COMPRESS is combined with TLS <xref target="RFC5246"/> or SASL
+  <xref target="RFC4422"/> security layers, the processing order of
+  the three layers MUST be first COMPRESS, then SASL, and finally TLS.
+  That is, before data is transmitted, it is first compressed.  Second,
+  if a SASL security layer has been negotiated, the compressed data is
+  then signed and/or encrypted accordingly.  Third, if a TLS security
+  layer has been negotiated, the data from the previous step is signed
+  and/or encrypted accordingly (with a possible additional TLS-level
+  compression).  When receiving data, the processing order MUST
+  be reversed.  This ensures that before sending, data is compressed
+  before it is encrypted.</t>
 
 <t>When compression is active and either the client or the server
   receives invalid or corrupted compressed data, the receiving end
@@ -545,19 +551,19 @@ Parameters
   setting compresses typical responses to 25-40% of their original
   size.</t>
 
-<t>Another type is article headers (as retrieved via the HEAD, HDR,
-  OVER, or ARTICLE commands).  These are equally compressible, and
-  benefit from using the same dictionary as the NNTP responses.</t>
+<t>Another type is article headers (as retrieved for instance via the
+  HEAD, HDR, OVER, or ARTICLE commands).  These are equally compressible,
+  and benefit from using the same dictionary as the NNTP responses.</t>
 
-<t>A third type is article body text (as retrieved via the BODY or
-  ARTICLE commands).  Text is usually fairly short and includes much
-  ASCII, so the same compression dictionary will do a good job here, too.
-  When multiple messages in the same thread are read at the same time,
-  quoted lines, etc. can often be compressed almost to zero.</t>
+<t>A third type is article body text (as retrieved for instance via the
+  BODY or ARTICLE commands).  Text is usually fairly short and includes
+  much ASCII, so the same compression dictionary will do a good job here,
+  too.  When multiple messages in the same thread are read at the same
+  time, quoted lines, etc. can often be compressed almost to zero.</t>
 
 <t>Finally, non-text article bodies or attachments (as retrieved
-  via the BODY or ARTICLE commands) are transmitted in encoded
-  form, usually Base64 <xref target="RFC4648"/>, UUencode <xref
+  for instance via the BODY or ARTICLE commands) are transmitted in
+  encoded form, usually Base64 <xref target="RFC4648"/>, UUencode <xref
   target="IEEE.1003-2.1992"/>, or yEnc <xref target="yEnc"/>.</t>
 
 <t>When already compressed articles or attachments are retrieved, a
@@ -569,10 +575,10 @@ Parameters
 
 <t>When attachments are retrieved in Base64 or UUencode form, the
   Huffman coding usually compresses those to approximatively only 75%
-  of their encoding size.  8-bit compression algorithms such as DEFLATE
-  work well on 8-bit file formats; however, both Base64 and UUencode
-  transform a file into something resembling 6-bit bytes, hiding most
-  of the 8-bit file format from the compressor.</t>
+  of their encoding size. &nbsp;8-bit compression algorithms such
+  as DEFLATE work well on 8-bit file formats; however, both Base64
+  and UUencode transform a file into something resembling 6-bit bytes,
+  hiding most of the 8-bit file format from the compressor.</t>
 
 <t>On the other end, attachments encoded using a compression algorithm
   that retains the full 8-bit spectrum, like yEnc, are much more likely
@@ -590,9 +596,9 @@ Parameters
   deflateInit2(), or else it will use the wrong format.  The windowBits
   value SHOULD be -15 for inflateInit2(), or else it will not be able
   to decompress a stream with a larger window size, thus reducing
-  interoperability.  deflateParams() can be used to improve compression
+  interoperability. &nbsp;deflateParams() can be used to improve compression
   rate and resource use.  Regarding flush operations, the Z_FULL_FLUSH
-  argument to deflate() permits to clear the dictionary, but generally
+  argument to deflate() permits to clear the dictionary, which generally
   results in compression that is less effective than performing a
   Z_PARTIAL_FLUSH.  As a matter of fact, keeping the 32kB dictionary from
   previous data, no matter how unrelated, can be of help (if there are
@@ -606,11 +612,11 @@ Parameters
   in <xref target="RFC3977"/> Section 9.8).  It permits to avoid trying
   to compress incompressible attachments.</t>
 
-<t>A very simple strategy is to change the compression level to 0 at
-  the start of a multi-line data block provided the first two bytes
-  are either 0x1F 0x8B (as in deflate-compressed files) or 0xFF 0xD8
-  (JPEG), and to keep it at 1-5 the rest of the time.  More complex
-  strategies are of course possible, and encouraged.</t>
+<t>A very simple strategy is to change the compression level to 0 at the
+  start of an incompressible multi-line data block, for instance when
+  encoded using yEnc <xref target="yEnc"/>, and to keep it at 1-5 the
+  rest of the time.  More complex strategies are of course possible,
+  and encouraged.</t>
 
 </section> <!-- deflatespecificities -->
 
@@ -702,27 +708,26 @@ Response code 206
 
 <t>In order to help mitigate leaking authentication credentials, this
   document states in <xref target="description"/> that authentication
-  SHOULD NOT be attempted when a compression layer is active.
-  Therefore, when a client wants to authenticate, compress data,
-  and negotiate a TLS security layer (without TLS-level compression)
-  in the same NNTP connection, it SHOULD use the STARTTLS, AUTHINFO,
-  and COMPRESS commands in that order.  Of course instead of using
-  the STARTTLS command, a client can also use implicit TLS, that is to
-  say it begins the TLS negotiation immediately upon connection on a
-  separate port dedicated to NNTP over TLS.</t>
+  MUST NOT be attempted after a successful use of COMPRESS.  Therefore,
+  when a client wants to authenticate, compress data, and negotiate a
+  TLS security layer (without TLS-level compression) in the same NNTP
+  connection, it MUST use the STARTTLS, AUTHINFO, and COMPRESS commands
+  in that order.  Of course, instead of using the STARTTLS command,
+  a client can also use implicit TLS, that is to say it begins the TLS
+  negotiation immediately upon connection on a separate port dedicated
+  to NNTP over TLS.</t>
 
 <t>NNTP commands other than AUTHINFO are not believed to divulge
-  confidential information as long as only public Netnews newsgroups
-  and articles are accessed.  That is why this specification only
-  adds a restriction to the use of AUTHINFO when a compression layer
-  is active.  In case confidential articles are accessed in private
-  newsgroups, special care is needed: implementations SHOULD NOT
-  compress confidential data together with public data when a TLS <xref
-  target="RFC5246"/> or SASL <xref target="RFC4422"/> security layer
-  is active.  As a matter of fact, adversaries that observe the length
-  of the compressed data might be able to derive information about it,
-  when public data (that adversaries know is read) and confidential
-  data are compressed in the same compress session.</t>
+  confidential information as long as only public Netnews newsgroups and
+  articles are accessed.  That is why this specification only prohibits
+  the use of AUTHINFO after COMPRESS.  In case confidential articles are
+  accessed in private newsgroups, special care is needed: implementations
+  SHOULD NOT compress confidential data together with public data when
+  a TLS <xref target="RFC5246"/> or SASL <xref target="RFC4422"/>
+  security layer is active.  As a matter of fact, adversaries that
+  observe the length of the compressed data might be able to derive
+  information about it, when public data (that adversaries know is read)
+  and confidential data are compressed in the same compress session.</t>
 
 <t>Additionally, it is preferable not to compress the contents of
   two distinct confidential articles together if it can be avoided,
@@ -736,7 +741,7 @@ Response code 206
   when no security layer is active, and to support an option to enable or
   disable compression when a security layer is active.  Such an option
   could for instance be with global scope or server/connection based.
-  Besides, as in general compression may weaken the confidentiality
+  Besides, as compression may in general weaken the confidentiality
   of a security layer, implementations SHOULD NOT automatically enable
   compression when a security layer is active unless the user explicitly
   enabled it with this knowledge.</t>
@@ -745,6 +750,12 @@ Response code 206
   data SHOULD ensure to state that these confidential data SHOULD
   NOT be compressed together with public data when a security layer
   is active.</t>
+
+<t>Last but not least, careful consideration should be given to
+  protections against implementation errors that introduce security risks
+  with regards to compression algorithms.  See for instance the part
+  of Section 6 of <xref target="RFC3749"/> about compression algorithms
+  that can occasionally expand, rather than compress, input data.</t>
 </section> <!-- security -->
 
 
@@ -892,7 +903,7 @@ anchor="registrationalg">
 <artwork>
    NNTP compression algorithm name: DEFLATE
 
-   Security considerations: See Section 6 of this document
+   Security considerations: See Section 7 of this document
 
    Published specification: This document
 
@@ -948,16 +959,16 @@ anchor="registrationext">
   COMPRESS command has been used successfully, the COMPRESS capability
   can no longer be advertised by CAPABILITIES.  Additionally, the
   STARTTLS and MODE-READER capabilities MUST NOT be advertised, and the
-  AUTHINFO capability label SHOULD either return no arguments or no longer
-  be advertised after successful execution of the COMPRESS command.</t>
+  AUTHINFO capability label MUST either be listed with no arguments or
+  not advertised at all after a successful execution of the COMPRESS
+  command.</t>
 <t>This extension does not cause any pre-existing command to produce a
   401, 480, or 483 response code.</t>
 <t>This extension is unaffected by any use of the MODE READER command;
   however, the MODE READER command MUST NOT be used in the same session
   following a successful execution of the COMPRESS command.</t>
-<t>The STARTTLS command MUST NOT be used, and the AUTHINFO command SHOULD
-  NOT be used, in the same session following a successful execution of
-  the COMPRESS command.</t>
+<t>The STARTTLS and AUTHINFO commands MUST NOT be used in the same
+  session following a successful execution of the COMPRESS command.</t>
 <t>Published Specification: This document.</t>
 <t>Contact for Further Information: Authors of this document.</t>
 <t>Change Controller: IESG &lt;iesg@ietf.org&gt;.</t>
@@ -1052,7 +1063,7 @@ anchor="registrationext">
 <section title="Acknowledgments" anchor="acknowledgments">
 
 <t>This document draws heavily on ideas in <xref target="RFC4978"/>
-  by Arnt Gulbrandsen and a large portion of this text was borrowed
+  by Arnt Gulbrandsen; a large portion of this text was borrowed
   from that specification.</t>
 
 <t>The authors would like to thank the following individuals for
@@ -1060,9 +1071,8 @@ anchor="registrationext">
   Russ Allbery, St&#233;phane Bortzmeyer, Francis Dupont, &#193;ngel
   Gonz&#225;lez, Barry Leiba, John Levine, and Brian Peterson.</t>
 
-<t>Special thanks to our Document Shepherd, Michael B&#228;uerle,
-  who substantially helped in increasing the quality of this
-  specification.</t>
+<t>Special thanks to our Document Shepherd, Michael B&#228;uerle, who
+  significantly helped to increase the quality of this specification.</t>
 
 <t>Many thanks to the Responsible Area Director, Alexey Melnikov,
   for reviewing and sponsoring this document.</t>
@@ -1090,8 +1100,13 @@ anchor="registrationext">
 <t>Move <xref target="RFC1951"/> reference to normative, and <xref
   target="RFC4642"/> reference to informative.</t>
 <t>Explain why STARTTLS is not allowed after COMPRESS.</t>
-<t>Improve security by saying that authentication MUST NOT be attempted after
-  COMPRESS has been successfully used.</t>
+<t>Improve security by stating that authentication MUST NOT be attempted after
+  COMPRESS has been successfully executed.  Do not change, though, the
+  behaviour of AUTHINFO as described in <xref target="RFC4643"/>, allowing
+  authentication even though TLS-level compression is active.</t>
+<t>Require that all data that was submitted for compression MUST be included
+  in the compressed output, and appropriately flushed.</t>
+<t>Mention possible security risks with regards to compression algorithms.</t>
 <t>Mention that using unregistered algorithms decrease interoperability.</t>
 <t>Mention the exact contents of the IANA registrations asked by this
   document.</t>
