@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY rfc1951 PUBLIC ''
@@ -40,15 +40,11 @@
 ]>
 <?rfc toc="yes" ?>
 <?rfc symrefs="yes" ?>
-<?rfc sortrefs="yes"?>
+<?rfc sortrefs="yes" ?>
 <?rfc strict="yes" ?>
 <?rfc rfcedstyle="yes" ?>
 <rfc category="std" ipr="trust200902"
-     docName="draft-murchison-nntp-compress-05">
-<!--
-ipr="full3978"
-updates="4642"
--->
+     docName="draft-murchison-nntp-compress-06">
 
 <front>
 <title abbrev="NNTP Extension for Compression">
@@ -60,7 +56,6 @@ updates="4642"
 <address>
 <postal>
 <street>5000 Forbes Avenue</street>
-<!-- <street>Cyert Hall 285</street>-->
 <city>Pittsburgh</city> <region>PA</region>
 <code>15213</code> <country>USA</country>
 </postal>
@@ -83,7 +78,7 @@ updates="4642"
 </address>
 </author>
 
-<date month="June" year="2016"/>
+<date month="October" year="2016"/>
 
 <area>Applications</area>
 <workgroup>Independent Submission</workgroup>
@@ -783,9 +778,9 @@ Response code 206
   with them.</t>
 
 <t>The 206, 403, and 502 response codes that a news server answers to
-   the COMPRESS command using a private compression algorithm MUST have
-   the same meaning as the one documented in <xref target="compresscmd"/>
-   of this document.</t>
+  the COMPRESS command using a private compression algorithm MUST have
+  the same meaning as the one documented in <xref target="compresscmd"/>
+  of this document.</t>
 
 <t>The procedure detailed in <xref target="regproc"/> is to be used
   for registration of a value naming a specific individual compression
