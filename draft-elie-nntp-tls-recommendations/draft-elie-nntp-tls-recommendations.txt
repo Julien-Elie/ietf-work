@@ -2,15 +2,15 @@
 
 
 Independent Submission                                           J. Elie
-Internet-Draft                                            August 5, 2016
+Internet-Draft                                         December 21, 2016
 Updates: 4642 (if approved)
 Intended status: Standards Track
-Expires: February 6, 2017
+Expires: June 24, 2017
 
 
                  Use of Transport Layer Security (TLS)
               in the Network News Transfer Protocol (NNTP)
-                 draft-elie-nntp-tls-recommendations-01
+                 draft-elie-nntp-tls-recommendations-02
 
 Abstract
 
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 6, 2017.
+   This Internet-Draft will expire on June 24, 2017.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Elie                    Expires February 6, 2017                [Page 1]
+Elie                      Expires June 24, 2017                 [Page 1]
 
-Internet-Draft             Use of TLS in NNTP                August 2016
+Internet-Draft             Use of TLS in NNTP              December 2016
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -63,25 +63,32 @@ Internet-Draft             Use of TLS in NNTP                August 2016
 Table of Contents
 
    1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
-     1.1.  Conventions Used in This Document  . . . . . . . . . . . .  4
-     1.2.  Author's Note  . . . . . . . . . . . . . . . . . . . . . .  4
-   2.  Recommendations  . . . . . . . . . . . . . . . . . . . . . . .  4
-     2.1.  Compression  . . . . . . . . . . . . . . . . . . . . . . .  4
-     2.2.  Protocol Versions and Cipher Suites  . . . . . . . . . . .  4
-     2.3.  Authenticated Connections  . . . . . . . . . . . . . . . .  5
-     2.4.  Human Factors  . . . . . . . . . . . . . . . . . . . . . .  5
-   3.  Security Considerations  . . . . . . . . . . . . . . . . . . .  6
-   4.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  6
-   5.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  7
-     5.1.  Normative References . . . . . . . . . . . . . . . . . . .  7
-     5.2.  Informative References . . . . . . . . . . . . . . . . . .  7
-   Appendix A.  Changes to RFC 4642 . . . . . . . . . . . . . . . . .  8
-   Appendix B.  Implementation Notes  . . . . . . . . . . . . . . . .  9
-   Appendix C.  Acknowledgements  . . . . . . . . . . . . . . . . . .  9
-   Appendix D.  Document History (to be removed by RFC Editor
-                before publication) . . . . . . . . . . . . . . . . . 10
-     D.1.  Changes since -00  . . . . . . . . . . . . . . . . . . . . 10
-   Appendix E.  Issues to Address . . . . . . . . . . . . . . . . . . 10
+     1.1.  Conventions Used in This Document  . . . . . . . . . . . .  3
+     1.2.  Author's Note  . . . . . . . . . . . . . . . . . . . . . .  3
+   2.  Updates/Changes to RFC 4642  . . . . . . . . . . . . . . . . .  4
+   3.  Recommendations  . . . . . . . . . . . . . . . . . . . . . . .  4
+     3.1.  Compression  . . . . . . . . . . . . . . . . . . . . . . .  5
+     3.2.  Protocol Versions and Security Preferences . . . . . . . .  5
+     3.3.  Server Name Indication . . . . . . . . . . . . . . . . . .  5
+     3.4.  Authenticated Connections  . . . . . . . . . . . . . . . .  5
+     3.5.  Human Factors  . . . . . . . . . . . . . . . . . . . . . .  6
+   4.  Security Considerations  . . . . . . . . . . . . . . . . . . .  7
+   5.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  7
+   6.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  7
+     6.1.  Normative References . . . . . . . . . . . . . . . . . . .  7
+     6.2.  Informative References . . . . . . . . . . . . . . . . . .  8
+   Appendix A.  Detailed Changes to RFC 4642  . . . . . . . . . . . .  9
+     A.1.  Related to TLS-level Compression . . . . . . . . . . . . . 10
+     A.2.  Related to Strict TLS  . . . . . . . . . . . . . . . . . . 10
+     A.3.  Related to RC4 Cipher Suites . . . . . . . . . . . . . . . 11
+     A.4.  Related to Server Name Indication  . . . . . . . . . . . . 11
+     A.5.  Related to Other Obsolete Wording  . . . . . . . . . . . . 11
+   Appendix B.  Acknowledgments . . . . . . . . . . . . . . . . . . . 11
+   Appendix C.  Document History (to be removed by RFC Editor
+                before publication) . . . . . . . . . . . . . . . . . 11
+     C.1.  Changes since -01  . . . . . . . . . . . . . . . . . . . . 11
+     C.2.  Changes since -00  . . . . . . . . . . . . . . . . . . . . 12
+   Appendix D.  Issue to Address  . . . . . . . . . . . . . . . . . . 12
 
 
 
@@ -101,16 +108,9 @@ Table of Contents
 
 
 
-
-
-
-
-
-
-
-Elie                    Expires February 6, 2017                [Page 2]
+Elie                      Expires June 24, 2017                 [Page 2]
 
-Internet-Draft             Use of TLS in NNTP                August 2016
+Internet-Draft             Use of TLS in NNTP              December 2016
 
 
 1.  Introduction
@@ -132,42 +132,13 @@ Internet-Draft             Use of TLS in NNTP                August 2016
    suites, public key lengths, forward secrecy, and other aspects of
    using TLS with NNTP.
 
-   Notably, this document updates [RFC4642] in the following aspects:
+   [[Q1: For RFC Editor: Throughout the document, should [RFC7525] be
+   referenced as [BCP195] or [RFC7525]?]]
 
-   o  NNTP implementations and deployments SHOULD disable TLS-level
-      compression (Section 3.3 of [RFC7525]), thus no longer using TLS
-      as a means to provide data compression (contrary to Abstract and
-      Section 2.2.2 of [RFC4642]).
-
-   o  NNTP implementations and deployments SHOULD prefer strict TLS
-      configuration (Section 3.2 of [RFC7525]), that is to say they
-      SHOULD use TCP port 563 dedicated to NNTP over TLS, and begin the
-      TLS negotiation immediately upon connection (contrary to a dynamic
-      upgrade from unencrypted to TLS-protected traffic via the use of
-      the STARTTLS command, as Section 1 of [RFC4642] was encouraging).
-      For the same reasons as those given in Appendix A of [MUA-STS]
-      transposed to NNTP, strict TLS is the preferred way of using TLS
-      with NNTP.
-
-   o  NNTP implementations and deployments MUST NOT negotiate RC4 cipher
-      suites ([RFC7465]) contrary to Section 5 of [RFC4642] that
-      REQUIRED them to implement the TLS_RSA_WITH_RC4_128_MD5 cipher
-      suite so as to ensure that any two NNTP compliant implementations
-      can be configured to interoperate.  This document removes that
-      requirement, so that NNTP client and server implementations follow
-      the recommendations of Section 4.2.1 of [RFC7525] instead.
-
-
-
-
-
-
-
-
-Elie                    Expires February 6, 2017                [Page 3]
-
-Internet-Draft             Use of TLS in NNTP                August 2016
-
+   [[Q2: For RFC Editor: Throughout the document, the references to
+   [MUA-STS] (draft-ietf-uta-email-deep) and [NNTP-COMPRESS]
+   (draft-murchison-nntp-compress) should be referenced as their
+   equivalent [RFCxxxx], once published.]]
 
 1.1.  Conventions Used in This Document
 
@@ -181,24 +152,84 @@ Internet-Draft             Use of TLS in NNTP                August 2016
 
 1.2.  Author's Note
 
-   Please write the first letter of "Elie" and the penultimate letter of
-   "allee" with an acute accent wherever possible -- they are
-   respectively U+00C9 ("&#201;" in XML) and U+00E9 ("&#233;" in XML).
-   Also, the letters "ae" in "Baeuerle" should be written as an a-umlaut
-   (U+00E4, "&#228;" in XML).
+   Please write the first letter of "Elie" with an acute accent wherever
+   possible -- it is U+00C9 ("&#201;" in XML).  The third letter of
+   "Stephane" and the penultimate letter of "allee" similarly have an
+   acute accent (U+00E9, "&#233;" in XML).  Also, the letters "ae" in
+   "Baeuerle" should be written as an a-umlaut (U+00E4, "&#228;" in
+   XML).
 
-2.  Recommendations
+
+
+
+
+
+Elie                      Expires June 24, 2017                 [Page 3]
+
+Internet-Draft             Use of TLS in NNTP              December 2016
+
+
+2.  Updates/Changes to RFC 4642
+
+   This document updates [RFC4642] in the following aspects:
+
+   o  NNTP implementations and deployments SHOULD disable TLS-level
+      compression (Section 3.3 of [RFC7525]), thus no longer using TLS
+      as a means to provide data compression (contrary to Abstract and
+      Section 2.2.2 of [RFC4642]).
+
+   o  NNTP implementations and deployments SHOULD prefer strict TLS
+      configuration (Section 3.2 of [RFC7525]), that is to say they
+      SHOULD use a port dedicated to NNTP over TLS, and begin the TLS
+      negotiation immediately upon connection (contrary to a dynamic
+      upgrade from unencrypted to TLS-protected traffic via the use of
+      the STARTTLS command, as Section 1 of [RFC4642] was encouraging).
+      For the same reasons, transposed to NNTP, as those given in
+      Appendix A of [MUA-STS] (whose one of the authors was also one of
+      the authors of [RFC4642]), strict TLS is the preferred way of
+      using TLS with NNTP.
+
+   o  NNTP implementations and deployments MUST NOT negotiate RC4 cipher
+      suites ([RFC7465]) contrary to Section 5 of [RFC4642] that
+      REQUIRED them to implement the TLS_RSA_WITH_RC4_128_MD5 cipher
+      suite so as to ensure that any two NNTP compliant implementations
+      can be configured to interoperate.  This document removes that
+      requirement, so that NNTP client and server implementations follow
+      the recommendations given in Sections 4.2 and 4.2.1 of [RFC7525]
+      instead.  The mandatory-to-implement cipher(s) suite(s) depend on
+      the TLS protocol version.  For instance, when TLS 1.2 is used, the
+      TLS_RSA_WITH_AES_128_CBC_SHA cipher suite MUST be implemented
+      (Section 9 of [RFC5246]).
+
+   o  NNTP implementations and deployments MUST support the Server Name
+      Indication (SNI) extension defined in Section 3 of [RFC6066],
+      contrary to Section 2.2.2 of [RFC4642] for which it was only a
+      SHOULD.  All clients and servers known by multiple names MUST
+      support the SNI extension, in conformance with Section 3.6 of
+      [RFC7525].
+
+   Appendix A of this document gives detailed changes with regards to
+   the wording of [RFC4642].
+
+3.  Recommendations
 
    The best current practices documented in the "Recommendations for
    Secure Use of TLS and DTLS" [RFC7525] are included here by reference.
    Therefore, NNTP implementations and deployments compliant with this
-   document is REQUIRED to also comply with [RFC7525].
+   document are REQUIRED to also comply with [RFC7525].
+
+
+
+Elie                      Expires June 24, 2017                 [Page 4]
+
+Internet-Draft             Use of TLS in NNTP              December 2016
+
 
    Instead of repeating those recommendations here, this document mostly
    provides supplementary information regarding secure implementation
    and deployment of NNTP technologies.
 
-2.1.  Compression
+3.1.  Compression
 
    NNTP supports the use of the COMPRESS command, defined in Section 2.2
    of [NNTP-COMPRESS], to compress data between an NNTP client and
@@ -207,31 +238,32 @@ Internet-Draft             Use of TLS in NNTP                August 2016
    compression can be activated after authentication has completed, thus
    reducing the chances that authentication credentials can be leaked
    via for instance a CRIME attack, as described in Section 2.6 of
-   [CRIME]), this document neither encourages nor discourages use of
-   NNTP COMPRESS extension.
+   [CRIME]), this document neither encourages nor discourages the use of
+   the NNTP COMPRESS extension.
 
-2.2.  Protocol Versions and Cipher Suites
+3.2.  Protocol Versions and Security Preferences
 
    NNTP implementations of news servers are encouraged to support
    options to configure the minimal TLS protocol version to accept, and
-   which cipher suites, signature algorithms or named groups (like
-   elliptic curves) to use for incoming connections.  Additional options
-   can naturally also be supported.  The goal is to enable
+   which cipher suites, signature algorithms or groups (like elliptic
+   curves) to use for incoming connections.  Additional options can
+   naturally also be supported.  The goal is to enable administrators of
+   news servers to easily and quickly strengthen security, if need be
+   (for instance by rejecting cipher suites considered unsafe with
+   regards to local policy).
 
+   News clients may also support similar options, either configurable by
+   the user or enforced by the news reader.
 
+3.3.  Server Name Indication
 
-Elie                    Expires February 6, 2017                [Page 4]
-
-Internet-Draft             Use of TLS in NNTP                August 2016
+   The TLS extension for Server Name Indication (SNI) defined in Section
+   3 of [RFC6066] MUST be implemented by all news clients.  It also MUST
+   be implemented by any news server that is known by multiple names.
+   (Otherwise, it is not possible for a server with several hostnames to
+   present the correct certificate to the client.)
 
-
-   administrators of news servers to easily and quickly strengthen
-   security, if need be (for instance by rejecting cipher suites
-   considered unsafe with regards to local policy).  News clients may
-   also support similar options, either configurable by the user or
-   enforced by the news reader.
-
-2.3.  Authenticated Connections
+3.4.  Authenticated Connections
 
    [RFC4642] already provides recommendations and requirements for
    certificate validation in the context of checking the client or the
@@ -239,6 +271,15 @@ Internet-Draft             Use of TLS in NNTP                August 2016
 
    Wherever possible, it is best to prefer certificate-based
    authentication (along with SASL [RFC4422]), and ensure that:
+
+
+
+
+
+Elie                      Expires June 24, 2017                 [Page 5]
+
+Internet-Draft             Use of TLS in NNTP              December 2016
+
 
    o  Clients authenticate servers.
 
@@ -261,25 +302,18 @@ Internet-Draft             Use of TLS in NNTP                August 2016
    Diffie-Hellman mechanisms or using self-signed certificates, among
    others.
 
-   When an NNTP server receives a Netnews article, it MAY add a
+   Note: when an NNTP server receives a Netnews article, it MAY add a
    <diag-match> (Section 3.1.5 of [RFC5536]), which appears as "!!" in
    the Path header field of that article, to indicate that it verified
    the identity of the client or peer server.  This document encourages
    the construction of such Path header fields, as described in Section
    3.2.1 of [RFC5537].
 
-2.4.  Human Factors
+3.5.  Human Factors
 
    It is strongly encouraged that NNTP clients provide ways for end
    users (and that NNTP servers provide ways for administrators) to
    complete the following tasks:
-
-
-
-Elie                    Expires February 6, 2017                [Page 5]
-
-Internet-Draft             Use of TLS in NNTP                August 2016
-
 
    o  Determine if a given incoming or outgoing connection is encrypted
       using a security layer (either using TLS or an SASL mechanism that
@@ -295,13 +329,23 @@ Internet-Draft             Use of TLS in NNTP                August 2016
 
    o  Determine the cipher suite used to encrypt a connection.
 
+
+
+
+Elie                      Expires June 24, 2017                 [Page 6]
+
+Internet-Draft             Use of TLS in NNTP              December 2016
+
+
    o  Be warned if the certificate changes for a given server.
 
-   o  Be warned if a given server stops advertising the STARTTLS
-      capability label in response to the CAPABILITIES command (of
-      course when a security layer is not already in place) whereas it
-      advertised the STARTTLS capability label during the previous
-      connection.
+   o  When a security layer is not already in place, be warned if a
+      given server stops advertising the STARTTLS capability label in
+      response to the CAPABILITIES command (Section 2.1 of [RFC4642])
+      whereas it advertised the STARTTLS capability label during any
+      previous connection within a (possibly configurable) time frame.
+      (Otherwise, a human might not see the warning the first time, and
+      the warning would disappear immediately after that.)
 
    o  Be warned if a failure response to the STARTTLS command is
       received from the server whereas the STARTTLS capability label was
@@ -309,35 +353,25 @@ Internet-Draft             Use of TLS in NNTP                August 2016
 
    Note that the last two tasks cannot occur when strict TLS is used.
 
-3.  Security Considerations
+4.  Security Considerations
 
    Beyond the security considerations already described in [RFC4642] and
    [RFC7525], the author wishes to add the following caveat when not
    using strict TLS.
 
    NNTP servers need ensure that they are not vulnerable to the STARTTLS
-   command injection vulnerability (CERT vulnerability ID #555316).
-   Though this command MUST NOT be pipelined, an attacker could pipeline
-   it.  Therefore, NNTP servers MUST discard any NNTP command received
+   command injection vulnerability (Section 2.2 of [RFC7457]).  Though
+   this command MUST NOT be pipelined, an attacker could pipeline it.
+   Therefore, NNTP servers MUST discard any NNTP command received
    between the use of STARTTLS and the end of TLS negotiation.
 
-4.  IANA Considerations
+5.  IANA Considerations
 
    This document has no actions for IANA.
 
-5.  References
+6.  References
 
-
-
-
-
-
-Elie                    Expires February 6, 2017                [Page 6]
-
-Internet-Draft             Use of TLS in NNTP                August 2016
-
-
-5.1.  Normative References
+6.1.  Normative References
 
    [RFC2119]        Bradner, S., "Key words for use in RFCs to Indicate
                     Requirement Levels", BCP 14, RFC 2119, DOI 10.17487/
@@ -351,11 +385,29 @@ Internet-Draft             Use of TLS in NNTP                August 2016
 
    [RFC4642]        Murchison, K., Vinocur, J., and C. Newman, "Using
                     Transport Layer Security (TLS) with Network News
+
+
+
+Elie                      Expires June 24, 2017                 [Page 7]
+
+Internet-Draft             Use of TLS in NNTP              December 2016
+
+
                     Transfer Protocol (NNTP)", RFC 4642, DOI 10.17487/
                     RFC4642, October 2006,
                     <http://www.rfc-editor.org/info/rfc4642>.
 
-5.2.  Informative References
+   [RFC5246]        Dierks, T. and E. Rescorla, "The Transport Layer
+                    Security (TLS) Protocol Version 1.2", RFC 5246,
+                    DOI 10.17487/RFC5246, August 2008,
+                    <http://www.rfc-editor.org/info/rfc5246>.
+
+   [RFC6066]        Eastlake 3rd, D., "Transport Layer Security (TLS)
+                    Extensions: Extension Definitions", RFC 6066,
+                    DOI 10.17487/RFC6066, January 2011,
+                    <http://www.rfc-editor.org/info/rfc6066>.
+
+6.2.  Informative References
 
    [CRIME]          Rizzo, J. and T. Duong, "The CRIME Attack", Ekoparty
                     Security Conference, 2012.
@@ -365,12 +417,17 @@ Internet-Draft             Use of TLS in NNTP                August 2016
 
    [NNTP-COMPRESS]  Murchison, K. and J. Elie, "Network News Transfer
                     Protocol (NNTP) Extension for Compression",
-                    June 2016.
+                    October 2016.
 
    [RFC3749]        Hollenbeck, S., "Transport Layer Security Protocol
                     Compression Methods", RFC 3749, DOI 10.17487/
                     RFC3749, May 2004,
                     <http://www.rfc-editor.org/info/rfc3749>.
+
+   [RFC4301]        Kent, S. and K. Seo, "Security Architecture for the
+                    Internet Protocol", RFC 4301, DOI 10.17487/RFC4301,
+                    December 2005,
+                    <http://www.rfc-editor.org/info/rfc4301>.
 
    [RFC4422]        Melnikov, A., Ed. and K. Zeilenga, Ed., "Simple
                     Authentication and Security Layer (SASL)", RFC 4422,
@@ -382,21 +439,16 @@ Internet-Draft             Use of TLS in NNTP                August 2016
                     RFC 4643, DOI 10.17487/RFC4643, October 2006,
                     <http://www.rfc-editor.org/info/rfc4643>.
 
-   [RFC5246]        Dierks, T. and E. Rescorla, "The Transport Layer
-                    Security (TLS) Protocol Version 1.2", RFC 5246,
-                    DOI 10.17487/RFC5246, August 2008,
-
-
-
-Elie                    Expires February 6, 2017                [Page 7]
-
-Internet-Draft             Use of TLS in NNTP                August 2016
-
-
-                    <http://www.rfc-editor.org/info/rfc5246>.
-
    [RFC5386]        Williams, N. and M. Richardson, "Better-Than-Nothing
                     Security: An Unauthenticated Mode of IPsec",
+
+
+
+Elie                      Expires June 24, 2017                 [Page 8]
+
+Internet-Draft             Use of TLS in NNTP              December 2016
+
+
                     RFC 5386, DOI 10.17487/RFC5386, November 2008,
                     <http://www.rfc-editor.org/info/rfc5386>.
 
@@ -415,6 +467,12 @@ Internet-Draft             Use of TLS in NNTP                August 2016
                     RFC7258, May 2014,
                     <http://www.rfc-editor.org/info/rfc7258>.
 
+   [RFC7457]        Sheffer, Y., Holz, R., and P. Saint-Andre,
+                    "Summarizing Known Attacks on Transport Layer
+                    Security (TLS) and Datagram TLS (DTLS)", RFC 7457,
+                    DOI 10.17487/RFC7457, February 2015,
+                    <http://www.rfc-editor.org/info/rfc7457>.
+
    [RFC7465]        Popov, A., "Prohibiting RC4 Cipher Suites",
                     RFC 7465, DOI 10.17487/RFC7465, February 2015,
                     <http://www.rfc-editor.org/info/rfc7465>.
@@ -431,25 +489,39 @@ Internet-Draft             Use of TLS in NNTP                August 2016
                     RFC7590, June 2015,
                     <http://www.rfc-editor.org/info/rfc7590>.
 
-Appendix A.  Changes to RFC 4642
+Appendix A.  Detailed Changes to RFC 4642
 
    This section lists detailed changes this document applies to
    [RFC4642].
+
+
+
+
+
+
+
+Elie                      Expires June 24, 2017                 [Page 9]
+
+Internet-Draft             Use of TLS in NNTP              December 2016
+
+
+A.1.  Related to TLS-level Compression
 
    The second sentence in the Abstract of [RFC4642] is replaced with the
    following text:
 
       The primary goal is to provide encryption for single-link
       confidentiality purposes, but data integrity, and (optional)
-
-
-
-Elie                    Expires February 6, 2017                [Page 8]
-
-Internet-Draft             Use of TLS in NNTP                August 2016
-
-
       certificate-based peer entity authentication are also possible.
+
+   The second sentence of the first paragraph in Section 2.2.2 of
+   [RFC4642] is replaced with the following text:
+
+      The STARTTLS command is usually used to initiate session security,
+      although it can also be used for client and/or server certificate
+      authentication.
+
+A.2.  Related to Strict TLS
 
    The third and fourth paragraphs in Section 1 of [RFC4642] are
    replaced with the following text:
@@ -461,87 +533,145 @@ Internet-Draft             Use of TLS in NNTP                August 2016
       initial steps of an NNTP session.  This use of strict TLS on a
       separate port is the preferred way of using TLS with NNTP.
 
+      If a host wishes to offer separate servers for transit and reading
+      clients (Section 3.4.1 of [RFC3977]), TCP port 563 SHOULD be used
+      for strict TLS with the reading server, and an unused port of its
+      choice different than TCP port 433 SHOULD be used for strict TLS
+      with the transit server.  The ports used for strict TLS should be
+      clearly communicated to the clients, and specifically that no
+      plain-text communication occurs before the TLS session is
+      negotiated.
+
       As some existing implementations negotiate TLS via a dynamic
       upgrade from unencrypted to TLS-protected traffic during an NNTP
-      session, this specification formalizes the STARTTLS command in use
-      for that purpose.  However, as already mentioned above,
-      implementations SHOULD use strict TLS on a separate port.
+      session on well-known TCP ports 119 or 433, this specification
+      formalizes the STARTTLS command in use for that purpose.  However,
+      as already mentioned above, implementations SHOULD use strict TLS
+      on a separate port.
 
-   The second sentence of the first paragraph in Section 2.2.2 of
-   [RFC4642] is replaced with the following text:
+      Note: a common alternative to protect NNTP exchanges with transit
+      servers that do not implement TLS is the use of IPsec with
+      encryption [RFC4301].
 
-      The STARTTLS command is usually used to initiate session security,
-      although it can also be used for client and/or server certificate
-      authentication.
+
+
+
+Elie                      Expires June 24, 2017                [Page 10]
+
+Internet-Draft             Use of TLS in NNTP              December 2016
+
+
+A.3.  Related to RC4 Cipher Suites
 
    The third paragraph in Section 5 of [RFC4642] is removed.
    Consequently, NNTP no longer requires to implement any cipher suites,
-   other than those prescribed by TLS [RFC5246] and Section 4.2.1 of
-   [RFC7525].
+   other than those prescribed by TLS (Section 9 of [RFC5246]) and
+   Sections 4.2 and 4.2.1 of [RFC7525].
 
-Appendix B.  Implementation Notes
+A.4.  Related to Server Name Indication
 
-   Some governments enforce legislation prohibiting the export of strong
-   cryptographic technologies.  Nothing in this document ought to be
-   taken as advice to violate such prohibitions.
+   The last two sentences of the seventh paragraph in Section 2.2.2 of
+   [RFC4642] are removed.  Section 3.6 of [RFC7525] apply.
 
-Appendix C.  Acknowledgements
+A.5.  Related to Other Obsolete Wording
+
+   The first two sentences of the seventh paragraph in Section 2.2.2 of
+   [RFC4642] are removed.  There is no special requirement for NNTP with
+   regards to TLS Client Hello messages.  Section 7.4.1.2 and Appendix E
+   of [RFC5246] apply.
+
+Appendix B.  Acknowledgments
 
    This document draws heavily on ideas in [RFC7590] by Peter
-   Saint-Andre and Thijs Alkemade, and a large portion of this text was
+   Saint-Andre and Thijs Alkemade; a large portion of this text was
    borrowed from that specification.
 
    The author would like to thank the following individuals for
    contributing their ideas and support for writing this specification:
-   Michael Baeuerle, Richard Kettlewell, and Chris Newman.
+   Michael Baeuerle, Stephane Bortzmeyer, Sabahattin Gucukoglu, Richard
+   Kettlewell, Jouni Korhonen, David Eric Mandelberg, and Chris Newman.
 
+   Many thanks to the Responsible Area Director, Alexey Melnikov, for
+   reviewing and sponsoring this document.
 
-
-
-
-
-Elie                    Expires February 6, 2017                [Page 9]
-
-Internet-Draft             Use of TLS in NNTP                August 2016
-
-
-Appendix D.  Document History (to be removed by RFC Editor before
+Appendix C.  Document History (to be removed by RFC Editor before
              publication)
 
-D.1.  Changes since -00
+C.1.  Changes since -01
 
-   o  Clarify in the introduction of Section 2 that NNTP implementations
+   o  Take into account all the remarks sent during IETF Last Call.
+
+   o  Move the part about [RFC4642] from Introduction to a new dedicated
+      Section named "Updates/Changes to RFC 4642" so as to make the
+      document a bit more structured.
+
+   o  The warning about lack of STARTTLS is expanded in scope to say
+      "during any previous connection within a (possibly configurable)
+      time frame" instead of "during the previous connection".
+
+
+
+
+Elie                      Expires June 24, 2017                [Page 11]
+
+Internet-Draft             Use of TLS in NNTP              December 2016
+
+
+   o  Remove Appendix about export restrictions on crypto.  It is
+      useless since RFC 2804.
+
+   o  Add wording about the use of strict TLS for transit.  Mention the
+      use of a port other than 433 for strict TLS between two peers, and
+      add a note about a possible use of IPsec [RFC4301] for transit.
+      Do not only speak about port 563.
+
+   o  Explicitly mention the mandatory-to-implement cipher suite for TLS
+      1.2.
+
+   o  Do not keep the paragraph about TLS Client Hello messages and
+      Server Name Indication (SNI) in [RFC4642].  Support for SNI
+      [RFC6066] is now a MUST, and not a SHOULD.
+
+   o  Reference [RFC7457] for the STARTTLS command injection
+      vulnerability.
+
+   o  Add notes to RFC Editor to ask that [MUA-STS] and [NNTP-COMPRESS]
+      references be changed to their [RFCxxxx] form, once published, and
+      whether [BCP195] should be used instead of [RFC7525].
+
+   o  Move [RFC5246] (TLS) to a normative reference.
+
+   o  Minor other wording improvements.
+
+C.2.  Changes since -00
+
+   o  Clarify in the introduction of Section 3 that NNTP implementations
       compliant with this document are REQUIRED to also comply with
       [RFC7525].
 
-   o  Improve the wording of Section 2.2 to mention that configuration
+   o  Improve the wording of Section 3.2 to mention that configuration
       is primarily intended for news servers.  Also, be more consistent
       in the options to accept, and include signature algorithms and
       named groups.
 
-Appendix E.  Issues to Address
+Appendix D.  Issue to Address
 
-   o  Should the paragraph starting with "Servers MUST be able to
-      understand backwards-compatible TLS Client Hello messages" in
-      Section 2.2.2 of [RFC4642] remain as-is or should it be modernized
-      with another wording?  (And which one? or is it already done by
-      the reference to [RFC7525]?)
+   o  The paragraphs in Section 5 of [RFC4642] dealing with certificate
+      validation should be modernized in favour of RFC 6125.
 
-   o  Should the paragraphs in Section 5 of [RFC4642] dealing with how
-      the client checks the server hostname and the binding between the
-      identity of servers and the public keys presented be modernized?
-      (Obsolete them in favour of RFC 6125 for instance? or maybe
-      [RFC7525] is enough as it also points to RFC 6125)
 
-   o  Regarding peering between mode-switching news servers, should
-      something specific be added?  NNTP has port 119, and NNTP over TLS
-      has port 563.  NNSP has port 433 but no dedicated port for TLS.
-      Shouldn't a port for NNSP over TLS be registered?  Otherwise, both
-      reading and peering are supposed to use port 563, which may be
-      inconvenient.  We could then recommend the use of stunnel with TCP
-      wrappers, or an equivalent mechanism, listening to that new
-      separate port for mode-switching news servers that do not natively
-      support TLS for peering.
+
+
+
+
+
+
+
+
+Elie                      Expires June 24, 2017                [Page 12]
+
+Internet-Draft             Use of TLS in NNTP              December 2016
+
 
 Author's Address
 
@@ -556,5 +686,43 @@ Author's Address
 
 
 
-Elie                    Expires February 6, 2017               [Page 10]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Elie                      Expires June 24, 2017                [Page 13]
 
