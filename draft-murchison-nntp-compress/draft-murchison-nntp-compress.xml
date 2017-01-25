@@ -49,8 +49,10 @@
      submissionType="IETF" consensus="yes">
 
 <front>
+
+<!-- Force a line break in the title.  The line in XML cannot be wrapped. -->
 <title abbrev="NNTP Extension for Compression">
-  Network News Transfer Protocol (NNTP) Extension for Compression
+  Network News Transfer Protocol (NNTP)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Extension&nbsp;for&nbsp;Compression
 </title>
 
 <author initials="K." surname="Murchison" fullname="Kenneth Murchison">
@@ -101,6 +103,7 @@
   efficiently compressed between an NNTP client and server.</t>
 
 </abstract>
+
 </front>
 
 
@@ -967,7 +970,7 @@ anchor="registrationext">
 <t>Change Controller: IESG &lt;iesg@ietf.org&gt;</t>
 </list></t>
 
-<t>This registration appears as follows in the "NNTP Capability
+<t>This registration will appear as follows in the "NNTP Capability
   Labels" registry contained in the "Network News Transfer Protocol (NNTP)
   Parameters" registry:</t>
 
