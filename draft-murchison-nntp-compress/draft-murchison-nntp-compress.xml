@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY rfc1951 PUBLIC ''
 'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1951.xml'>
@@ -36,15 +37,13 @@
 <!ENTITY rfc7525 PUBLIC ''
 'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7525.xml'>
 ]>
+
 <?rfc toc="yes" ?>
 <?rfc symrefs="yes" ?>
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<!--
-<rfc category="std" ipr="trust200902"
-     docName="draft-murchison-nntp-compress-06">
--->
+
 <rfc number="8054" category="std" ipr="trust200902"
      submissionType="IETF" consensus="yes">
 
@@ -108,6 +107,7 @@
 
 
 <middle>
+
 <section title="Introduction" anchor="intro">
 
 <t>The goal of COMPRESS is to reduce the bandwidth usage of NNTP.</t>
@@ -161,9 +161,8 @@
   the compression facility in NNTP, and control when it is available
   during a connection.</t>
 
-<t>Compared to TLS-level compression
-  <xref target="RFC3749"/>, NNTP COMPRESS has the following
-  advantages:
+<t>Compared to TLS-level compression <xref target="RFC3749"/>,
+  NNTP COMPRESS has the following advantages:
 
 <list style="symbols">
 <t>COMPRESS can be implemented easily both by NNTP servers and
@@ -197,7 +196,9 @@
   initiator of the NNTP connection; the server is the other endpoint.</t>
 
 </section> <!-- conventions -->
+
 </section> <!-- intro -->
+
 
 <section title="The COMPRESS Extension" anchor="compressext">
 
@@ -249,7 +250,6 @@
 
 </section> <!-- advertising -->
 
-
 <section title="COMPRESS Command" anchor="compresscmd">
 
 <section title="Usage" anchor="usage">
@@ -273,7 +273,9 @@ Parameters
   algorithm = Name of compression algorithm (e.g., "DEFLATE")
 </artwork>
 </figure>
+
 </section> <!-- usage -->
+
 <section title="Description" anchor="description">
 
 <t>The COMPRESS command instructs the server to use the named
@@ -356,7 +358,6 @@ Parameters
   end will do the same.</t>
 
 </section> <!-- description -->
-
 
 <section title="Examples" anchor="examples">
 
@@ -512,6 +513,7 @@ Parameters
 
 </section> <!-- compressext -->
 
+
 <section title="Compression Efficiency" anchor="efficiency">
 
 <t>This section is informative, not normative.</t>
@@ -577,6 +579,7 @@ Parameters
 
 </section> <!-- efficiency -->
 
+
 <section title="DEFLATE Specificities" anchor="deflatespecificities">
 
 <t>When using the zlib library (see <xref target="RFC1951"/>), the
@@ -634,6 +637,7 @@ anchor="ABNF">
   compress-command = "COMPRESS" WS algorithm
 </artwork>
 </figure>
+
 </section> <!-- commands -->
 
 <section title="Capability Entries" anchor="capabilities">
@@ -648,6 +652,7 @@ anchor="ABNF">
   compress-capability = "COMPRESS" 1*(WS algorithm)
 </artwork>
 </figure>
+
 </section> <!-- capabilities -->
 
 <section title="General Non-terminals" anchor="non-terminals">
@@ -676,6 +681,7 @@ Response code 206
    Meaning: compression layer activated
 </artwork>
 </figure>
+
 </section> <!-- respcodes -->
 
 
@@ -989,7 +995,6 @@ anchor="registrationext">
 
 </middle>
 
-
 <back>
 <references title="Normative References">
 &rfc1951;
@@ -1021,10 +1026,10 @@ anchor="registrationext">
 <author>
 <organization>IEEE</organization>
 </author>
-<date year="2008" />
+<date year="2008"/>
 </front>
-<seriesInfo name="IEEE" value="Standard 1003.1-2008" />
-<seriesInfo name="DOI" value="10.1109/IEEESTD.2016.7582338" />
+<seriesInfo name="IEEE" value="Standard 1003.1-2008"/>
+<seriesInfo name="DOI" value="10.1109/IEEESTD.2016.7582338"/>
 </reference>
 
 <reference anchor="V42bis" target="http://www.itu.int/rec/T-REC-V.42bis">
@@ -1033,43 +1038,42 @@ anchor="registrationext">
   equipment (DCE) using error correction procedures</title>
 <author><organization abbrev="ITU">International Telecommunications
   Union</organization></author>
-<date month="January" year="1990" />
+<date month="January" year="1990"/>
 </front>
-<seriesInfo name="ITU-T Recommendation" value="V.42bis" />
+<seriesInfo name="ITU-T Recommendation" value="V.42bis"/>
 </reference>
 
 <reference anchor="MNP">
 <front>
 <title>The Complete Modem Reference</title>
-<author initials="G." surname="Held" fullname="Gilbert Held" />
-<date month="May" year="1994" />
+<author initials="G." surname="Held" fullname="Gilbert Held"/>
+<date month="May" year="1994"/>
 </front>
-<seriesInfo name="Second Edition," value="John Wiley &amp; Sons, Inc." />
+<seriesInfo name="Second Edition," value="John Wiley &amp; Sons, Inc."/>
 </reference>
 
 <reference anchor="CRIME">
 <front>
 <title>The CRIME Attack</title>
-<author initials="J." surname="Rizzo" fullname="Juliano Rizzo" />
-<author initials="T." surname="Duong" fullname="Thai Duong" />
-<date month="Ekoparty Security Conference," year="2012" />
+<author initials="J." surname="Rizzo" fullname="Juliano Rizzo"/>
+<author initials="T." surname="Duong" fullname="Thai Duong"/>
+<date month="Ekoparty Security Conference," year="2012"/>
 </front>
 </reference>
 
 <reference anchor="yEnc" target="http://www.yenc.org/">
 <front>
 <title>yEnc - Efficient encoding for Usenet and eMail</title>
-<author initials="J." surname="Helbing" fullname="J&#252;rgen Helbing" />
-<date month="March" year="2002" />
+<author initials="J." surname="Helbing" fullname="J&#252;rgen Helbing"/>
+<date month="March" year="2002"/>
 </front>
-<format type="TEXT" target="http://www.yenc.org/yenc-draft.1.3.txt" />
+<format type="TEXT" target="http://www.yenc.org/yenc-draft.1.3.txt"/>
 </reference>
 
 </references> <!-- informative -->
 
 
-<section title="Acknowledgments" anchor="acknowledgments">
-<!-- numbered="no" -->
+<section title="Acknowledgments" anchor="acknowledgments" numbered="no">
 
 <t>This document draws heavily on ideas in <xref target="RFC4978"/>
   by Arnt Gulbrandsen; a large portion of this text was borrowed
@@ -1089,6 +1093,7 @@ anchor="registrationext">
   for reviewing and sponsoring this document.</t>
 
 </section> <!-- acknowledgments -->
+
 
 <!--
 <section title="Document History (to be removed by RFC Editor before
@@ -1161,7 +1166,8 @@ anchor="registrationext">
 <t>Added an example of AUTHINFO command when compression is active.</t>
 <t>The LIST capability label was missing in the examples when READER
   was also advertised.</t>
-<t>Improved an example to send CAPABILITIES after successful authentication.</t>
+<t>Improved an example to send CAPABILITIES after successful
+  authentication.</t>
 <t>Mentioned that COMPRESS is related to security.  CAPABILITIES is therefore
   sent again after COMPRESS.</t>
 <t>Re-added discussion of attachments in binary form and incompressible
