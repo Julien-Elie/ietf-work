@@ -12,10 +12,10 @@ Datatracker](https://datatracker.ietf.org/doc/rfc8054/).
 
 ## Support
 
-If you have any question about this RFC, you may ask either via the [GitHub
-issue tracker](https://github.com/Julien-Elie/ietf-work), the [ietf-nntp
-mailing-list](https://lists.eyrie.org/mailman/listinfo/ietf-nntp) or the
-`news.software.nntp` newsgroup.
+If you have any question about this RFC, you may ask either via the
+[GitHub issue tracker](https://github.com/Julien-Elie/ietf-work/issues), the
+[ietf-nntp mailing-list](https://lists.eyrie.org/mailman/listinfo/ietf-nntp)
+or the `news.software.nntp` newsgroup.
 
 Errata can be submitted through the [RFC Editor web
 site](https://www.rfc-editor.org/errata.php).
