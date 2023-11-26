@@ -3,43 +3,43 @@
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY rfc3749 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3749.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3749.xml'>
 <!ENTITY rfc3977 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3977.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3977.xml'>
 <!ENTITY rfc4301 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4301.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4301.xml'>
 <!ENTITY rfc4422 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4422.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4422.xml'>
 <!ENTITY rfc4642 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4642.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4642.xml'>
 <!ENTITY rfc4643 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4643.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4643.xml'>
 <!ENTITY rfc5246 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml'>
 <!ENTITY rfc5280 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml'>
 <!ENTITY rfc5386 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5386.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5386.xml'>
 <!ENTITY rfc5536 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5536.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5536.xml'>
 <!ENTITY rfc5537 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5537.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5537.xml'>
 <!ENTITY rfc6066 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6066.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6066.xml'>
 <!ENTITY rfc6125 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6125.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6125.xml'>
 <!ENTITY rfc7258 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7258.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7258.xml'>
 <!ENTITY rfc7435 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7435.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7435.xml'>
 <!ENTITY rfc7457 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7457.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7457.xml'>
 <!ENTITY rfc7465 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7465.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7465.xml'>
 <!ENTITY rfc7590 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7590.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7590.xml'>
 <!ENTITY rfc8054 PUBLIC ''
-'http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8054.xml'>
+'https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8054.xml'>
 ]>
 
 <?rfc toc="yes" ?>
